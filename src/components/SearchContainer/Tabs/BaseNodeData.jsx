@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
+import CEProperties from './Components/CEProperties';
 import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
@@ -101,6 +102,8 @@ const BaseNodeData = ({}) => {
                     </Table>
                 </div>
             </CollapsibleSection>
+
+            <CEProperties properties={nodeProps} />
         </div>
     );
 };

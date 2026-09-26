@@ -34,7 +34,7 @@ import BaseNodeData from "./Tabs/BaseNodeData";
 import ContainerNodeData from "./Tabs/ContainerNodeData";
 import AZManagementGroupNodeData from "./Tabs/AZManagementGroupNodeData";
 import AZRoleNodeData from "./Tabs/AZRoleNodeData";
-import AllPropertiesNodeData from './Tabs/AllPropertiesNodeData';
+import CENodeData from './Tabs/CENodeData';
 
 class TabContainer extends Component {
 
@@ -173,7 +173,7 @@ class TabContainer extends Component {
         });
     }
 
-    // kinds with no panel of their own, shown by AllPropertiesNodeData
+    // kinds with no panel of their own, shown by CENodeData
     _otherNodeClicked() {
         this.clearVisible()
         this.setState({
@@ -482,7 +482,7 @@ class TabContainer extends Component {
                         <AZAppNodeData visible={this.state.azAppVisible} />
                         <AZManagementGroupNodeData visible={this.state.azManagementGroupVisible} />
                         <AZRoleNodeData visible={this.state.azRoleVisible} />
-                        <AllPropertiesNodeData
+                        <CENodeData
                             visible={this.state.otherVisible}
                         />
                     </Tab>

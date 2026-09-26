@@ -3,6 +3,7 @@ import { AppContext } from '../../../AppContext';
 import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
+import CEProperties from './Components/CEProperties';
 import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeDisplayLink from './Components/NodeDisplayLink';
@@ -103,6 +104,8 @@ const AZManagementGroupNodeData = ({}) => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

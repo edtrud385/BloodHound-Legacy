@@ -5,6 +5,7 @@ import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import MappedNodeProps from './Components/MappedNodeProps';
+import CEProperties from './Components/CEProperties';
 import ExtraNodeProps from './Components/ExtraNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { withAlert } from 'react-alert';
@@ -151,6 +152,8 @@ const UserNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

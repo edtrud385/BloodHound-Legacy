@@ -5,6 +5,7 @@ import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
+import CEProperties from './Components/CEProperties';
 import ExtraNodeProps from './Components/ExtraNodeProps';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
@@ -101,6 +102,8 @@ const AZSubscriptionNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

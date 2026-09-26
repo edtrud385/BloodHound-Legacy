@@ -5,6 +5,7 @@ import { AppContext } from '../../../AppContext';
 import CollapsibleSection from './Components/CollapsibleSection';
 import ExtraNodeProps from './Components/ExtraNodeProps';
 import MappedNodeProps from './Components/MappedNodeProps';
+import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import styles from './NodeData.module.css';
@@ -106,6 +107,8 @@ const GroupNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

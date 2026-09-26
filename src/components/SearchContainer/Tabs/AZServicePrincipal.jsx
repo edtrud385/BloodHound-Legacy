@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
+import CEProperties from './Components/CEProperties';
 import ExtraNodeProps from './Components/ExtraNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { withAlert } from 'react-alert';
@@ -115,6 +116,8 @@ const AZServicePrincipalNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

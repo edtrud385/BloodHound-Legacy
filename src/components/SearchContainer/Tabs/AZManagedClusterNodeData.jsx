@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
+import CEProperties from './Components/CEProperties';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
@@ -105,6 +106,8 @@ const AZManagedClusterNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

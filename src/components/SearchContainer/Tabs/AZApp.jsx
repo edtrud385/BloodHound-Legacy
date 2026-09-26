@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
+import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
 import ExtraNodeProps from './Components/ExtraNodeProps';
@@ -123,6 +124,8 @@ const AZAppNodeData = () => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

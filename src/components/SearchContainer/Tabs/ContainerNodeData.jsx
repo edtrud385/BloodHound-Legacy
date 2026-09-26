@@ -3,6 +3,7 @@ import { AppContext } from '../../../AppContext';
 import CollapsibleSection from './Components/CollapsibleSection';
 import ExtraNodeProps from './Components/ExtraNodeProps';
 import MappedNodeProps from './Components/MappedNodeProps';
+import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import styles from './NodeData.module.css';
@@ -97,6 +98,8 @@ const ContainerNodeData = ({}) => {
                     properties={nodeProps}
                     label={label}
                 />
+
+                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

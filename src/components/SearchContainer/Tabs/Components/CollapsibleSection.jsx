@@ -5,9 +5,16 @@ import {Col, Grid, Row} from 'react-bootstrap';
 import {motion} from 'framer-motion';
 import {AppContext} from '../../../../AppContext';
 
-const CollapsibleSection = ({ header, children }) => {
-    const [open, setOpen] = useState(true);
+// Pass open (and onToggle) to control the section from outside; without
+// them it starts open and keeps its own state.
+const CollapsibleSection = ({ header, children, open: openProp, onToggle }) => {
+    const [openState, setOpenState] = useState(true);
     const context = useContext(AppContext);
+    const open = openProp === undefined ? openState : openProp;
+    const setOpen = (value) => {
+        if (onToggle) onToggle(value);
+        else if (openProp === undefined) setOpenState(value);
+    };
 
     return (
         <>
