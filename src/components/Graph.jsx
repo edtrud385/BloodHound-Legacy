@@ -14,6 +14,16 @@ import { escapeRegExp } from '../js/utils';
 import { filterQuery } from '../js/edgeFilter';
 import { compositionQuery, domainCompositionQuery } from '../js/adcsComposition';
 import { exportGraphImage } from '../js/imageExport';
+import { isHighValue, refreshProtected } from '../js/ceHighValue';
+
+const HIGH_VALUE_GLYPH = {
+    position: 'top-right',
+    font: '"Font Awesome 5 Free"',
+    content: '\uf3a5',
+    fillColor: 'black',
+    fontScale: 1.5,
+    fontStyle: '900',
+};
 
 let child;
 const { dialog } = remote;
@@ -115,6 +125,9 @@ class GraphContainer extends Component {
         emitter.on('toggleDarkMode', this.toggleDarkMode.bind(this));
         emitter.on('closeTooltip', this.hideTooltip.bind(this));
         emitter.on('confirmGraphDraw', this.sendToChild.bind(this));
+        emitter.on('setOwned', refreshProtected);
+        emitter.on('setHighVal', refreshProtected);
+        emitter.on('highValueUpdated', this.applyHighValue.bind(this));
     }
 
     componentDidMount() {
@@ -122,6 +135,36 @@ class GraphContainer extends Component {
         font.load().then((x) => {
             this.inita();
         });
+        refreshProtected();
+    }
+
+    // Brings the high value diamond on drawn nodes (and nodes folded into
+    // them) in line with isHighValue, after the protected set changes or a
+    // node is marked or unmarked.
+    applyHighValue() {
+        let instance = this.state.sigmaInstance;
+        if (!instance) return;
+        let sync = (node) => {
+            let want = isHighValue({
+                objectid: node.objectid,
+                labels: node.labels,
+                properties: node.props,
+                highvalue: node.highvalue,
+            });
+            let glyphs = (node.glyphs || []).filter(
+                (glyph) => glyph.position !== HIGH_VALUE_GLYPH.position
+            );
+            if (want) glyphs.push({ ...HIGH_VALUE_GLYPH });
+            node.glyphs = glyphs;
+        };
+        $.each(instance.graph.nodes(), (_, node) => {
+            sync(node);
+            if (node.folded && node.folded.nodes) {
+                $.each(node.folded.nodes, (_, folded) => sync(folded));
+            }
+        });
+        instance.renderers[0].glyphs();
+        instance.refresh();
     }
 
     hideTooltip() {
@@ -1001,6 +1044,7 @@ class GraphContainer extends Component {
             id: id,
             type: type,
             label: label,
+            labels: data.labels,
             Enabled: data.properties.Enabled,
             props: data.properties,
             glyphs: [],
@@ -1073,15 +1117,15 @@ class GraphContainer extends Component {
             });
         }
 
-        if (node.highvalue) {
-            node.glyphs.push({
-                position: 'top-right',
-                font: '"Font Awesome 5 Free"',
-                content: '\uf3a5',
-                fillColor: 'black',
-                fontScale: 1.5,
-                fontStyle: '900',
-            });
+        if (
+            isHighValue({
+                objectid: node.objectid,
+                labels: data.labels,
+                properties: data.properties,
+                highvalue: node.highvalue,
+            })
+        ) {
+            node.glyphs.push({ ...HIGH_VALUE_GLYPH });
         }
 
         switch (type) {

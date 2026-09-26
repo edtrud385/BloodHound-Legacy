@@ -51,7 +51,19 @@ Right-click a **domain** and choose **Expand ADCS Attack Paths** to draw every A
 
 These mirror CE's published composition queries. They rely on data collected for CE (the ADCS nodes and edges); with none present they return nothing, as in CE.
 
-## Settings
+## High value markers from CE
+
+CE marks Tier Zero with the `Tag_Tier_Zero` label and `admin_tier_0` in `system_tags` rather than Legacy's `highvalue` property, so a CE database used to show almost no diamonds. A node now gets the high value diamond when any of these is true:
+
+- it has `highvalue: true` (Legacy's own marking, as before)
+- it has the `Tag_Tier_Zero` label
+- its `system_tags` contain `admin_tier_0`
+- it is a protected object, while **Protected Groups Are High Value** is on (see below)
+
+Protected objects are the AD protected groups (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Domain Controllers, Read-only Domain Controllers, Key Admins, Enterprise Key Admins, Enterprise Domain Controllers, Account, Server, Print and Backup Operators, Replicators) and all their nested members, the objects CE's `ProtectAdminGroups` edges point to, Azure tenants, and the groups, users, service principals and devices holding the Global Administrator or Privileged Role Administrator role.
+
+This is display only: nothing is written to the database. The protected set is read with a single query when the graph opens and is refreshed when the setting changes or a node is marked or unmarked from the right-click menu. The **Mark / Unmark as High Value** actions work as before; unmarking a node that CE or the protected set still marks leaves its diamond in place.
+
 
 <img src="docs/screenshots/04-settings.png" alt="Settings window" width="520" align="right">
 
@@ -59,6 +71,10 @@ These mirror CE's published composition queries. They rely on data collected for
 
 - **Force Labels On** (default on) keeps node and edge labels visible at every zoom level and stops the Ctrl/Cmd key from hiding node labels.
 - **Label Size** sets node and edge label sizes in pixels (default 22 and 16).
+
+**High Value**
+
+- **Protected Groups Are High Value** (default on) shows the diamond on protected groups and their members, `ProtectAdminGroups` targets, Azure tenants and privileged Entra role holders, as described above.
 
 **Graph Images**
 

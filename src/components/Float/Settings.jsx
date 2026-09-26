@@ -20,6 +20,10 @@ import {
     screenSize,
     updateImageSettings,
 } from '../../js/imageExport';
+import {
+    protectedGroupsEnabled,
+    setProtectedGroupsEnabled,
+} from '../../js/ceHighValue';
 
 // Number box that lets the field be cleared while typing and only reports
 // whole numbers of at least min. With emptyValue set, an empty box means
@@ -59,6 +63,9 @@ const NumberSetting = ({ value, min, onCommit, placeholder, emptyValue }) => {
 const Settings = () => {
     const [nodeCollapse, setNodeCollapse] = useState(appStore.performance.edge);
     const [open, setOpen] = useState(false);
+    const [protectedHighValue, setProtectedHighValue] = useState(
+        protectedGroupsEnabled()
+    );
     const dragControl = useDragControls();
 
     const context = useContext(AppContext);
@@ -91,6 +98,11 @@ const Settings = () => {
     const nodeLabelChange = (e) => {
         let val = parseInt(e.target.value);
         context.setNodeLabels(val);
+    };
+
+    const protectedHighValueChange = (e) => {
+        setProtectedHighValue(e.target.checked);
+        setProtectedGroupsEnabled(e.target.checked);
     };
 
 
@@ -339,6 +351,27 @@ const Settings = () => {
                                 <Checkbox
                                     checked={context.darkMode}
                                     onChange={context.toggleDarkMode}
+                                />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col sm={5} componentClass={ControlLabel}>
+                                Protected Groups Are High Value
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Show the high value marker on AD protected groups and their members, ProtectAdminGroups targets, Azure tenants and privileged Entra role holders. Nothing is written to the database.'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                <Checkbox
+                                    checked={protectedHighValue}
+                                    onChange={protectedHighValueChange}
                                 />
                             </Col>
                         </FormGroup>
