@@ -5,9 +5,36 @@ import styles from './EdgeFilter.module.css';
 import EdgeFilterCheck from './EdgeFilterCheck';
 import clsx from 'clsx';
 import EdgeFilterSection from './EdgeFilterSection';
+import { CE_EDGE_GROUPS, isListedEdge } from '../../../js/ceEdges';
+
+const EdgeFilterGroup = ({ title, sectionName, edges }) => (
+    <>
+        <EdgeFilterSection
+            title={title}
+            edges={edges}
+            sectionName={sectionName}
+        />
+        {edges.map((edge) => (
+            <EdgeFilterCheck key={edge} name={edge} />
+        ))}
+    </>
+);
 
 const EdgeFilter = ({ open }) => {
     const context = useContext(AppContext);
+    // Edge types seen in the database that no section above covers.
+    const otherEdges = Object.keys(context.edgeIncluded)
+        .filter((edge) => !isListedEdge(edge))
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    const ceColumns = [
+        CE_EDGE_GROUPS.slice(0, 2),
+        CE_EDGE_GROUPS.slice(2).concat(
+            otherEdges.length > 0
+                ? [{ title: 'Other', sectionName: 'other', edges: otherEdges }]
+                : []
+        ),
+    ];
+
     return (
         <motion.div
             variants={{
@@ -199,6 +226,13 @@ const EdgeFilter = ({ open }) => {
                     <EdgeFilterCheck name='AZMGGrantAppRoles' />
                     <EdgeFilterCheck name='AZMGGrantRole' />
                 </div>
+                {ceColumns.map((groups, i) => (
+                    <div key={i}>
+                        {groups.map((group) => (
+                            <EdgeFilterGroup key={group.title} {...group} />
+                        ))}
+                    </div>
+                ))}
             </div>
         </motion.div>
     );

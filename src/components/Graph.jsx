@@ -488,6 +488,10 @@ class GraphContainer extends Component {
         this.state.sigmaInstance.graph.clear();
         this.state.sigmaInstance.graph.read(graph);
         this.applyDesign();
+        emitter.emit(
+            'edgeTypesSeen',
+            this.state.sigmaInstance.graph.edges().map((edge) => edge.etype)
+        );
 
         if (appStore.dagre) {
             sigma.layouts.dagre.start(this.state.sigmaInstance);

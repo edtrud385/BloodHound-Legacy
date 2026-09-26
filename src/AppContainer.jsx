@@ -27,6 +27,7 @@ import { AppContext } from './AppContext';
 import GraphErrorModal from './components/Modals/GraphErrorModal';
 import MenuContainer from './components/Menu/MenuContainer';
 import QueryCustomCreate from './components/Float/QueryCustomCreate';
+import { CE_EDGES } from './js/ceEdges';
 
 const fullEdgeList = [
     'CanRDP',
@@ -83,7 +84,8 @@ const fullEdgeList = [
     'AddKeyCredentialLink',
     'DumpSMSAPassword',
     'DCSync',
-    'SyncLAPSPassword'
+    'SyncLAPSPassword',
+    ...CE_EDGES,
 ];
 
 export default class AppContainer extends Component {
@@ -149,6 +151,24 @@ export default class AppContainer extends Component {
             conf.set('edgeincluded', edgeIncluded);
         };
 
+        // Edge types that show up in a drawn graph but have no filter row
+        // yet get one (enabled), so they can be filtered like the rest.
+        this.addEdgeTypes = (types) => {
+            let { edgeIncluded } = this.state;
+            let added = false;
+            for (let type of types) {
+                if (type && !(type in edgeIncluded)) {
+                    edgeIncluded[type] = true;
+                    added = true;
+                }
+            }
+            if (added) {
+                this.setState({ edgeIncluded: edgeIncluded });
+                appStore.edgeincluded = edgeIncluded;
+                conf.set('edgeincluded', edgeIncluded);
+            }
+        };
+
         this.state = {
             darkMode: appStore.performance.darkMode,
             toggleDarkMode: this.toggleDarkMode,
@@ -193,13 +213,12 @@ export default class AppContainer extends Component {
             false
         );
 
-        let { edgeIncluded } = this.state;
+        this.addEdgeTypes(fullEdgeList);
+        emitter.on('edgeTypesSeen', this.addEdgeTypes);
+    }
 
-        for (let edge of fullEdgeList) {
-            if (!(edge in edgeIncluded)) {
-                this.setEdgeIncluded(edge, true);
-            }
-        }
+    componentWillUnmount() {
+        emitter.removeListener('edgeTypesSeen', this.addEdgeTypes);
     }
 
     render() {
