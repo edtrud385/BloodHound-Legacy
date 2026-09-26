@@ -126,3 +126,17 @@ hr {
     color: white;
     opacity: 1;
 }
+
+.allProperties {
+    margin-top: 15px;
+}
+
+.kind {
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.propValue {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}

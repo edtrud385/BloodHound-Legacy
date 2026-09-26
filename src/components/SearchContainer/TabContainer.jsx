@@ -34,6 +34,7 @@ import BaseNodeData from "./Tabs/BaseNodeData";
 import ContainerNodeData from "./Tabs/ContainerNodeData";
 import AZManagementGroupNodeData from "./Tabs/AZManagementGroupNodeData";
 import AZRoleNodeData from "./Tabs/AZRoleNodeData";
+import AllPropertiesNodeData from './Tabs/AllPropertiesNodeData';
 
 class TabContainer extends Component {
 
@@ -67,6 +68,7 @@ class TabContainer extends Component {
             azAppVisible: false,
             azManagementGroupVisible: false,
             azRoleVisible: false,
+            otherVisible: false,
             selected: 1,
         };
     }
@@ -136,6 +138,8 @@ class TabContainer extends Component {
             this._azManagementGroupNodeClicked()
         } else if (type === 'AZRole') {
             this._azRoleNodeClicked()
+        } else {
+            this._otherNodeClicked()
         }
     }
 
@@ -165,6 +169,15 @@ class TabContainer extends Component {
         this.clearVisible()
         this.setState({
             baseVisible: true,
+            selected: 2
+        });
+    }
+
+    // kinds with no panel of their own, shown by AllPropertiesNodeData
+    _otherNodeClicked() {
+        this.clearVisible()
+        this.setState({
+            otherVisible: true,
             selected: 2
         });
     }
@@ -424,7 +437,8 @@ class TabContainer extends Component {
                                 !this.state.azAppVisible &&
                                 !this.state.baseVisible &&
                                 !this.state.azManagementGroupVisible &&
-                                !this.state.azRoleVisible
+                                !this.state.azRoleVisible &&
+                                !this.state.otherVisible
                             }
                         />
                         <BaseNodeData visible={this.state.baseVisible} />
@@ -468,6 +482,9 @@ class TabContainer extends Component {
                         <AZAppNodeData visible={this.state.azAppVisible} />
                         <AZManagementGroupNodeData visible={this.state.azManagementGroupVisible} />
                         <AZRoleNodeData visible={this.state.azRoleVisible} />
+                        <AllPropertiesNodeData
+                            standalone={this.state.otherVisible}
+                        />
                     </Tab>
 
                     <Tab eventKey={3} title='Analysis'>
