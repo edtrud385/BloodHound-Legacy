@@ -7,6 +7,16 @@
     margin-left: 5px;
 }
 
+.inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.numberInput {
+    width: 9ch !important;
+}
+
 .container :global {
     position: absolute;
     top: 50%;

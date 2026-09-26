@@ -571,6 +571,19 @@ if (typeof appStore.performance.edgeLabels === 'undefined') {
     conf.set('performance', appStore.performance);
 }
 
+if (typeof appStore.performance.nodeLabelSize === 'undefined') {
+    appStore.performance.nodeLabelSize = 22;
+    appStore.performance.edgeLabelSize = 16;
+    conf.set('performance', appStore.performance);
+}
+
+if (typeof appStore.performance.forceLabels === 'undefined') {
+    appStore.performance.forceLabels = true;
+    appStore.performance.nodeLabels = 1;
+    appStore.performance.edgeLabels = 1;
+    conf.set('performance', appStore.performance);
+}
+
 if (typeof appStore.performance.darkMode === 'undefined') {
     appStore.performance.darkMode = false;
     conf.set('performance', appStore.performance);

@@ -15,6 +15,34 @@ import { AppContext } from '../../AppContext';
 import PoseContainer from '../PoseContainer';
 import { useDragControls } from 'framer-motion';
 
+// Number box that lets the field be cleared while typing and only reports
+// whole numbers of at least min.
+const NumberSetting = ({ value, min, onCommit, placeholder }) => {
+    const [text, setText] = useState(value ? String(value) : '');
+
+    useEffect(() => {
+        setText(value ? String(value) : '');
+    }, [value]);
+
+    const change = (e) => {
+        setText(e.target.value);
+        let val = parseInt(e.target.value);
+        if (val >= min) onCommit(val);
+    };
+
+    return (
+        <FormControl
+            type='number'
+            min={min}
+            className={styles.numberInput}
+            value={text}
+            placeholder={placeholder}
+            onChange={change}
+            onBlur={() => setText(value ? String(value) : '')}
+        />
+    );
+};
+
 const Settings = () => {
     const [nodeCollapse, setNodeCollapse] = useState(appStore.performance.edge);
     const [open, setOpen] = useState(false);
@@ -46,6 +74,7 @@ const Settings = () => {
         let val = parseInt(e.target.value);
         context.setNodeLabels(val);
     };
+
 
     useEffect(() => {
         emitter.on('openSettings', handleOpen);
@@ -137,6 +166,7 @@ const Settings = () => {
                                     componentClass='select'
                                     value={context.edgeLabels}
                                     onChange={edgeLabelChange}
+                                    disabled={context.forceLabels}
                                 >
                                     <option value='0'>Threshold Display</option>
                                     <option value='1'>Always Display</option>
@@ -163,11 +193,72 @@ const Settings = () => {
                                     componentClass='select'
                                     value={context.nodeLabels}
                                     onChange={nodeLabelChange}
+                                    disabled={context.forceLabels}
                                 >
                                     <option value='0'>Threshold Display</option>
                                     <option value='1'>Always Display</option>
                                     <option value='2'>Never Display</option>
                                 </FormControl>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col sm={5} componentClass={ControlLabel}>
+                                Force Labels On
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Always show node and edge labels, and stop the Ctrl/Cmd key from toggling node labels'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                <Checkbox
+                                    checked={context.forceLabels}
+                                    onChange={context.toggleForceLabels}
+                                />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Label Size
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Font size of node and edge labels in pixels'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={7} className={styles.inline}>
+                                Node
+                                <NumberSetting
+                                    min={1}
+                                    value={context.nodeLabelSize}
+                                    onCommit={(val) =>
+                                        context.setLabelSize(
+                                            'nodeLabelSize',
+                                            val
+                                        )
+                                    }
+                                />
+                                Edge
+                                <NumberSetting
+                                    min={1}
+                                    value={context.edgeLabelSize}
+                                    onCommit={(val) =>
+                                        context.setLabelSize(
+                                            'edgeLabelSize',
+                                            val
+                                        )
+                                    }
+                                />
                             </Col>
                         </FormGroup>
                         <FormGroup>

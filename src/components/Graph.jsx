@@ -100,6 +100,7 @@ class GraphContainer extends Component {
         emitter.on('zoomOut', this.zoomOut.bind(this));
         emitter.on('changeNodeLabels', this.changeNodeLabelMode.bind(this));
         emitter.on('changeEdgeLabels', this.changeEdgeLabelMode.bind(this));
+        emitter.on('changeLabelSize', this.changeLabelSize.bind(this));
         emitter.on('deleteEdgeConfirm', this.deleteEdge.bind(this));
         emitter.on('deleteNodeConfirm', this.deleteNode.bind(this));
         emitter.on('changeLayout', this.changeLayout.bind(this));
@@ -382,20 +383,35 @@ class GraphContainer extends Component {
         }
     }
 
+    // sigma's labelThreshold for the current Node Label Display mode
+    nodeLabelThreshold() {
+        if (appStore.performance.forceLabels) return 0;
+        const mode = appStore.performance.nodeLabels;
+        if (mode === 0) return 15;
+        if (mode === 1) return 1;
+        return 500;
+    }
+
     changeNodeLabelMode() {
-        let mode = appStore.performance.nodeLabels;
         let instance = this.state.sigmaInstance;
-        if (mode === 0) {
-            instance.settings('labelThreshold', 15);
-        } else if (mode === 1) {
-            instance.settings('labelThreshold', 1);
-        } else {
-            instance.settings('labelThreshold', 500);
-        }
+        instance.settings('labelThreshold', this.nodeLabelThreshold());
         instance.refresh({ skipIndexation: true });
         this.setState({
             sigmaInstance: instance,
         });
+    }
+
+    changeLabelSize() {
+        let instance = this.state.sigmaInstance;
+        instance.settings(
+            'defaultLabelSize',
+            appStore.performance.nodeLabelSize
+        );
+        instance.settings(
+            'defaultEdgeLabelSize',
+            appStore.performance.edgeLabelSize
+        );
+        instance.refresh({ skipIndexation: true });
     }
 
     changeEdgeLabelMode() {
@@ -1204,6 +1220,10 @@ class GraphContainer extends Component {
             scalingMode: 'inside',
             autoRescale: true,
             sideMargin: 20,
+            labelSize: 'fixed',
+            edgeLabelSize: 'fixed',
+            defaultLabelSize: appStore.performance.nodeLabelSize,
+            defaultEdgeLabelSize: appStore.performance.edgeLabelSize,
         });
 
         //Monkeypatch the drawIcon function to add font-weight to the canvas drawing for drawIcon
@@ -1523,7 +1543,11 @@ class GraphContainer extends Component {
                 let sigmaInstance = this.state.sigmaInstance;
 
                 if (document.activeElement === document.body) {
-                    if (this.state.ctrlDown && !this.state.otherDown) {
+                    if (
+                        this.state.ctrlDown &&
+                        !this.state.otherDown &&
+                        !appStore.performance.forceLabels
+                    ) {
                         mode = mode + 1;
                         if (mode > 2) {
                             mode = 0;
@@ -1659,15 +1683,7 @@ class GraphContainer extends Component {
             design.setStyles(appStore.highResStyle);
         }
 
-        const mode = appStore.performance.nodeLabels;
-
-        if (mode === 2) {
-            sigmaInstance.settings('labelThreshold', 500);
-        } else if (mode === 0) {
-            sigmaInstance.settings('labelThreshold', 15);
-        } else {
-            sigmaInstance.settings('labelThreshold', 1);
-        }
+        sigmaInstance.settings('labelThreshold', this.nodeLabelThreshold());
 
         this.setState({
             sigmaInstance: sigmaInstance,

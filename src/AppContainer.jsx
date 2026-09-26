@@ -141,6 +141,26 @@ export default class AppContainer extends Component {
             emitter.emit('changeEdgeLabels');
         };
 
+        this.setLabelSize = (key, val) => {
+            this.setState({ [key]: val });
+            appStore.performance[key] = val;
+            conf.set('performance', appStore.performance);
+            emitter.emit('changeLabelSize');
+        };
+
+        // Keeps node and edge labels on and turns off the Ctrl/Cmd key
+        // that normally cycles node labels.
+        this.toggleForceLabels = () => {
+            let forceLabels = !this.state.forceLabels;
+            this.setState({ forceLabels: forceLabels });
+            appStore.performance.forceLabels = forceLabels;
+            if (forceLabels) {
+                this.setNodeLabels(1);
+                this.setEdgeLabels(1);
+            }
+            conf.set('performance', appStore.performance);
+        };
+
         this.setEdgeIncluded = (name, included) => {
             let { edgeIncluded } = this.state;
             edgeIncluded[name] = included;
@@ -187,6 +207,11 @@ export default class AppContainer extends Component {
             setNodeLabels: this.setNodeLabels,
             edgeLabels: appStore.performance.edgeLabels,
             setEdgeLabels: this.setEdgeLabels,
+            nodeLabelSize: appStore.performance.nodeLabelSize,
+            edgeLabelSize: appStore.performance.edgeLabelSize,
+            setLabelSize: this.setLabelSize,
+            forceLabels: appStore.performance.forceLabels,
+            toggleForceLabels: this.toggleForceLabels,
             edgeIncluded: appStore.edgeincluded,
             setEdgeIncluded: this.setEdgeIncluded,
             filterAllQueries: appStore.filterAllQueries,
