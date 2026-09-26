@@ -45,6 +45,16 @@ const NodeTooltip = ({ node, x, y }) => {
         >
             <div>{label}</div>
             <ul>
+                {type === 'Domain' && (
+                    <li
+                        onClick={() => {
+                            emitter.emit('expandDomainComposition', node);
+                        }}
+                    >
+                        <i className='fa fa-project-diagram' /> Expand ADCS
+                        Attack Paths
+                    </li>
+                )}
                 <li
                     onClick={() => {
                         emitter.emit('setStart', node);

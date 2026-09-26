@@ -2,10 +2,12 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import styles from './Tooltips.module.css';
 import clsx from 'clsx';
 import {AppContext} from '../../AppContext';
+import {isCompositionEdge} from '../../js/adcsComposition';
 
 const EdgeTooltip = ({ edge, x, y }) => {
     let label = edge.label;
     let id = edge.id;
+    let type = edge.etype || edge.label;
 
     const tooltipDiv = useRef(null);
 
@@ -41,6 +43,16 @@ const EdgeTooltip = ({ edge, x, y }) => {
         >
             <div>{label}</div>
             <ul>
+                {isCompositionEdge(type) && (
+                    <li
+                        onClick={() => {
+                            emitter.emit('expandComposition', id);
+                        }}
+                    >
+                        <i className='fa fa-project-diagram' /> Expand ADCS
+                        Composition
+                    </li>
+                )}
                 <li
                     onClick={() => {
                         emitter.emit('getHelp', id);

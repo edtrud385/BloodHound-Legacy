@@ -12,6 +12,7 @@ import EdgeTooltip from './Tooltips/EdgeTooltip';
 import ConfirmDrawModal from './Modals/ConfirmDrawModal';
 import { escapeRegExp } from '../js/utils';
 import { filterQuery } from '../js/edgeFilter';
+import { compositionQuery, domainCompositionQuery } from '../js/adcsComposition';
 import { exportGraphImage } from '../js/imageExport';
 
 let child;
@@ -90,6 +91,8 @@ class GraphContainer extends Component {
         emitter.on('spotlightClick', this.spotlightClickHandler.bind(this));
         emitter.on('graphRefresh', this.relayout.bind(this));
         emitter.on('graphReload', this.reload.bind(this));
+        emitter.on('expandComposition', this.expandComposition.bind(this));
+        emitter.on('expandDomainComposition', this.expandDomainComposition.bind(this));
         emitter.on('export', this.export.bind(this));
         emitter.on('import', this.import.bind(this));
         emitter.on('clearDB', this.clearGraph.bind(this));
@@ -348,6 +351,39 @@ class GraphContainer extends Component {
     reload() {
         closeTooltip();
         this.doQueryNative(this.state.currentQuery);
+    }
+
+    // Expand one ADCS edge into the underlying attack-path composition.
+    expandComposition(edgeId) {
+        closeTooltip();
+        let graph = this.state.sigmaInstance.graph;
+        let edge = graph.edges(edgeId);
+        if (!edge) return;
+        let type = edge.etype || edge.label;
+        let statement = compositionQuery(type);
+        if (!statement) {
+            this.props.alert.info('No composition for {} edges'.format(type));
+            return;
+        }
+        let source = graph.nodes(edge.source);
+        let target = graph.nodes(edge.target);
+        this.doQueryNative({
+            statement: statement,
+            props: { s: source ? source.objectid : null, t: target.objectid },
+            allowCollapse: false,
+            noFilter: true,
+        });
+    }
+
+    // Expand every ADCS attack path that targets a domain.
+    expandDomainComposition(node) {
+        closeTooltip();
+        this.doQueryNative({
+            statement: domainCompositionQuery(),
+            props: { s: null, t: node.objectid },
+            allowCollapse: false,
+            noFilter: true,
+        });
     }
 
     export(payload) {
@@ -766,7 +802,10 @@ class GraphContainer extends Component {
         }
 
         let finaledges = edgearr.join('|');
-        let statement = filterQuery(params.statement.format(finaledges));
+        let statement = params.statement.format(finaledges);
+        if (!params.noFilter) {
+            statement = filterQuery(statement);
+        }
 
         if (appStore.performance.debug) {
             let temp = statement;
