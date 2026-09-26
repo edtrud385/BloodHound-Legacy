@@ -43,7 +43,7 @@ const ExportContainer = () => {
             visible={visible}
             className={clsx(
                 styles.container,
-                context.darkMode ? styles.dark : null
+                context.darkMode ? styles.dark : styles.light
             )}
             dragHandle={dragControl}
         >

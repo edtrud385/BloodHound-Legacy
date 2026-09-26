@@ -130,3 +130,34 @@
 hr {
     border-color: #94989d;
 }
+
+.container :global .panel {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.light :global .panel {
+    border: 1px solid #c4c9d0;
+    background: #ffffff;
+}
+
+.light :global .panel-heading {
+    background: #f0f2f5;
+    border-bottom: 1px solid #c4c9d0;
+    color: #111;
+    font-weight: 600;
+}
+
+.light :global .table > tbody > tr + tr {
+    border-top: 1px solid #e2e5e9;
+}
+
+.light :global .table > tbody > tr:hover {
+    background: #eef1f4;
+}
+
+.light :global .table > tbody > tr > td {
+    padding: 10px 0;
+    border-top: none;
+}
