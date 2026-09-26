@@ -35,11 +35,17 @@
 
 .container {
     display: grid;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(4, auto);
     margin-left: 8px;
     margin-right: 8px;
     white-space: nowrap;
-    column-gap: 1rem;
+    column-gap: 0.75rem;
+    /* scroll the checkboxes, not the page, so the footer stays visible */
+    max-height: calc(100vh - 130px);
+    /* and keep clear of the menu strip on the right on small windows */
+    max-width: calc(100vw - 500px);
+    overflow: auto;
+    padding-right: 8px;
 }
 
 .input {

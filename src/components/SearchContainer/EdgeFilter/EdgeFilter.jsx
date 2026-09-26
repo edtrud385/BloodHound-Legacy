@@ -26,14 +26,14 @@ const EdgeFilter = ({ open }) => {
     const otherEdges = Object.keys(context.edgeIncluded)
         .filter((edge) => !isListedEdge(edge))
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-    const ceColumns = [
-        CE_EDGE_GROUPS.slice(0, 2),
-        CE_EDGE_GROUPS.slice(2).concat(
-            otherEdges.length > 0
-                ? [{ title: 'Other', sectionName: 'other', edges: otherEdges }]
-                : []
-        ),
-    ];
+    // ADCS sections share the short MS Graph column; the rest get one
+    // new column so the pane stays narrow enough for the default window.
+    const adcsGroups = CE_EDGE_GROUPS.slice(0, 2);
+    const otherCeGroups = CE_EDGE_GROUPS.slice(2).concat(
+        otherEdges.length > 0
+            ? [{ title: 'Other', sectionName: 'other', edges: otherEdges }]
+            : []
+    );
 
     return (
         <motion.div
@@ -225,14 +225,15 @@ const EdgeFilter = ({ open }) => {
                     <EdgeFilterCheck name='AZMGAddMember' />
                     <EdgeFilterCheck name='AZMGGrantAppRoles' />
                     <EdgeFilterCheck name='AZMGGrantRole' />
+                    {adcsGroups.map((group) => (
+                        <EdgeFilterGroup key={group.title} {...group} />
+                    ))}
                 </div>
-                {ceColumns.map((groups, i) => (
-                    <div key={i}>
-                        {groups.map((group) => (
-                            <EdgeFilterGroup key={group.title} {...group} />
-                        ))}
-                    </div>
-                ))}
+                <div>
+                    {otherCeGroups.map((group) => (
+                        <EdgeFilterGroup key={group.title} {...group} />
+                    ))}
+                </div>
             </div>
             <div className={styles.footer}>
                 <label
