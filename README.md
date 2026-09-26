@@ -4,6 +4,14 @@ A fork of [BloodHound Legacy](https://github.com/SpecterOps/BloodHound-Legacy) 4
 
 The screenshots below use a small fictional `CORP.LOCAL` domain.
 
+## Why this fork
+
+When I review large environments, the CE graph is hard to read. On a dense domain the layout packs everything together and the nodes shrink until they are too small to make sense of, so getting an overall picture of the attack surface is a struggle. BloodHound Legacy lays the same data out far better: it spreads nodes out, keeps them at a readable size and stays usable when a graph has a lot in it, which makes it much easier to take in a large environment at a glance.
+
+So I use the two tools for different jobs. I reach for Legacy when I want to view and reason about a big graph, and I use CE for detailed, honed-in work on a specific path. The problem was that Legacy predates CE's collection, so pointing it at a CE database left out a lot: ADCS objects drew as blank question marks, local groups and the newer attack-path edges had no icons, and much of what CE marks as high value or explains about each edge simply did not show up.
+
+This fork closes that gap. It teaches Legacy to read and display CE-collected data so I can keep using Legacy's layout for the big-picture review while still seeing everything CE knows about: the CE node kinds and icons, the high-value markers CE applies, the CE edges and their descriptions, and the ADCS attack-path composition. The rest of this README describes each of those additions.
+
 ## CE node icons
 
 Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser) and AZFederatedIdentityCredential are covered too. Low detail mode uses the same colours.
