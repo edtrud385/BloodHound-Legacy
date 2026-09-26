@@ -31,11 +31,17 @@
 
 .container :global {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* framer-motion's drag replaces any transform, so centre with left/top */
+    top: 5vh;
+    left: calc(50% - 300px);
+    width: 600px;
     overflow: hidden;
     box-shadow: 0 5px 15px 0 black;
+}
+
+.container :global .panel-body {
+    max-height: calc(90vh - 50px);
+    overflow-y: auto;
 }
 
 .container :global .panel {
