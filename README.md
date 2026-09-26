@@ -21,9 +21,15 @@ On small windows the list scrolls inside the pane, so the footer stays visible.
 
 ![Edge Filtering pane with the CE sections](docs/screenshots/02-edge-filtering.png)
 
-## Node Info for CE objects
+## CE Properties in Node Info
 
-Clicking a node kind Legacy has no panel for (CertTemplate, EnterpriseCA and other CE kinds) used to leave the Node Info tab showing the previous node. Those kinds now get a panel listing every property with readable names. Lists such as EKUs show one item per line, and dates are formatted.
+BloodHound CE collection enriches objects with extra properties, including ordinary users, computers, groups and domains (for example `system_tags`, `isaclprotected` and `doesanyinheritedacegrantownerrights`). Stock Legacy showed these only as raw keys under Extra Properties, and not at all for some node kinds.
+
+Every Node Info panel now has a **CE Properties** section. It lists all of the node's properties with readable names, shows lists one item per line and formats dates. It starts collapsed and remembers whether you last left it open.
+
+<img src="docs/screenshots/07-ce-properties-user.png" alt="CE Properties section in a User panel" width="420">
+
+Node kinds that Legacy has no panel for at all (CertTemplate, EnterpriseCA, RootCA, NTAuthStore, IssuancePolicy, ADLocalGroup and so on) used to leave the Node Info tab showing the previous node. They now open to their name and kind with CE Properties expanded:
 
 ![Node Info for a certificate template](docs/screenshots/03-node-info-certtemplate.png)
 
