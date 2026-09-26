@@ -483,7 +483,7 @@ class TabContainer extends Component {
                         <AZManagementGroupNodeData visible={this.state.azManagementGroupVisible} />
                         <AZRoleNodeData visible={this.state.azRoleVisible} />
                         <AllPropertiesNodeData
-                            standalone={this.state.otherVisible}
+                            visible={this.state.otherVisible}
                         />
                     </Tab>
 

@@ -1,59 +1,53 @@
 import React, { useContext, useEffect, useState } from 'react';
-import clsx from 'clsx';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
 import { AppContext } from '../../../AppContext';
 import { propLabel, propValue } from '../../../js/propLabels';
 
-// Lists every property of the clicked node. For kinds Legacy has its own
-// panel for, this is a collapsed section below that panel. For kinds it has
-// no panel for (the ADCS kinds and anything else from CE), this is the
-// whole Node Info tab.
-const AllPropertiesNodeData = ({ standalone }) => {
+// Node Info for kinds Legacy has no panel of its own for (the ADCS kinds
+// and anything else from CE): lists every property of the clicked node.
+// Kinds with their own panel already list leftover properties under
+// EXTRA PROPERTIES.
+const AllPropertiesNodeData = ({ visible }) => {
+    const [target, setTarget] = useState(null);
     const [node, setNode] = useState(null);
-    const [open, setOpen] = useState(conf.get('allPropertiesOpen') === true);
     const context = useContext(AppContext);
 
     useEffect(() => {
-        let current = null;
-
-        const nodeClickEvent = async (type, objectid) => {
-            current = objectid;
-            if (!objectid) {
-                setNode(null);
-                return;
-            }
-            setNode({ objectid: objectid, type: type, loading: true });
-            let result;
-            try {
-                result = await fetchNode(type, objectid);
-            } catch (e) {
-                result = { error: e.message };
-            }
-            // a later click wins over a slow lookup
-            if (current !== objectid) return;
-            setNode({ objectid: objectid, type: type, ...result });
+        const nodeClickEvent = (type, objectid) => {
+            setTarget(objectid ? { type: type, objectid: objectid } : null);
         };
-
         emitter.on('nodeClicked', nodeClickEvent);
         return () => {
             emitter.removeListener('nodeClicked', nodeClickEvent);
         };
     }, []);
 
-    if (node === null) return <div />;
+    useEffect(() => {
+        if (!visible || target === null) return;
+        let current = true;
+        setNode({ ...target, loading: true });
+        fetchNode(target.type, target.objectid)
+            .then((result) => ({ ...target, ...result }))
+            .catch((e) => ({ ...target, error: e.message }))
+            .then((result) => {
+                // a later click wins over a slow lookup
+                if (current) setNode(result);
+            });
+        return () => {
+            current = false;
+        };
+    }, [target, visible]);
 
-    const toggle = (value) => {
-        setOpen(value);
-        conf.set('allPropertiesOpen', value);
-    };
+    if (!visible || node === null) return <div />;
 
     const props = node.properties || {};
     const name = props.name || props.azname || props.displayname;
-    const kinds = (node.labels || []).filter(
-        (l) => l !== 'Base' && l !== 'AZBase' && !l.startsWith('Tag_')
-    );
+    const kind =
+        (node.labels || []).find(
+            (l) => l !== 'Base' && l !== 'AZBase' && !l.startsWith('Tag_')
+        ) || node.type;
 
     let rows;
     if (node.loading) {
@@ -71,30 +65,14 @@ const AllPropertiesNodeData = ({ standalone }) => {
     }
 
     return (
-        <div
-            className={clsx(
-                standalone ? null : styles.allProperties,
-                context.darkMode ? styles.dark : styles.light
-            )}
-        >
-            {standalone && (
-                <div className={styles.dl}>
-                    <h5>
-                        {name || node.objectid}
-                        {(kinds[0] || node.type) && (
-                            <span className={styles.kind}>
-                                {' '}
-                                - {kinds[0] || node.type}
-                            </span>
-                        )}
-                    </h5>
-                </div>
-            )}
-            <CollapsibleSection
-                header={'ALL PROPERTIES'}
-                open={standalone || open}
-                onToggle={standalone ? null : toggle}
-            >
+        <div className={context.darkMode ? styles.dark : styles.light}>
+            <div className={styles.dl}>
+                <h5>
+                    {name || node.objectid}
+                    {kind && <span className={styles.kind}> - {kind}</span>}
+                </h5>
+            </div>
+            <CollapsibleSection header={'NODE PROPERTIES'}>
                 <div className={styles.itemlist}>
                     <Table>
                         <tbody>
