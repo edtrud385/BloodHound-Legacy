@@ -33,6 +33,24 @@ Node kinds that Legacy has no panel for at all (CertTemplate, EnterpriseCA, Root
 
 ![Node Info for a certificate template](docs/screenshots/03-node-info-certtemplate.png)
 
+## ADCS attack-path composition
+
+Like BloodHound Community Edition, an ADCS attack edge can be expanded into the underlying chain it summarises. Right-click an ADCS edge (ESC1, ESC3, ESC4, ESC6a/b, ESC9a/b, ESC10a/b, ESC13 or GoldenCert) and choose **Expand ADCS Composition**.
+
+For example, this single `ADCSESC1` edge from Domain Users to the domain:
+
+![A single ADCSESC1 edge](docs/screenshots/08-esc1-edge.png)
+
+expands into the enrollment right, the template's publication to the enterprise CA, the CA's certificate chain up to the domain's root CA, and the CA's NT-auth trust:
+
+![The ADCSESC1 edge expanded into its composition](docs/screenshots/09-esc1-composition.png)
+
+Right-click a **domain** and choose **Expand ADCS Attack Paths** to draw every ADCS attack that targets it at once:
+
+![Every ADCS attack path into a domain](docs/screenshots/10-domain-composition.png)
+
+These mirror CE's published composition queries. They rely on data collected for CE (the ADCS nodes and edges); with none present they return nothing, as in CE.
+
 ## Settings
 
 <img src="docs/screenshots/04-settings.png" alt="Settings window" width="520" align="right">
