@@ -13,6 +13,7 @@ import AdmZip from 'adm-zip';
 import * as NewIngestion from '../../js/newingestion';
 import { AzureLabels } from '../../js/newingestion';
 import UploadStatusContainer from '../Float/UploadStatusContainer';
+import { chooseImageFolder } from '../../js/imageExport';
 import { streamArray } from 'stream-json/streamers/StreamArray';
 
 const { dialog, app } = remote;
@@ -1340,6 +1341,14 @@ const MenuContainer = () => {
                     click={exportClick}
                     hoverVal='Export Graph'
                     glyphicon='fa fa-upload'
+                />
+            </div>
+            <div>
+                <MenuButton
+                    click={() => emitter.emit('export', 'image')}
+                    rightClick={chooseImageFolder}
+                    hoverVal='Save Image'
+                    glyphicon='fa fa-camera'
                 />
             </div>
             <div>

@@ -14,20 +14,33 @@ import clsx from 'clsx';
 import { AppContext } from '../../AppContext';
 import PoseContainer from '../PoseContainer';
 import { useDragControls } from 'framer-motion';
+import {
+    chooseImageFolder,
+    imageSize,
+    screenSize,
+    updateImageSettings,
+} from '../../js/imageExport';
 
 // Number box that lets the field be cleared while typing and only reports
-// whole numbers of at least min.
-const NumberSetting = ({ value, min, onCommit, placeholder }) => {
-    const [text, setText] = useState(value ? String(value) : '');
+// whole numbers of at least min. With emptyValue set, an empty box means
+// (and shows) that value.
+const NumberSetting = ({ value, min, onCommit, placeholder, emptyValue }) => {
+    const display = (v) =>
+        emptyValue !== undefined && v === emptyValue ? '' : String(v);
+    const [text, setText] = useState(display(value));
 
     useEffect(() => {
-        setText(value ? String(value) : '');
+        setText(display(value));
     }, [value]);
 
     const change = (e) => {
         setText(e.target.value);
         let val = parseInt(e.target.value);
-        if (val >= min) onCommit(val);
+        if (e.target.value === '' && emptyValue !== undefined) {
+            onCommit(emptyValue);
+        } else if (val >= min) {
+            onCommit(val);
+        }
     };
 
     return (
@@ -38,7 +51,7 @@ const NumberSetting = ({ value, min, onCommit, placeholder }) => {
             value={text}
             placeholder={placeholder}
             onChange={change}
-            onBlur={() => setText(value ? String(value) : '')}
+            onBlur={() => setText(display(value))}
         />
     );
 };
@@ -49,6 +62,11 @@ const Settings = () => {
     const dragControl = useDragControls();
 
     const context = useContext(AppContext);
+    const image = context.imageExport;
+    const { width: imageWidth, height: imageHeight } = imageSize(
+        sigma.instances(0),
+        image
+    );
 
     const handleOpen = () => {
         setOpen(true);
@@ -322,6 +340,194 @@ const Settings = () => {
                                     checked={context.darkMode}
                                     onChange={context.toggleDarkMode}
                                 />
+                            </Col>
+                        </FormGroup>
+                        <h5 className={styles.sectionHeader}>
+                            Graph Images
+                        </h5>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Image Size
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Pixel size of saved images. Leave blank to use the size of the graph on screen; with only a width set, the height keeps the screen proportions.'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={7}>
+                                <div className={styles.inline}>
+                                    <NumberSetting
+                                        min={256}
+                                        emptyValue={0}
+                                        placeholder='auto'
+                                        value={image.width}
+                                        onCommit={(val) =>
+                                            updateImageSettings({ width: val })
+                                        }
+                                    />
+                                    x
+                                    <NumberSetting
+                                        min={256}
+                                        emptyValue={0}
+                                        placeholder='auto'
+                                        value={image.height}
+                                        onCommit={(val) =>
+                                            updateImageSettings({
+                                                height: val,
+                                            })
+                                        }
+                                    />
+                                    <Button
+                                        bsSize='small'
+                                        onClick={() => {
+                                            let screen = screenSize(
+                                                sigma.instances(0)
+                                            );
+                                            updateImageSettings(screen);
+                                        }}
+                                    >
+                                        Match screen
+                                    </Button>
+                                    <Button
+                                        bsSize='small'
+                                        onClick={() =>
+                                            updateImageSettings({
+                                                width: 0,
+                                                height: 0,
+                                            })
+                                        }
+                                    >
+                                        Auto
+                                    </Button>
+                                </div>
+                                <div className={styles.hint}>
+                                    {image.width || image.height
+                                        ? 'saves at'
+                                        : 'auto, currently'}{' '}
+                                    {imageWidth} x {imageHeight}
+                                </div>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Image Padding
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Zooms out by this percent so labels near the edges are not clipped'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={7} className={styles.inline}>
+                                <NumberSetting
+                                    min={0}
+                                    value={image.padding}
+                                    onCommit={(val) =>
+                                        updateImageSettings({ padding: val })
+                                    }
+                                />
+                                %
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Image Markers
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Which node markers to draw in saved images'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={7}>
+                                <Checkbox
+                                    inline
+                                    checked={image.highValue}
+                                    onChange={() =>
+                                        updateImageSettings({
+                                            highValue: !image.highValue,
+                                        })
+                                    }
+                                >
+                                    High Value
+                                </Checkbox>
+                                <Checkbox
+                                    inline
+                                    checked={image.owned}
+                                    onChange={() =>
+                                        updateImageSettings({
+                                            owned: !image.owned,
+                                        })
+                                    }
+                                >
+                                    Owned
+                                </Checkbox>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Numbered Auto-Save
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='On: images save straight to the folder below as 00001.png, 00002.png and so on. Off: a save dialog asks for the name every time.'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                <Checkbox
+                                    checked={image.autoNumber}
+                                    onChange={() =>
+                                        updateImageSettings({
+                                            autoNumber: !image.autoNumber,
+                                        })
+                                    }
+                                />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col componentClass={ControlLabel} sm={5}>
+                                Image Folder
+                                <i
+                                    data-toggle='tooltip'
+                                    data-placement='right'
+                                    title='Where numbered images are saved, and where the save dialog opens. Right-clicking the camera button also changes it.'
+                                    className={clsx(
+                                        'glyphicon',
+                                        'glyphicon-question-sign',
+                                        styles.glyphMargin
+                                    )}
+                                />
+                            </Col>
+                            <Col sm={7} className={styles.inline}>
+                                <FormControl
+                                    readOnly
+                                    value={image.folder || ''}
+                                    placeholder='no folder chosen yet'
+                                />
+                                <Button
+                                    bsSize='small'
+                                    onClick={chooseImageFolder}
+                                >
+                                    Choose
+                                </Button>
                             </Col>
                         </FormGroup>
                     </Form>

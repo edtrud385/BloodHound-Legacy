@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import AppContainer from './AppContainer';
+import { loadImageSettings } from './js/imageExport';
 import Login from './components/Float/Login';
 import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -565,6 +566,7 @@ const alertOptions = {
 appStore.edgeincluded = conf.get('edgeincluded');
 appStore.performance = conf.get('performance');
 appStore.filterAllQueries = conf.get('filterAllQueries') !== false;
+appStore.imageExport = loadImageSettings();
 
 if (typeof appStore.performance.edgeLabels === 'undefined') {
     appStore.performance.edgeLabels = 0;

@@ -12,6 +12,7 @@ import EdgeTooltip from './Tooltips/EdgeTooltip';
 import ConfirmDrawModal from './Modals/ConfirmDrawModal';
 import { escapeRegExp } from '../js/utils';
 import { filterQuery } from '../js/edgeFilter';
+import { exportGraphImage } from '../js/imageExport';
 
 let child;
 const { dialog } = remote;
@@ -351,18 +352,16 @@ class GraphContainer extends Component {
 
     export(payload) {
         if (payload === 'image') {
-            let size = $('#graph').outerWidth();
-            let bgColor = this.state.darkMode ? '#383332' : '#f2f5f9';
-            sigma.plugins.image(
-                this.state.sigmaInstance,
-                this.state.sigmaInstance.renderers[0],
-                {
-                    download: true,
-                    size: size,
-                    background: bgColor,
-                    clip: true,
-                }
-            );
+            try {
+                let saved = exportGraphImage(
+                    this.state.sigmaInstance,
+                    this.state.darkMode
+                );
+                if (saved) this.props.alert.success(`Saved ${saved}`);
+            } catch (e) {
+                console.error(e);
+                this.props.alert.error(`Image export failed: ${e.message}`);
+            }
         } else {
             let json = this.state.sigmaInstance.toJSON({
                 pretty: true,

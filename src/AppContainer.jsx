@@ -196,6 +196,10 @@ export default class AppContainer extends Component {
             conf.set('filterAllQueries', filterAllQueries);
         };
 
+        this.syncImageSettings = (imageExport) => {
+            this.setState({ imageExport: imageExport });
+        };
+
         this.state = {
             darkMode: appStore.performance.darkMode,
             toggleDarkMode: this.toggleDarkMode,
@@ -216,6 +220,7 @@ export default class AppContainer extends Component {
             setEdgeIncluded: this.setEdgeIncluded,
             filterAllQueries: appStore.filterAllQueries,
             toggleFilterAllQueries: this.toggleFilterAllQueries,
+            imageExport: appStore.imageExport,
         };
     }
 
@@ -249,10 +254,12 @@ export default class AppContainer extends Component {
 
         this.addEdgeTypes(fullEdgeList);
         emitter.on('edgeTypesSeen', this.addEdgeTypes);
+        emitter.on('imageSettingsChanged', this.syncImageSettings);
     }
 
     componentWillUnmount() {
         emitter.removeListener('edgeTypesSeen', this.addEdgeTypes);
+        emitter.removeListener('imageSettingsChanged', this.syncImageSettings);
     }
 
     render() {

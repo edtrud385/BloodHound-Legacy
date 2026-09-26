@@ -13,6 +13,18 @@
     gap: 6px;
 }
 
+.hint {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-top: 3px;
+}
+
+.sectionHeader {
+    border-top: 1px solid #94989d;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
 .numberInput {
     width: 9ch !important;
 }
