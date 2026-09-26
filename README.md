@@ -1,14 +1,60 @@
 # BloodHound Legacy 4.3.1 with CE support
 
-This fork of BloodHound Legacy 4.3.1 adds support for data collected by BloodHound Community Edition:
+A fork of [BloodHound Legacy](https://github.com/SpecterOps/BloodHound-Legacy) 4.3.1 that can display and work with data collected for BloodHound Community Edition (CE): ADCS objects, local groups and the newer attack-path edges. It also adds label, image-export and filtering improvements. The stock prebuilt queries are unchanged.
 
-- **Edge Filtering** lists the CE edges (ADCS, ADCS control, local groups and CE attack paths), plus an "Other" section for any other edge type seen in a graph. "Apply filter to every query" makes unchecked edges drop out of prebuilt, custom, raw and Node Info queries too, not just the ones using the `{}` placeholder. "Recalculate" reruns the current query.
-- **Node icons** use CE's icon set, including the ADCS kinds and local principals.
-- **Node Info** lists every property of CE kinds Legacy has no panel for, such as CertTemplate and EnterpriseCA. Other kinds get a collapsed "All Properties" section.
-- **Settings** has node and edge label sizes, Force Labels On (labels always visible, Ctrl/Cmd no longer toggles them), and graph image options: size, padding, markers, numbered auto-save and the save folder.
-- **Save Image** (the camera button in the menu strip) saves the graph as a PNG. Right-click the button to choose the folder.
+The screenshots below use a small fictional `CORP.LOCAL` domain.
 
-The stock prebuilt queries are unchanged.
+## CE node icons
+
+Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser) and AZFederatedIdentityCredential are covered too. Low detail mode uses the same colours.
+
+![ADCS objects drawn with CE icons](docs/screenshots/01-ce-icons.png)
+
+## Edge filtering for every edge and every query
+
+- **New sections** for the CE edges: ADCS (ESC1 to ESC13, GoldenCert), ADCS Control, Local Groups and CE Attack Paths. All are enabled by default.
+- **Other** lists any edge type found in a drawn graph that has no row yet, so every edge type can be filtered.
+- **Apply filter to every query.** Stock Legacy only applies the filter to the few queries that use the `{}` placeholder. With this on, unchecked edges also drop out of prebuilt, custom and raw queries and the Node Info counts. Queries that write to the database are never changed.
+- **Recalculate** reruns the current query with the current filter.
+
+On small windows the list scrolls inside the pane, so the footer stays visible.
+
+![Edge Filtering pane with the CE sections](docs/screenshots/02-edge-filtering.png)
+
+## Node Info for CE objects
+
+Clicking a node kind Legacy has no panel for (CertTemplate, EnterpriseCA and other CE kinds) used to leave the Node Info tab showing the previous node. Those kinds now get a panel listing every property with readable names. Lists such as EKUs show one item per line, and dates are formatted.
+
+![Node Info for a certificate template](docs/screenshots/03-node-info-certtemplate.png)
+
+## Settings
+
+<img src="docs/screenshots/04-settings.png" alt="Settings window" width="520" align="right">
+
+**Labels**
+
+- **Force Labels On** (default on) keeps node and edge labels visible at every zoom level and stops the Ctrl/Cmd key from hiding node labels.
+- **Label Size** sets node and edge label sizes in pixels (default 22 and 16).
+
+**Graph Images**
+
+- **Image Size**: a fixed size, or blank for the graph's on-screen size.
+- **Image Padding**: zooms out slightly so nothing sits on the edge of the image.
+- **Image Markers**: whether saved images show the High Value and Owned markers.
+- **Numbered Auto-Save**: saves straight to the image folder as `00001.png`, `00002.png`, ... without asking.
+- **Image Folder**: where images are saved.
+
+<br clear="right">
+
+## Saving graph images
+
+The **camera button** in the menu strip saves the graph using the settings above. Right-click it to change the folder. **Export Graph > Export to PNG** uses the same exporter. The image is framed exactly as the graph is on screen:
+
+![A graph image saved with the camera button](docs/screenshots/06-exported-image.png)
+
+In light mode the Export Graph popup is now styled as a card:
+
+![Export Graph popup in light mode](docs/screenshots/05-export-popup.png)
 
 ## Building
 
@@ -21,6 +67,8 @@ npm run build:macos      # or build:win32 / build:linux
 ```
 
 On Node 17 or later, set `NODE_OPTIONS=--openssl-legacy-provider` so webpack 4 can build.
+
+Settings and custom queries live in the app's user data folder, not in the app, so replacing an existing BloodHound Legacy install keeps them.
 
 ---
 
