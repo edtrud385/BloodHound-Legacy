@@ -51,6 +51,12 @@ Right-click a **domain** and choose **Expand ADCS Attack Paths** to draw every A
 
 These mirror CE's published composition queries. They rely on data collected for CE (the ADCS nodes and edges); with none present they return nothing, as in CE.
 
+## Help text for the CE edges
+
+Right-clicking an edge and choosing **Help** opens a panel describing what the edge is. Stock Legacy has no panel for the CE edges, so they used to open an empty box. Every CE edge now has an **Info** tab explaining what the edge represents and what it lets a principal do, and a **Refs** tab linking to the official BloodHound documentation for the full abuse and detection guidance.
+
+This covers the ADCS attack edges (ESC1, ESC3–ESC7, ESC9a/b, ESC10a/b, ESC13 and GoldenCert), the ADCS control edges (ManageCA, ManageCertificates, WritePKIEnrollmentFlag, WritePKINameFlag, EnrollOnBehalfOf, DelegatedEnrollmentAgent), the local group edges (MemberOfLocalGroup, LocalToComputer, RemoteInteractiveLogonRight) and the newer CE attack-path edges (CoerceToTGT, DCFor, HasTrustKeys, SpoofSIDHistory, AbuseTGTDelegation, WriteGPLink, GPOAppliesTo, CanApplyGPO, SyncedToEntraUser, WriteOwnerLimitedRights, OwnsLimitedRights).
+
 ## High value markers from CE
 
 CE marks Tier Zero with the `Tag_Tier_Zero` label and `admin_tier_0` in `system_tags` rather than Legacy's `highvalue` property, so a CE database used to show almost no diamonds. A node now gets the high value diamond when any of these is true:
