@@ -234,6 +234,25 @@ const EdgeFilter = ({ open }) => {
                     </div>
                 ))}
             </div>
+            <div className={styles.footer}>
+                <label
+                    title='Also exclude unchecked edges from queries that name their own edge types (prebuilt, custom, raw and Node Info queries)'
+                >
+                    <input
+                        type='checkbox'
+                        checked={context.filterAllQueries}
+                        onChange={context.toggleFilterAllQueries}
+                    />
+                    Apply filter to every query
+                </label>
+                <button
+                    className='btn btn-default btn-xs'
+                    title='Rerun the current query with the current filter'
+                    onClick={() => emitter.emit('graphReload')}
+                >
+                    Recalculate
+                </button>
+            </div>
         </motion.div>
     );
 };

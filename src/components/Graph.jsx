@@ -11,6 +11,7 @@ import StageTooltip from './Tooltips/StageTooltip';
 import EdgeTooltip from './Tooltips/EdgeTooltip';
 import ConfirmDrawModal from './Modals/ConfirmDrawModal';
 import { escapeRegExp } from '../js/utils';
+import { filterQuery } from '../js/edgeFilter';
 
 let child;
 const { dialog } = remote;
@@ -750,7 +751,7 @@ class GraphContainer extends Component {
         }
 
         let finaledges = edgearr.join('|');
-        let statement = params.statement.format(finaledges);
+        let statement = filterQuery(params.statement.format(finaledges));
 
         if (appStore.performance.debug) {
             let temp = statement;

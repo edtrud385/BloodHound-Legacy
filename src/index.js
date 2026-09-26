@@ -476,6 +476,7 @@ const alertOptions = {
 
 appStore.edgeincluded = conf.get('edgeincluded');
 appStore.performance = conf.get('performance');
+appStore.filterAllQueries = conf.get('filterAllQueries') !== false;
 
 if (typeof appStore.performance.edgeLabels === 'undefined') {
     appStore.performance.edgeLabels = 0;

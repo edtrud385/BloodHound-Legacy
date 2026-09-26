@@ -70,3 +70,28 @@
     justify-content: center;
     margin-bottom: 5px;
 }
+
+.footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 16px 8px 16px;
+    white-space: nowrap;
+}
+
+.footer > label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    font-weight: 400;
+}
+
+.footer > label > input {
+    margin: 0;
+}
+
+.dark .footer > button {
+    color: white;
+    border-color: #94989d;
+}

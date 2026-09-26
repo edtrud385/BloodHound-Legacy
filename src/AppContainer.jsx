@@ -169,6 +169,13 @@ export default class AppContainer extends Component {
             }
         };
 
+        this.toggleFilterAllQueries = () => {
+            let filterAllQueries = !this.state.filterAllQueries;
+            this.setState({ filterAllQueries: filterAllQueries });
+            appStore.filterAllQueries = filterAllQueries;
+            conf.set('filterAllQueries', filterAllQueries);
+        };
+
         this.state = {
             darkMode: appStore.performance.darkMode,
             toggleDarkMode: this.toggleDarkMode,
@@ -182,6 +189,8 @@ export default class AppContainer extends Component {
             setEdgeLabels: this.setEdgeLabels,
             edgeIncluded: appStore.edgeincluded,
             setEdgeIncluded: this.setEdgeIncluded,
+            filterAllQueries: appStore.filterAllQueries,
+            toggleFilterAllQueries: this.toggleFilterAllQueries,
         };
     }
 

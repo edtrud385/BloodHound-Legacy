@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import { filterQuery } from '../../../../js/edgeFilter';
 import './NodeCypherLink.module.css';
 
 const NodeCypherLink = ({
@@ -34,7 +35,7 @@ const NodeCypherLink = ({
                 : 'RETURN COUNT(n) AS count'
         }`;
 
-        sess.run(query, {
+        sess.run(filterQuery(query), {
             objectid: target,
             domain: domain,
         })

@@ -34,6 +34,7 @@
     },
     "scripts": {
         "start": "run-s start:client",
+        "test": "babel-node test/edgeFilter.test.js",
         "start:server": "babel-node server.js",
         "start:client": "cross-env NODE_ENV=development electron .",
         "dev": "run-p start:**",

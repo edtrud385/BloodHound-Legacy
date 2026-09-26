@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Icon from '../../../Icon';
 import styles from './NodePlayCypherLink.module.css';
 import NodeALink from './NodeALink';
+import { filterQuery } from '../../../../js/edgeFilter';
 
 const NodePlayCypherLink = ({
     property,
@@ -55,7 +56,7 @@ const NodePlayCypherLink = ({
             distinct ? 'RETURN COUNT(DISTINCT(n))' : 'RETURN COUNT(n)'
         }`;
 
-        sess.run(query, {
+        sess.run(filterQuery(query), {
             objectid: target,
             domain: domain,
         })

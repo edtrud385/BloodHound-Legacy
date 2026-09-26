@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import { filterQuery } from '../../../../js/edgeFilter';
 
 const NodeCypherLinkComplex = ({
     property,
@@ -27,7 +28,7 @@ const NodeCypherLinkComplex = ({
 
         setSession(sess);
         setReady(false);
-        sess.run(countQuery, {
+        sess.run(filterQuery(countQuery), {
             objectid: target,
             domain: domain,
         })
