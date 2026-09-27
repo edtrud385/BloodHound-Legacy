@@ -51,7 +51,6 @@ import AZCloudAppAdmin from './HelpTexts/AZCloudAppAdmin/AZCloudAppAdmin';
 import AZRunsAs from './HelpTexts/AZRunsAs/AZRunsAs';
 import AZVMAdminLogin from './HelpTexts/AZVMAdminLogin/AZVMAdminLogin';
 import AZVMContributor from './HelpTexts/AZVMContributor/AZVMContributor';
-import Default from './HelpTexts/Default/Default';
 import WriteSPN from './HelpTexts/WriteSPN/WriteSPN';
 import AddSelf from './HelpTexts/AddSelf/AddSelf';
 import AddKeyCredentialLink from './HelpTexts/AddKeyCredentialLink/AddKeyCredentialLink';
@@ -78,7 +77,7 @@ import AZAKSContributor from './HelpTexts/AZAKSContributor/AZAKSContributor';
 import AZKeyVaultKVContributor from './HelpTexts/AZKeyVaultKVContributor/AZKeyVaultKVContributor';
 import AZLogicAppContributor from './HelpTexts/AZLogicAppContributor/AZLogicAppContributor';
 import AZNodeResourceGroup from './HelpTexts/AZNodeResourceGroup/AZNodeResourceGroup';
-import CEEdgeHelp from './HelpTexts/CEEdges';
+import CEEdgeHelp, { GenericEdge } from './HelpTexts/CEEdges';
 
 const HelpModal = () => {
     const [sourceName, setSourceName] = useState('');
@@ -195,7 +194,7 @@ const HelpModal = () => {
         ...CEEdgeHelp,
     };
 
-    const Component = edge in components ? components[edge] : Default;
+    const Component = edge in components ? components[edge] : GenericEdge;
 
     return (
         <BaseModal
@@ -210,6 +209,7 @@ const HelpModal = () => {
 
             <Modal.Body>
                 <Component
+                    edge={edge}
                     sourceName={sourceName}
                     sourceType={sourceType}
                     targetName={targetName}

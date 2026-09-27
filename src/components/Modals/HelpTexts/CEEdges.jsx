@@ -230,6 +230,12 @@ const DEFINITIONS = {
             'SyncedToEntraUser links an on-premises Active Directory user to the Entra ID (Azure AD) user it is synchronized to, so compromise of one side can affect the other.',
         ],
     },
+    SyncedToADUser: {
+        slug: 'syncedtoaduser',
+        paras: [
+            'SyncedToADUser is the reverse direction of SyncedToEntraUser: it links an Entra ID (Azure AD) user back to the on-premises Active Directory user it is synchronized to, so compromise of the cloud identity can reach the on-premises one.',
+        ],
+    },
     WriteOwnerLimitedRights: {
         slug: 'writeownerlimitedrights',
         paras: [
@@ -240,6 +246,20 @@ const DEFINITIONS = {
         slug: 'ownslimitedrights',
         paras: [
             'OwnsLimitedRights is a constrained form of Owns: the principal is the owner of the target but with limited implicit rights, which may still be leveraged toward control of the object.',
+        ],
+    },
+    WriteOwnerRaw: {
+        slug: 'writeowner',
+        paras: [
+            'WriteOwnerRaw is the raw form of the WriteOwner right, as collected before CE post-processing decides how much control it actually confers.',
+            'CE keeps this raw edge and, during analysis, resolves it into either WriteOwner (full control) or WriteOwnerLimitedRights depending on whether the target grants owner rights. It is normally hidden in CE and mainly of interest when reviewing the underlying ACLs.',
+        ],
+    },
+    OwnsRaw: {
+        slug: 'owns',
+        paras: [
+            'OwnsRaw is the raw form of the Owns relationship, as collected before CE post-processing decides how much control ownership actually confers.',
+            'CE keeps this raw edge and, during analysis, resolves it into either Owns (full control) or OwnsLimitedRights depending on whether the target grants owner rights. It is normally hidden in CE and mainly of interest when reviewing the underlying ACLs.',
         ],
     },
 };
@@ -305,5 +325,39 @@ const CEEdgeHelp = Object.fromEntries(
     Object.entries(DEFINITIONS).map(([key, def]) => [key, makeComponent(key, def)])
 );
 
-export { DEFINITIONS };
+// Fallback for any edge type with no definition of its own. Rather than the
+// stock "report this to the dev team" error, it names the edge and links to
+// the BloodHound edge documentation index. Newer CE edges land here until a
+// specific definition is added above.
+const GenericEdge = ({ edge, sourceName, sourceType, targetName, targetType }) => (
+    <Tabs defaultActiveKey={1} id='help-tab-container' justified>
+        <Tab eventKey={1} title='Info'>
+            <p>
+                {groupSpecialFormat(sourceType, sourceName)} the {edge} edge to
+                the {typeFormat(targetType)} {targetName}.
+            </p>
+            <p>
+                No detailed description for the {edge} edge is bundled with this
+                build. See the BloodHound documentation for what this edge means
+                and how it is abused.
+            </p>
+        </Tab>
+        <Tab eventKey={2} title='Refs'>
+            <a href='https://bloodhound.specterops.io/resources/edges/overview'>
+                https://bloodhound.specterops.io/resources/edges/overview
+            </a>
+            <br />
+        </Tab>
+    </Tabs>
+);
+
+GenericEdge.propTypes = {
+    edge: PropTypes.string,
+    sourceName: PropTypes.string,
+    sourceType: PropTypes.string,
+    targetName: PropTypes.string,
+    targetType: PropTypes.string,
+};
+
+export { DEFINITIONS, GenericEdge };
 export default CEEdgeHelp;

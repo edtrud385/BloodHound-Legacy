@@ -55,8 +55,11 @@ export const CE_EDGE_GROUPS = [
             'GPOAppliesTo',
             'CanApplyGPO',
             'SyncedToEntraUser',
+            'SyncedToADUser',
             'WriteOwnerLimitedRights',
             'OwnsLimitedRights',
+            'WriteOwnerRaw',
+            'OwnsRaw',
         ],
     },
 ];
