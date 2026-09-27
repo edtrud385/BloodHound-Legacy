@@ -14,6 +14,10 @@ So I use both tools deliberately, for different jobs: CE for collection and for 
 
 This fork closes that gap. It teaches Legacy to read and display CE-collected data, so I keep Legacy's readable layout and cleaner screenshots while still seeing everything CE knows about: the CE node kinds and icons, the high-value markers CE applies, the CE edges and their descriptions, the ADCS attack-path composition, and PKI/AD CS counts in the Database Info tab. If you also run assessments and live in both tools, that's the itch this scratches. Most of the changes are small quality-of-life fixes you'll recognise immediately; the sections below walk through each one.
 
+## Fork version in About
+
+The About window (Help > About) shows the fork version next to the upstream base, for example `Version: 4.3.1 (CE fork v1.0.0)`, and links to both this fork and the upstream repository. Bump `forkVersion` in `package.json` when cutting a build so any screenshot taken for a report is traceable to a known version.
+
 ## CE node icons
 
 Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser) and AZFederatedIdentityCredential are covered too. Low detail mode uses the same colours.

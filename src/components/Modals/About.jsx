@@ -10,6 +10,7 @@ import BaseModal from './BaseModal';
 const About = () => {
     const [data, setData] = useState('');
     const [version, setVersion] = useState('');
+    const [forkVersion, setForkVersion] = useState('');
     const [open, setOpen] = useState(false);
     const context = useContext(AppContext);
 
@@ -17,9 +18,10 @@ const About = () => {
         let data = await promises.readFile(
             join(app.getAppPath(), 'package.json')
         );
-        let version = JSON.parse(data).version;
+        let parsed = JSON.parse(data);
 
-        setVersion(version);
+        setVersion(parsed.version);
+        setForkVersion(parsed.forkVersion);
     };
 
     const getLicense = async () => {
@@ -64,18 +66,34 @@ const About = () => {
             </Modal.Header>
 
             <Modal.Body>
-                <h5>Version: {version}</h5>
                 <h5>
-                    GitHub:{' '}
+                    Version: {version}
+                    {forkVersion ? ` (CE fork v${forkVersion})` : ''}
+                </h5>
+                <h5>
+                    Fork GitHub:{' '}
                     <a
                         href='#'
                         onClick={() => {
                             openLink(
-                                'https://www.github.com/BloodHoundAD/BloodHound'
+                                'https://github.com/edtrud385/BloodHound-Legacy'
                             );
                         }}
                     >
-                        https://www.github.com/BloodHoundAD/BloodHound
+                        https://github.com/edtrud385/BloodHound-Legacy
+                    </a>
+                </h5>
+                <h5>
+                    Upstream:{' '}
+                    <a
+                        href='#'
+                        onClick={() => {
+                            openLink(
+                                'https://github.com/SpecterOps/BloodHound-Legacy'
+                            );
+                        }}
+                    >
+                        https://github.com/SpecterOps/BloodHound-Legacy
                     </a>
                 </h5>
                 <h5>
