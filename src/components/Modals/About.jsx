@@ -6,11 +6,14 @@ import { Modal, Button } from 'react-bootstrap';
 import styles from './About.module.css';
 import { AppContext } from '../../AppContext';
 import BaseModal from './BaseModal';
+import { checkForUpdate } from '../../js/updateCheck';
 
 const About = () => {
     const [data, setData] = useState('');
     const [version, setVersion] = useState('');
     const [forkVersion, setForkVersion] = useState('');
+    const [update, setUpdate] = useState(null);
+    const [checking, setChecking] = useState(false);
     const [open, setOpen] = useState(false);
     const context = useContext(AppContext);
 
@@ -22,6 +25,42 @@ const About = () => {
 
         setVersion(parsed.version);
         setForkVersion(parsed.forkVersion);
+        return parsed.forkVersion;
+    };
+
+    const runUpdateCheck = async (fork) => {
+        setChecking(true);
+        const result = await checkForUpdate(fork);
+        setUpdate(result);
+        setChecking(false);
+    };
+
+    // Renders the result of the update check as a short status line.
+    const updateStatus = () => {
+        if (checking) return 'Checking for updates…';
+        if (!update) return null;
+        switch (update.status) {
+            case 'update':
+                return (
+                    <span>
+                        Update available: v{update.latest} (you have v
+                        {update.current}).{' '}
+                        <a href='#' onClick={() => openLink(update.url)}>
+                            View releases
+                        </a>
+                    </span>
+                );
+            case 'current':
+                return `Up to date (v${update.current}).`;
+            case 'untagged':
+                return update.commit
+                    ? `No tagged releases; latest commit ${update.commit}${
+                          update.date ? ` (${update.date})` : ''
+                      }.`
+                    : 'No tagged releases found.';
+            default:
+                return `Update check failed: ${update.message}.`;
+        }
     };
 
     const getLicense = async () => {
@@ -45,7 +84,7 @@ const About = () => {
     };
 
     useEffect(() => {
-        getVersion();
+        getVersion().then((fork) => runUpdateCheck(fork));
         getLicense();
 
         emitter.on('showAbout', handleOpen);
@@ -69,6 +108,17 @@ const About = () => {
                 <h5>
                     Version: {version}
                     {forkVersion ? ` (CE fork v${forkVersion})` : ''}
+                </h5>
+                <h5>
+                    Updates:{' '}
+                    <small>{updateStatus() || '—'}</small>{' '}
+                    <Button
+                        bsSize='xsmall'
+                        disabled={checking}
+                        onClick={() => runUpdateCheck(forkVersion)}
+                    >
+                        Check for Updates
+                    </Button>
                 </h5>
                 <h5>
                     Fork GitHub:{' '}

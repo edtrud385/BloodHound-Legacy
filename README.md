@@ -18,6 +18,8 @@ This fork closes that gap. It teaches Legacy to read and display CE-collected da
 
 The About window (Help > About) shows the fork version next to the upstream base, for example `Version: 4.3.1 (CE fork v1.0.0)`, and links to both this fork and the upstream repository. Bump `forkVersion` in `package.json` when cutting a build so any screenshot taken for a report is traceable to a known version.
 
+The About window also has a **Check for Updates** line. It asks GitHub whether a newer version of the fork exists and reports back; it never downloads or installs anything, so it works the same on macOS, Windows and Linux and needs no code signing. It compares the running `forkVersion` against the newest semver tag on the repository, so cut a build by bumping `forkVersion` and pushing a matching tag (for example `v1.1.0`). If there are no tags yet it reports the latest commit instead.
+
 ## CE node icons
 
 Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser) and AZFederatedIdentityCredential are covered too. Low detail mode uses the same colours.
