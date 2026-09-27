@@ -18,6 +18,10 @@ Every CE node kind gets CE's own icon and colour, including the ADCS kinds that 
 
 ![ADCS objects drawn with CE icons](docs/screenshots/01-ce-icons.png)
 
+## PKI / AD CS objects in Database Info
+
+The Database Info tab counts on-prem and Azure objects but had no counts for the ADCS objects CE collects. A **PKI / AD CS OBJECTS** section now sits right after **On-Prem Objects**, counting Certificate Templates, Enterprise CAs, Root CAs, AIA CAs, NTAuth Stores and Issuance Policies. On a database with no ADCS data collected the counts are simply zero.
+
 ## Edge filtering for every edge and every query
 
 - **New sections** for the CE edges: ADCS (ESC1 to ESC13, GoldenCert), ADCS Control, Local Groups and CE Attack Paths. All are enabled by default.

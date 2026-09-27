@@ -134,6 +134,54 @@ const DatabaseDataDisplay = () => {
 
             <hr></hr>
 
+            <CollapsibleSection header='PKI / AD CS OBJECTS'>
+                <Table hover striped responsive>
+                    <thead></thead>
+                    <tbody>
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:CertTemplate) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Certificate Templates'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:EnterpriseCA) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Enterprise CAs'}
+                        />
+                        <DatabaseDataLabel
+                            query={'MATCH (n:RootCA) RETURN count(n) AS count'}
+                            index={index}
+                            label={'Root CAs'}
+                        />
+                        <DatabaseDataLabel
+                            query={'MATCH (n:AIACA) RETURN count(n) AS count'}
+                            index={index}
+                            label={'AIA CAs'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:NTAuthStore) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'NTAuth Stores'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:IssuancePolicy) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Issuance Policies'}
+                        />
+                    </tbody>
+                </Table>
+            </CollapsibleSection>
+
+            <hr></hr>
+
             <CollapsibleSection header='AZURE OBJECTS'>
                 <Table hover striped responsive>
                     <thead></thead>
