@@ -1,7 +1,7 @@
 {
     "name": "bloodhound",
     "version": "4.3.1",
-    "forkVersion": "1.0.0",
+    "forkVersion": "1.1.0",
     "description": "Graph Theory for Active Directory",
     "prettier": {
         "tabWidth": 4,
