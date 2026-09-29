@@ -116,7 +116,7 @@ This is display only: nothing is written to the database. The protected set is r
 
 The Queries tab lists your custom queries (from `customqueries.json`) grouped by their `category`. With a lot of custom queries that stack grew long below the built-in analytics, so the **Custom Queries** section now has a category dropdown. Pick a category to show only its queries, or **All categories** to show everything; the choice is remembered.
 
-Categories named `ADSA - <sub>` or `ESA - <sub>` fold under a single **ADSA** or **ESA** entry (with a count), and selecting it reveals each sub-section with its own header — the same ADSA/ESA layout as the bloodhound-legacy-tweaks setup. Any other category stands on its own.
+Categories are grouped by platform. A category named `Active Directory - <sub>` or `Entra ID - <sub>` folds under a single **Active Directory** or **Entra ID** entry (with a count), and selecting it reveals each sub-section with its own header. The prefix matching is case-insensitive and also accepts common spellings (`AD`, `Azure AD`, `AAD`) and the older `ADSA`/`ESA` assessment labels, which map to Active Directory and Entra ID respectively. Any other category stands on its own.
 
 ## Saving graph images
 
