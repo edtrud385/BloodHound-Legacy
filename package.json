@@ -35,7 +35,7 @@
     },
     "scripts": {
         "start": "run-s start:client",
-        "test": "babel-node test/edgeFilter.test.js && babel-node test/adcsComposition.test.js && babel-node test/ceHighValue.test.js && babel-node test/ceEdges.test.js && babel-node test/updateCheck.test.js",
+        "test": "babel-node test/edgeFilter.test.js && babel-node test/adcsComposition.test.js && babel-node test/ceHighValue.test.js && babel-node test/ceEdges.test.js && babel-node test/updateCheck.test.js && babel-node test/queryCategories.test.js",
         "start:server": "babel-node server.js",
         "start:client": "cross-env NODE_ENV=development electron .",
         "dev": "run-p start:**",

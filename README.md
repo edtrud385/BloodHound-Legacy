@@ -112,6 +112,12 @@ This is display only: nothing is written to the database. The protected set is r
 
 <br clear="right">
 
+## Custom query categories
+
+The Queries tab lists your custom queries (from `customqueries.json`) grouped by their `category`. With a lot of custom queries that stack grew long below the built-in analytics, so the **Custom Queries** section now has a category dropdown. Pick a category to show only its queries, or **All categories** to show everything; the choice is remembered.
+
+Categories named `ADSA - <sub>` or `ESA - <sub>` fold under a single **ADSA** or **ESA** entry (with a count), and selecting it reveals each sub-section with its own header — the same ADSA/ESA layout as the bloodhound-legacy-tweaks setup. Any other category stands on its own.
+
 ## Saving graph images
 
 The **camera button** in the menu strip saves the graph using the settings above. Right-click it to change the folder. **Export Graph > Export to PNG** uses the same exporter. The image is framed exactly as the graph is on screen:

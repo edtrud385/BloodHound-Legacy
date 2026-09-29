@@ -7,12 +7,16 @@ import styles from './PrebuiltQueries.module.css';
 import { AppContext } from '../../../AppContext';
 import { Table } from 'react-bootstrap';
 import CollapsibleSection from './Components/CollapsibleSection';
+import { splitCategory, topLevels } from '../../../js/queryCategories';
 
 const { app } = remote;
 
 const PrebuiltQueriesDisplay = () => {
     const [queries, setQueries] = useState([]);
     const [custom, setCustom] = useState([]);
+    const [customCat, setCustomCat] = useState(
+        conf.get('customQueryCat') || ''
+    );
     const context = useContext(AppContext);
 
     useEffect(() => {
@@ -82,40 +86,32 @@ const PrebuiltQueriesDisplay = () => {
         });
     };
 
-    // const getCommandLine = () => {
-    //     switch (platform) {
-    //         case 'darwin':
-    //             return 'open';
-    //         case 'win32':
-    //             return '';
-    //         default:
-    //             return 'xdg-open';
-    //     }
-    // };
-    //
-    // const editCustom = () => {
-    //     exec(
-    //         getCommandLine() +
-    //             ' "' +
-    //             join(app.getPath('userData'), '/customqueries.json') +
-    //             '"'
-    //     );
-    // };
-
     const refreshCustom = () => {
         readCustom();
     };
 
-    const createQuerieSections = (queryArray) => {
+    // Registers every category (unfiltered) so the query-create form's category
+    // list stays complete regardless of the dropdown selection.
+    useEffect(() => {
+        emitter.emit('registerQueryCategories', queries);
+    }, [queries]);
+    useEffect(() => {
+        emitter.emit('registerQueryCategories', custom);
+    }, [custom]);
+
+    // Builds the collapsible category sections. When selectedTop is set (not
+    // the empty "all" value), only categories under that top-level are shown,
+    // and grouped sub-sections are relabelled to their sub name.
+    const createQuerieSections = (queryArray, selectedTop) => {
         let finalQueryElement = [];
 
         for (let queryCategory in queryArray) {
+            const { top, sub, grouped } = splitCategory(queryCategory);
+            if (selectedTop && top !== selectedTop) continue;
+            const header = selectedTop && grouped ? sub : queryCategory;
             try {
                 finalQueryElement.push(
-                    <CollapsibleSection
-                        header={queryCategory}
-                        key={queryCategory}
-                    >
+                    <CollapsibleSection header={header} key={queryCategory}>
                         <div className={styles.itemlist}>
                             <Table>
                                 <thead />
@@ -140,7 +136,6 @@ const PrebuiltQueriesDisplay = () => {
             }
         }
 
-        emitter.emit('registerQueryCategories', queryArray);
         return finalQueryElement;
     };
 
@@ -148,12 +143,23 @@ const PrebuiltQueriesDisplay = () => {
         emitter.emit('openQueryCreate');
     };
 
+    const changeCustomCat = (e) => {
+        const value = e.target.value;
+        setCustomCat(value);
+        try {
+            conf.set('customQueryCat', value);
+        } catch (err) {}
+    };
+
+    const customTops = topLevels(Object.keys(custom));
+    const dark = context.darkMode;
+
     return (
         <div className={context.darkMode ? styles.dark : styles.light}>
             <div className={styles.dl}>
                 <h5>Pre-Built Analytics Queries</h5>
 
-                {createQuerieSections(queries).map((a) => {
+                {createQuerieSections(queries, '').map((a) => {
                     return a;
                 })}
 
@@ -177,10 +183,46 @@ const PrebuiltQueriesDisplay = () => {
                 {Object.keys(custom).length === 0 && (
                     <div>No user defined queries.</div>
                 )}
-                {Object.keys(custom).length > 0 &&
-                    createQuerieSections(custom).map((a) => {
-                        return a;
-                    })}
+                {Object.keys(custom).length > 0 && (
+                    <>
+                        <select
+                            className='form-control'
+                            value={customCat}
+                            onChange={changeCustomCat}
+                            style={{
+                                width: 'auto',
+                                minWidth: '60%',
+                                margin: '4px 10px 8px 10px',
+                                cursor: 'pointer',
+                                ...(dark
+                                    ? {
+                                          background: '#0d1013',
+                                          color: 'white',
+                                          border: '1px solid #94989d',
+                                      }
+                                    : {}),
+                            }}
+                        >
+                            <option value=''>All categories</option>
+                            {customTops.map((t) => {
+                                let n = 0;
+                                Object.keys(custom).forEach((c) => {
+                                    if (splitCategory(c).top === t)
+                                        n += custom[c].length;
+                                });
+                                return (
+                                    <option key={t} value={t}>
+                                        {t}
+                                        {n ? `  (${n})` : ''}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                        {createQuerieSections(custom, customCat).map((a) => {
+                            return a;
+                        })}
+                    </>
+                )}
             </div>
         </div>
     );
