@@ -114,7 +114,7 @@ This is display only: nothing is written to the database. The protected set is r
 
 ## Custom query categories
 
-The Queries tab lists your custom queries (from `customqueries.json`) grouped by their `category`. With a lot of custom queries that stack grew long below the built-in analytics, so the **Custom Queries** section now has a category dropdown. Pick a category to show only its queries, or **All categories** to show everything; the choice is remembered.
+The Queries tab lists your custom queries (from `customqueries.json`) grouped by their `category`. With a lot of custom queries that stack grew long below the built-in analytics, so there is now a **Custom Query Category** dropdown at the top of the tab, above the built-in analytics, so it can be reached without scrolling. Pick a category to show only its custom queries, or **All categories** to show everything; the choice is remembered. It filters the Custom Queries list only; the built-in analytics always show in full.
 
 Categories are grouped by platform. A category named `Active Directory - <sub>` or `Entra ID - <sub>` folds under a single **Active Directory** or **Entra ID** entry (with a count), and selecting it reveals each sub-section with its own header. The prefix matching is case-insensitive and also accepts common spellings (`AD`, `Azure AD`, `AAD`) and the older `ADSA`/`ESA` assessment labels, which map to Active Directory and Entra ID respectively. Any other category stands on its own.
 

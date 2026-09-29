@@ -153,10 +153,60 @@ const PrebuiltQueriesDisplay = () => {
 
     const customTops = topLevels(Object.keys(custom));
     const dark = context.darkMode;
+    const hasCustom = Object.keys(custom).length > 0;
+
+    // The custom-query category picker, shown at the very top so it can be
+    // reached without scrolling past the built-in analytics. It filters only
+    // the Custom Queries list below.
+    const categoryPicker = hasCustom ? (
+        <div style={{ margin: '2px 10px 12px 12px' }}>
+            <div
+                style={{
+                    fontSize: '12px',
+                    color: dark ? '#9fb3c2' : '#555',
+                    margin: '0 0 4px 1px',
+                }}
+            >
+                Custom Query Category
+            </div>
+            <select
+                className='form-control'
+                value={customCat}
+                onChange={changeCustomCat}
+                style={{
+                    width: '100%',
+                    cursor: 'pointer',
+                    ...(dark
+                        ? {
+                              background: '#0d1013',
+                              color: 'white',
+                              border: '1px solid #94989d',
+                          }
+                        : {}),
+                }}
+            >
+                <option value=''>All categories</option>
+                {customTops.map((t) => {
+                    let n = 0;
+                    Object.keys(custom).forEach((c) => {
+                        if (splitCategory(c).top === t) n += custom[c].length;
+                    });
+                    return (
+                        <option key={t} value={t}>
+                            {t}
+                            {n ? `  (${n})` : ''}
+                        </option>
+                    );
+                })}
+            </select>
+        </div>
+    ) : null;
 
     return (
         <div className={context.darkMode ? styles.dark : styles.light}>
             <div className={styles.dl}>
+                {categoryPicker}
+
                 <h5>Pre-Built Analytics Queries</h5>
 
                 {createQuerieSections(queries, '').map((a) => {
@@ -180,49 +230,11 @@ const PrebuiltQueriesDisplay = () => {
                         title='Refresh Queries'
                     />
                 </h5>
-                {Object.keys(custom).length === 0 && (
-                    <div>No user defined queries.</div>
-                )}
-                {Object.keys(custom).length > 0 && (
-                    <>
-                        <select
-                            className='form-control'
-                            value={customCat}
-                            onChange={changeCustomCat}
-                            style={{
-                                width: 'auto',
-                                minWidth: '60%',
-                                margin: '4px 10px 8px 10px',
-                                cursor: 'pointer',
-                                ...(dark
-                                    ? {
-                                          background: '#0d1013',
-                                          color: 'white',
-                                          border: '1px solid #94989d',
-                                      }
-                                    : {}),
-                            }}
-                        >
-                            <option value=''>All categories</option>
-                            {customTops.map((t) => {
-                                let n = 0;
-                                Object.keys(custom).forEach((c) => {
-                                    if (splitCategory(c).top === t)
-                                        n += custom[c].length;
-                                });
-                                return (
-                                    <option key={t} value={t}>
-                                        {t}
-                                        {n ? `  (${n})` : ''}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                        {createQuerieSections(custom, customCat).map((a) => {
-                            return a;
-                        })}
-                    </>
-                )}
+                {!hasCustom && <div>No user defined queries.</div>}
+                {hasCustom &&
+                    createQuerieSections(custom, customCat).map((a) => {
+                        return a;
+                    })}
             </div>
         </div>
     );
