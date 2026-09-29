@@ -1,10 +1,17 @@
 name: Publish
 
+# Push a tag like v4.3.1-ce.1 to build every platform and attach the zips to a
+# GitHub Release. "Run workflow" on the Actions tab builds the same zips as
+# downloadable workflow artifacts without creating a release.
 on:
   push:
     tags:
       - "v*.*.*"
-    
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.build.os }}
@@ -13,47 +20,28 @@ jobs:
         shell: bash
 
     strategy:
+      fail-fast: false
       matrix:
         build:
-        - os: macos-latest
-          ostype: darwin
-          arch: x64
-
-        - os: macos-latest
-          ostype: darwin
-          arch: arm64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: x64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: arm64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: armv7l
-
-        - os: windows-latest
-          ostype: win32
-          arch: ia32
-
-        - os: windows-latest
-          ostype: win32
-          arch: x64
-
-        - os: windows-latest
-          ostype: win32
-          arch: arm64
+        - { os: macos-latest,   ostype: darwin, arch: x64,    icon: src/img/icon.icns }
+        - { os: macos-latest,   ostype: darwin, arch: arm64,  icon: src/img/icon.icns }
+        - { os: ubuntu-latest,  ostype: linux,  arch: x64,    icon: src/img/icon.png }
+        - { os: ubuntu-latest,  ostype: linux,  arch: arm64,  icon: src/img/icon.png }
+        - { os: ubuntu-latest,  ostype: linux,  arch: armv7l, icon: src/img/icon.png }
+        - { os: windows-latest, ostype: win32,  arch: ia32,   icon: src/img/icon.ico }
+        - { os: windows-latest, ostype: win32,  arch: x64,    icon: src/img/icon.ico }
+        - { os: windows-latest, ostype: win32,  arch: arm64,  icon: src/img/icon.ico }
 
     name: Build (${{ matrix.build.ostype }} ${{ matrix.build.arch }})
 
+    env:
+      NAME: BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup NodeJS
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: 16
         cache: npm
@@ -61,13 +49,41 @@ jobs:
     - name: Install Dependencies
       run: npm ci
 
+    - name: Test
+      run: npm test
+
     - name: Build
-      run: npm run build -- --arch=${{ matrix.build.arch }}
+      run: |
+        npm run compile
+        npm run package -- --platform=${{ matrix.build.ostype }} --arch=${{ matrix.build.arch }} --icon=${{ matrix.build.icon }}
 
-    - name: Zip
-      run: 7z a -tzip -mx9 BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}.zip BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}
+    # Packaging invalidates Electron's signature and Apple Silicon refuses to run
+    # unsigned code, so apply a free ad-hoc signature (no Apple developer account).
+    - name: Ad-hoc sign (macOS)
+      if: matrix.build.ostype == 'darwin'
+      run: codesign --force --deep --sign - "$NAME/BloodHound.app"
 
-    - name: Upload
-      uses: softprops/action-gh-release@v1
+    # ditto and zip -y keep the symlinks inside the app bundles; 7z would flatten them.
+    - name: Zip (macOS)
+      if: matrix.build.ostype == 'darwin'
+      run: ditto -c -k --sequesterRsrc --keepParent "$NAME" "$NAME.zip"
+
+    - name: Zip (Linux)
+      if: matrix.build.ostype == 'linux'
+      run: zip -qry "$NAME.zip" "$NAME"
+
+    - name: Zip (Windows)
+      if: matrix.build.ostype == 'win32'
+      run: 7z a -tzip -mx9 "$NAME.zip" "$NAME"
+
+    - name: Upload workflow artifact
+      uses: actions/upload-artifact@v4
       with:
-        files: BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}.zip
+        name: ${{ env.NAME }}
+        path: ${{ env.NAME }}.zip
+
+    - name: Attach to release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: ${{ env.NAME }}.zip

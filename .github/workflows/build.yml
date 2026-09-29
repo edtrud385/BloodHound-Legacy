@@ -1,5 +1,7 @@
 name: Build
 
+# Quick check on every push: tests plus a webpack compile. Release binaries for
+# every platform come from publish.yml when a v*.*.* tag is pushed.
 on:
   push:
     branches: [ master ]
@@ -8,50 +10,10 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.build.os }}
-    defaults:
-      run:
-        shell: bash
-
-    strategy:
-      matrix:
-        build:
-        - os: macos-latest
-          ostype: darwin
-          arch: x64
-
-        - os: macos-latest
-          ostype: darwin
-          arch: arm64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: x64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: arm64
-
-        - os: ubuntu-latest
-          ostype: linux
-          arch: armv7l
-
-        - os: windows-latest
-          ostype: win32
-          arch: ia32
-
-        - os: windows-latest
-          ostype: win32
-          arch: x64
-
-        - os: windows-latest
-          ostype: win32
-          arch: arm64
-
-    name: Build (${{ matrix.build.ostype }} ${{ matrix.build.arch }})
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup NodeJS
       uses: actions/setup-node@v4
@@ -62,21 +24,8 @@ jobs:
     - name: Install Dependencies
       run: npm ci
 
-    - name: Build
-      run: npm run build -- --arch=${{ matrix.build.arch }}
+    - name: Test
+      run: npm test
 
-    - name: Zip
-      run: 7z a -tzip -mx9 BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}.zip BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}
-
-    - name: Update Rolling Release
-      if: "! startsWith(github.event_name, 'pull_request')"
-      uses: softprops/action-gh-release@v1
-      with:
-        name: Rolling Release (unstable)
-        tag_name: rolling
-        prerelease: true
-        files: BloodHound-${{ matrix.build.ostype }}-${{ matrix.build.arch }}.zip
-        body: |
-          Rolling release of BloodHound compiled from source (${{ github.sha }})
-
-          This is automatically kept up-to-date with the `${{ github.ref_name }}` ${{ github.ref_type }}.
+    - name: Compile
+      run: npm run compile
