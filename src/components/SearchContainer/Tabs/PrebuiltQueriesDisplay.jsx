@@ -155,11 +155,11 @@ const PrebuiltQueriesDisplay = () => {
     const dark = context.darkMode;
     const hasCustom = Object.keys(custom).length > 0;
 
-    // The custom-query category picker, shown at the very top so it can be
-    // reached without scrolling past the built-in analytics. It filters only
-    // the Custom Queries list below.
+    // The custom-query category picker. It sits with the Custom Queries list
+    // (both at the top of the tab) so the dropdown and the queries it filters
+    // are together and visible without scrolling past the built-in analytics.
     const categoryPicker = hasCustom ? (
-        <div style={{ margin: '2px 10px 12px 12px' }}>
+        <div style={{ margin: '0 10px 10px 12px' }}>
             <div
                 style={{
                     fontSize: '12px',
@@ -205,15 +205,6 @@ const PrebuiltQueriesDisplay = () => {
     return (
         <div className={context.darkMode ? styles.dark : styles.light}>
             <div className={styles.dl}>
-                {categoryPicker}
-
-                <h5>Pre-Built Analytics Queries</h5>
-
-                {createQuerieSections(queries, '').map((a) => {
-                    return a;
-                })}
-
-                <hr />
                 <h5>
                     Custom Queries
                     <i
@@ -230,11 +221,19 @@ const PrebuiltQueriesDisplay = () => {
                         title='Refresh Queries'
                     />
                 </h5>
+                {categoryPicker}
                 {!hasCustom && <div>No user defined queries.</div>}
                 {hasCustom &&
                     createQuerieSections(custom, customCat).map((a) => {
                         return a;
                     })}
+
+                <hr />
+                <h5>Pre-Built Analytics Queries</h5>
+
+                {createQuerieSections(queries, '').map((a) => {
+                    return a;
+                })}
             </div>
         </div>
     );
