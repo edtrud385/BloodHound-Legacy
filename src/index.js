@@ -206,6 +206,25 @@ global.appStore = {
                 scale: 1.25,
                 color: '#99B2DD',
             },
+            // AD Sites (SharpHound v2.17 / CE 9.8)
+            Site: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uf3c5',
+                scale: 1.25,
+                color: '#7CB7A4',
+            },
+            SiteServer: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uf233',
+                scale: 1.25,
+                color: '#5FA88E',
+            },
+            SiteSubnet: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uf6ff',
+                scale: 1.25,
+                color: '#A3CFC0',
+            },
             // Azure
             AZUser: {
                 font: "'Font Awesome 5 Free'",
@@ -387,6 +406,9 @@ global.appStore = {
             NTAuthStore: '#D575F5',
             CertTemplate: '#B153F3',
             IssuancePolicy: '#99B2DD',
+            Site: '#7CB7A4',
+            SiteServer: '#5FA88E',
+            SiteSubnet: '#A3CFC0',
             AZUser: '#34D2EB',
             AZGroup: '#F57C9B',
             AZTenant: '#54F2F2',
@@ -546,7 +568,7 @@ if (typeof conf.get('edgeincluded') === 'undefined') {
         AZMGGrantAppRoles: true,
         AZNodeResourceGroup: true,
         AZWebsiteContributor: true,
-        AZLogicAppContributo: true,
+        AZLogicAppContributor: true,
         AZAutomationContributor: true,
         AZAKSContributor: true,
     });
@@ -562,6 +584,13 @@ const alertOptions = {
         width: '100%',
     },
 };
+
+// Configs written by earlier builds carry a misspelled default entry.
+if ('AZLogicAppContributo' in conf.get('edgeincluded')) {
+    let edgeincluded = conf.get('edgeincluded');
+    delete edgeincluded.AZLogicAppContributo;
+    conf.set('edgeincluded', edgeincluded);
+}
 
 appStore.edgeincluded = conf.get('edgeincluded');
 appStore.performance = conf.get('performance');

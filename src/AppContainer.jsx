@@ -28,6 +28,7 @@ import GraphErrorModal from './components/Modals/GraphErrorModal';
 import MenuContainer from './components/Menu/MenuContainer';
 import QueryCustomCreate from './components/Float/QueryCustomCreate';
 import { CE_EDGES } from './js/ceEdges';
+import { loadDatabaseEdgeTypes } from './js/dbEdgeTypes';
 
 const fullEdgeList = [
     'CanRDP',
@@ -254,11 +255,14 @@ export default class AppContainer extends Component {
 
         this.addEdgeTypes(fullEdgeList);
         emitter.on('edgeTypesSeen', this.addEdgeTypes);
+        emitter.on('refreshDBData', loadDatabaseEdgeTypes);
+        loadDatabaseEdgeTypes();
         emitter.on('imageSettingsChanged', this.syncImageSettings);
     }
 
     componentWillUnmount() {
         emitter.removeListener('edgeTypesSeen', this.addEdgeTypes);
+        emitter.removeListener('refreshDBData', loadDatabaseEdgeTypes);
         emitter.removeListener('imageSettingsChanged', this.syncImageSettings);
     }
 

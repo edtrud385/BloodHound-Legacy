@@ -60,7 +60,25 @@ export const CE_EDGE_GROUPS = [
             'OwnsLimitedRights',
             'WriteOwnerRaw',
             'OwnsRaw',
+            'WriteAltSecurityIdentities',
+            'WritePublicInformation',
+            'ServerIs',
         ],
+    },
+    {
+        title: 'NTLM Relay',
+        sectionName: 'NTLM relay',
+        edges: [
+            'CoerceAndRelayNTLMToSMB',
+            'CoerceAndRelayNTLMToLDAP',
+            'CoerceAndRelayNTLMToLDAPS',
+            'CoerceAndRelayNTLMToADCS',
+        ],
+    },
+    {
+        title: 'Entra ID (CE)',
+        sectionName: 'Entra ID',
+        edges: ['AZAuthenticatesTo', 'AZRoleEligible', 'AZRoleApprover'],
     },
 ];
 

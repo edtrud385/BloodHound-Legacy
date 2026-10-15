@@ -14,6 +14,7 @@ import BaseModal from './BaseModal';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { AppContext } from '../../AppContext';
+import { nodeKind } from '../../js/nodeKind';
 
 const AddEdgeModal = () => {
     const [open, setOpen] = useState(false);
@@ -82,10 +83,7 @@ const AddEdgeModal = () => {
         for (let record of result.records) {
             let node = record.get(0);
             let properties = node.properties;
-            let fType = node.labels.filter(
-                (w) => w !== 'Base' && w !== 'AZBase'
-            );
-            properties.type = fType.length > 0 ? fType[0] : 'Base';
+            properties.type = nodeKind(node.labels);
             data.push(properties);
         }
 

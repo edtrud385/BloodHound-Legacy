@@ -189,6 +189,8 @@ const HelpModal = () => {
         AZAKSContributor: AZAKSContributor,
         AZAutomationContributor: AZAutomationContributor,
         AZKeyVaultKVContributor: AZKeyVaultKVContributor,
+        // CE's name for the same edge
+        AZKeyVaultContributor: AZKeyVaultKVContributor,
         AZLogicAppContributor: AZLogicAppContributor,
         AZNodeResourceGroup: AZNodeResourceGroup,
         ...CEEdgeHelp,
