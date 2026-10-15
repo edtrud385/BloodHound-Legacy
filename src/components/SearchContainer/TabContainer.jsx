@@ -20,6 +20,7 @@ import AZVMScaleSetNodeData from './Tabs/AZVMScaleSetNodeData';
 import AZKeyVaultNodeData from './Tabs/AZKeyVaultNodeData';
 import AZResourceGroupNodeData from './Tabs/AZResourceGroupNodeData';
 import AZDeviceNodeData from './Tabs/AZDeviceNodeData';
+import AZFederatedIdentityCredentialNodeData from './Tabs/AZFederatedIdentityCredentialNodeData';
 import AZSubscriptionNodeData from './Tabs/AZSubscriptionNodeData';
 import AZTenantNodeData from './Tabs/AZTenantNodeData';
 import AZVMNodeData from './Tabs/AZVMNodeData';
@@ -61,6 +62,7 @@ class TabContainer extends Component {
             azKeyVaultVisible: false,
             azResourceGroupVisible: false,
             azDeviceVisible: false,
+            azFederatedIdentityCredentialVisible: false,
             azSubscriptionVisible: false,
             azTenantVisible: false,
             azVMVisible: false,
@@ -120,6 +122,8 @@ class TabContainer extends Component {
             this._azResourceGroupNodeClicked();
         } else if (type === 'AZDevice') {
             this._azDeviceNodeClicked();
+        } else if (type === 'AZFederatedIdentityCredential') {
+            this._azFederatedIdentityCredentialNodeClicked();
         } else if (type === 'AZSubscription') {
             this._azSubscriptionNodeClicked();
         } else if (type === 'AZTenant') {
@@ -350,6 +354,14 @@ class TabContainer extends Component {
         });
     }
 
+    _azFederatedIdentityCredentialNodeClicked() {
+        this.clearVisible()
+        this.setState({
+            azFederatedIdentityCredentialVisible: true,
+            selected: 2
+        });
+    }
+
     _azSubscriptionNodeClicked() {
         this.clearVisible()
         this.setState({
@@ -430,6 +442,7 @@ class TabContainer extends Component {
                                 !this.state.azKeyVaultVisible &&
                                 !this.state.azResourceGroupVisible &&
                                 !this.state.azDeviceVisible &&
+                                !this.state.azFederatedIdentityCredentialVisible &&
                                 !this.state.azSubscriptionVisible &&
                                 !this.state.azTenantVisible &&
                                 !this.state.azVMVisible &&
@@ -468,6 +481,9 @@ class TabContainer extends Component {
                         />
                         <AZDeviceNodeData
                             visible={this.state.azDeviceVisible}
+                        />
+                        <AZFederatedIdentityCredentialNodeData
+                            visible={this.state.azFederatedIdentityCredentialVisible}
                         />
                         <AZSubscriptionNodeData
                             visible={this.state.azSubscriptionVisible}

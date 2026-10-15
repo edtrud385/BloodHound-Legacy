@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './NodeData.module.css';
 import CEProperties from './Components/CEProperties';
 import { AppContext } from '../../../AppContext';
+import { nodeKind } from '../../../js/nodeKind';
 
 // Node Info for kinds Legacy has no panel of its own for (the ADCS kinds
 // and anything else from CE): the node's name and its CE Properties. Kinds
@@ -41,10 +42,7 @@ const CENodeData = ({ visible }) => {
 
     const props = node.properties || {};
     const name = props.name || props.azname || props.displayname;
-    const kind =
-        (node.labels || []).find(
-            (l) => l !== 'Base' && l !== 'AZBase' && !l.startsWith('Tag_')
-        ) || node.type;
+    const kind = nodeKind(node.labels, node.type);
 
     let properties = props;
     let extraRows = [];
