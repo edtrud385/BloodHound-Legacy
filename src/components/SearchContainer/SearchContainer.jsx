@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../AppContext';
 import clsx from 'clsx';
 import EdgeFilter from './EdgeFilter/EdgeFilter';
+import { nodeKind } from '../../js/nodeKind';
 
 const SearchContainer = () => {
     const [pathfindingOpen, setPathfindingOpen] = useState(false);
@@ -84,14 +85,7 @@ const SearchContainer = () => {
             for (let record of result.records) {
                 let node = record.get(0);
                 let properties = node.properties;
-                let labels = node.labels;
-                if (labels.length === 1) {
-                    properties.type = labels[0];
-                } else {
-                    properties.type = labels.filter((x) => {
-                        return x !== 'Base' && x !== 'AZBase';
-                    })[0];
-                }
+                properties.type = nodeKind(node.labels, node.labels[0]);
 
                 data.push(properties);
             }

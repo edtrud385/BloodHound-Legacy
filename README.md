@@ -22,7 +22,7 @@ The About window also has a **Check for Updates** line. It asks GitHub whether a
 
 ## CE node icons
 
-Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser) and AZFederatedIdentityCredential are covered too. Low detail mode uses the same colours.
+Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser), the AD Sites kinds from SharpHound v2.17 (Site, SiteServer, SiteSubnet) and AZFederatedIdentityCredential are covered too. Nodes carrying CE's `Tag_Tier_Zero` or `Tag_Owned` labels keep their own icon and Node Info panel, whatever order Neo4j returns the labels in. Low detail mode uses the same colours.
 
 ![ADCS objects drawn with CE icons](docs/screenshots/01-ce-icons.png)
 
@@ -32,8 +32,9 @@ The Database Info tab counts on-prem and Azure objects but had no counts for the
 
 ## Edge filtering for every edge and every query
 
-- **New sections** for the CE edges: ADCS (ESC1 to ESC13, GoldenCert), ADCS Control, Local Groups and CE Attack Paths. All are enabled by default.
-- **Other** lists any edge type found in a drawn graph that has no row yet, so every edge type can be filtered.
+- **New sections** for the CE edges: ADCS (ESC1 to ESC13, GoldenCert), ADCS Control, Local Groups, CE Attack Paths, NTLM Relay and Entra ID (CE). All are enabled by default.
+- **Every edge type in the database is included.** On connect and after each upload, the relationship types in the database are added to the filter (enabled), so pathfinding and the `{}` prebuilt queries follow edge types this build has no row for, instead of skipping them until one has been drawn.
+- **Other** lists any edge type in the database that has no row of its own, so every edge type can be filtered.
 - **Apply filter to every query.** Stock Legacy only applies the filter to the few queries that use the `{}` placeholder. With this on, unchecked edges also drop out of prebuilt, custom and raw queries and the Node Info counts. Queries that write to the database are never changed.
 - **Recalculate** reruns the current query with the current filter.
 
@@ -48,6 +49,8 @@ BloodHound CE collection enriches objects with extra properties, including ordin
 Every Node Info panel now has a **CE Properties** section. It lists all of the node's properties with readable names, shows lists one item per line and formats dates. The header carries a tag icon and a count of the properties (for example `CE PROPERTIES (12)`) so it is obvious the node has CE data even when the section is collapsed. It defaults to open and remembers a deliberate collapse, so it is not missed while scrolling.
 
 <img src="docs/screenshots/07-ce-properties-user.png" alt="CE Properties section in a User panel" width="420">
+
+AZFederatedIdentityCredential has its own panel: issuer, subject and audiences, the app it authenticates to and the service principal that app runs as.
 
 Node kinds that Legacy has no panel for at all (CertTemplate, EnterpriseCA, RootCA, NTAuthStore, IssuancePolicy, ADLocalGroup and so on) used to leave the Node Info tab showing the previous node. They now open to their name and kind with CE Properties expanded:
 
@@ -75,7 +78,7 @@ These mirror CE's published composition queries. They rely on data collected for
 
 Right-clicking an edge and choosing **Help** opens a panel describing what the edge is. Stock Legacy has no panel for the CE edges, so they used to open an empty box. Every CE edge now has an **Info** tab explaining what the edge represents and what it lets a principal do, and a **Refs** tab linking to the official BloodHound documentation for the full abuse and detection guidance.
 
-This covers the ADCS attack edges (ESC1, ESC3–ESC7, ESC9a/b, ESC10a/b, ESC13 and GoldenCert), the ADCS control edges (ManageCA, ManageCertificates, WritePKIEnrollmentFlag, WritePKINameFlag, EnrollOnBehalfOf, DelegatedEnrollmentAgent), the local group edges (MemberOfLocalGroup, LocalToComputer, RemoteInteractiveLogonRight) and the newer CE attack-path edges (CoerceToTGT, DCFor, HasTrustKeys, SpoofSIDHistory, AbuseTGTDelegation, WriteGPLink, GPOAppliesTo, CanApplyGPO, SyncedToEntraUser, SyncedToADUser, WriteOwnerLimitedRights, OwnsLimitedRights, WriteOwnerRaw, OwnsRaw). Any CE edge without its own entry (for example a newer edge this build predates) falls back to a generic panel that names the edge and links to the BloodHound documentation, instead of the stock “report this error” message.
+This covers the ADCS attack edges (ESC1, ESC3–ESC7, ESC9a/b, ESC10a/b, ESC13 and GoldenCert), the ADCS control edges (ManageCA, ManageCertificates, WritePKIEnrollmentFlag, WritePKINameFlag, EnrollOnBehalfOf, DelegatedEnrollmentAgent), the local group edges (MemberOfLocalGroup, LocalToComputer, RemoteInteractiveLogonRight) and the newer CE attack-path edges (CoerceToTGT, DCFor, HasTrustKeys, SpoofSIDHistory, AbuseTGTDelegation, WriteGPLink, GPOAppliesTo, CanApplyGPO, SyncedToEntraUser, SyncedToADUser, WriteOwnerLimitedRights, OwnsLimitedRights, WriteOwnerRaw, OwnsRaw, WriteAltSecurityIdentities, WritePublicInformation, ServerIs), the NTLM relay edges (CoerceAndRelayNTLMToSMB, CoerceAndRelayNTLMToLDAP, CoerceAndRelayNTLMToLDAPS, CoerceAndRelayNTLMToADCS) and the Entra ID edges AZAuthenticatesTo, AZRoleEligible and AZRoleApprover. CE's AZKeyVaultContributor uses the same panel as Legacy's AZKeyVaultKVContributor, and the Key Vault Node Info counts include both names. Any CE edge without its own entry (for example a newer edge this build predates) falls back to a generic panel that names the edge and links to the BloodHound documentation, instead of the stock “report this error” message.
 
 ## High value markers from CE
 

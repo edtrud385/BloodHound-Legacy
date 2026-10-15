@@ -107,7 +107,7 @@ const DEFINITIONS = {
         ],
     },
     GoldenCert: {
-        slug: 'golden-certificate',
+        slug: 'golden-cert',
         paras: [
             'A Golden Certificate edge marks that a principal can obtain or use the private key of an enterprise CA (for example by controlling the CA host).',
             'With the CA private key an attacker can forge certificates for any principal in the domain and authenticate as them, similar to a golden ticket.',
@@ -116,33 +116,33 @@ const DEFINITIONS = {
 
     // --- ADCS control edges ------------------------------------------------
     ManageCA: {
-        slug: 'manageca',
+        slug: 'manage-ca',
         paras: [
             'ManageCA is the CA Administrator role over an enterprise CA. It allows administrative changes to the CA configuration, including toggling flags such as the one behind ESC6.',
         ],
     },
     ManageCertificates: {
-        slug: 'managecertificates',
+        slug: 'manage-certificates',
         paras: [
             'ManageCertificates is the Certificate Manager (officer) role over an enterprise CA. It allows approving or denying pending certificate requests, which can release requests that would otherwise need manager approval.',
         ],
     },
     WritePKIEnrollmentFlag: {
-        slug: 'writepkienrollmentflag',
+        slug: 'write-pki-enrollment-flag',
         paras: [
             'WritePKIEnrollmentFlag is write access to the msPKI-Enrollment-Flag attribute of a certificate template.',
             'Changing this flag (for example to remove the manager-approval requirement) can move a template into an abusable configuration.',
         ],
     },
     WritePKINameFlag: {
-        slug: 'writepkinameflag',
+        slug: 'write-pki-name-flag',
         paras: [
             'WritePKINameFlag is write access to the msPKI-Certificate-Name-Flag attribute of a certificate template.',
             'Changing this flag (for example to allow the enrollee to supply the subject) can move a template into an ESC1-style abusable configuration.',
         ],
     },
     EnrollOnBehalfOf: {
-        slug: 'enrollonbehalfof',
+        slug: 'enroll-on-behalf-of',
         paras: [
             'EnrollOnBehalfOf links an enrollment agent template to a target template it can request on behalf of another principal. It is a component of the ESC3 chain.',
         ],
@@ -156,19 +156,19 @@ const DEFINITIONS = {
 
     // --- Local group edges -------------------------------------------------
     MemberOfLocalGroup: {
-        slug: 'memberoflocalgroup',
+        slug: 'member-of-local-group',
         paras: [
             'MemberOfLocalGroup means the principal is a member of a local group on a computer (for example the local Administrators or Remote Desktop Users group), granting whatever access that local group confers on the host.',
         ],
     },
     LocalToComputer: {
-        slug: 'localtocomputer',
+        slug: 'local-to-computer',
         paras: [
             'LocalToComputer ties a local group or local user object to the computer it exists on, expressing that the local principal is defined on that specific host.',
         ],
     },
     RemoteInteractiveLogonRight: {
-        slug: 'remoteinteractivelogonright',
+        slug: 'remote-interactive-logon-right',
         paras: [
             'RemoteInteractiveLogonRight means the principal is granted the "Allow log on through Remote Desktop Services" user right on the computer, i.e. it may sign in over RDP.',
         ],
@@ -176,90 +176,170 @@ const DEFINITIONS = {
 
     // --- CE attack-path edges ----------------------------------------------
     CoerceToTGT: {
-        slug: 'coercetotgt',
+        slug: 'coerce-to-tgt',
         paras: [
             'CoerceToTGT indicates a principal can coerce or obtain a Ticket-Granting Ticket for the target, for example through unconstrained delegation or Kerberos abuse, allowing it to act as that principal.',
         ],
     },
     DCFor: {
-        slug: 'dcfor',
+        slug: 'dc-for',
         paras: [
             'DCFor marks that a computer is a domain controller for the target domain. Domain controllers are Tier Zero and can perform sensitive directory operations such as replication.',
         ],
     },
     HasTrustKeys: {
-        slug: 'hastrustkeys',
+        slug: 'has-trust-keys',
         paras: [
             'HasTrustKeys represents possession of the trust keys for a domain trust, which can be used to forge inter-realm tickets and traverse the trust.',
         ],
     },
     SpoofSIDHistory: {
-        slug: 'spoofsidhistory',
+        slug: 'spoof-sid-history',
         paras: [
             'SpoofSIDHistory indicates the principal can add SID history entries (for example across a trust) so that authenticating grants the privileges of the spoofed SIDs.',
         ],
     },
     AbuseTGTDelegation: {
-        slug: 'abusetgtdelegation',
+        slug: 'abuse-tgt-delegation',
         paras: [
             'AbuseTGTDelegation indicates a principal can obtain another principal’s TGT through Kerberos delegation across a trust, and reuse it to authenticate as that principal.',
         ],
     },
     WriteGPLink: {
-        slug: 'writegplink',
+        slug: 'write-gp-link',
         paras: [
             'WriteGPLink is write access to the gPLink attribute of an OU or site, letting a principal link a Group Policy Object to that container and so apply policy (and any settings it carries) to the objects within it.',
         ],
     },
     GPOAppliesTo: {
-        slug: 'gpoappliesto',
+        slug: 'gpo-applies-to',
         target: 'Base',
         paras: [
             'GPOAppliesTo expresses that a Group Policy Object applies to the target object, i.e. the settings in the GPO reach that principal or computer.',
         ],
     },
     CanApplyGPO: {
-        slug: 'canapplygpo',
+        slug: 'can-apply-gpo',
         paras: [
             'CanApplyGPO expresses that a principal is within the scope of, or can cause the application of, a Group Policy Object, so control over that GPO affects the principal.',
         ],
     },
     SyncedToEntraUser: {
-        slug: 'syncedtoentrauser',
+        slug: 'synced-to-entra-user',
         paras: [
             'SyncedToEntraUser links an on-premises Active Directory user to the Entra ID (Azure AD) user it is synchronized to, so compromise of one side can affect the other.',
         ],
     },
     SyncedToADUser: {
-        slug: 'syncedtoaduser',
+        slug: 'synced-to-ad-user',
         paras: [
             'SyncedToADUser is the reverse direction of SyncedToEntraUser: it links an Entra ID (Azure AD) user back to the on-premises Active Directory user it is synchronized to, so compromise of the cloud identity can reach the on-premises one.',
         ],
     },
     WriteOwnerLimitedRights: {
-        slug: 'writeownerlimitedrights',
+        slug: 'write-owner-limited-rights',
         paras: [
             'WriteOwnerLimitedRights is a constrained form of WriteOwner: the principal can set the owner of the target object but only within limits enforced by the environment, still potentially enabling further control.',
         ],
     },
     OwnsLimitedRights: {
-        slug: 'ownslimitedrights',
+        slug: 'owns-limited-rights',
         paras: [
             'OwnsLimitedRights is a constrained form of Owns: the principal is the owner of the target but with limited implicit rights, which may still be leveraged toward control of the object.',
         ],
     },
     WriteOwnerRaw: {
-        slug: 'writeowner',
+        slug: 'write-owner-raw',
         paras: [
             'WriteOwnerRaw is the raw form of the WriteOwner right, as collected before CE post-processing decides how much control it actually confers.',
             'CE keeps this raw edge and, during analysis, resolves it into either WriteOwner (full control) or WriteOwnerLimitedRights depending on whether the target grants owner rights. It is normally hidden in CE and mainly of interest when reviewing the underlying ACLs.',
         ],
     },
     OwnsRaw: {
-        slug: 'owns',
+        slug: 'owns-raw',
         paras: [
             'OwnsRaw is the raw form of the Owns relationship, as collected before CE post-processing decides how much control ownership actually confers.',
             'CE keeps this raw edge and, during analysis, resolves it into either Owns (full control) or OwnsLimitedRights depending on whether the target grants owner rights. It is normally hidden in CE and mainly of interest when reviewing the underlying ACLs.',
+        ],
+    },
+    WriteAltSecurityIdentities: {
+        slug: 'write-alt-security-identities',
+        refs: [
+            'https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9',
+        ],
+        paras: [
+            'The principal can write the altSecurityIdentities attribute of the target. That attribute holds explicit certificate mappings: a certificate listed there can be used to authenticate as the target.',
+            'This can enable ADCS ESC14 scenario A. The attacker adds a mapping to a certificate they hold and authenticates as the target with it. The certificate must chain to a root CA the domain controller trusts, be issued by a CA in the NTAuth store, carry an EKU that allows domain authentication (Client Authentication, PKINIT Client Authentication or Smart Card Logon), and must not carry a UPN in its subject alternative name.',
+        ],
+    },
+    WritePublicInformation: {
+        slug: 'write-public-information',
+        refs: [
+            'https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9',
+        ],
+        paras: [
+            'The principal can write the Public-Information property set of the target. The set includes the altSecurityIdentities and servicePrincipalName attributes.',
+            'Write access to altSecurityIdentities can enable ADCS ESC14 scenario A (see WriteAltSecurityIdentities). Write access to servicePrincipalName allows targeted Kerberoasting of a user account (see WriteSPN).',
+        ],
+    },
+    ServerIs: {
+        slug: 'server-is',
+        paras: [
+            'ServerIs links an Active Directory site server object to the computer named by its serverReference attribute, normally the domain controller the site server represents.',
+            'It grants no control on its own. It makes control of a site traversable: a GPO linked to the site applies to the domain controllers whose site servers are in it, so check the inbound control and GPLink edges of the site.',
+        ],
+    },
+
+    // --- NTLM relay edges --------------------------------------------------
+    CoerceAndRelayNTLMToSMB: {
+        slug: 'coerce-and-relay-ntlm-to-smb',
+        paras: [
+            'Any authenticated user can compromise the target computer by coercing SMB authentication from another computer that has administrative rights on the target and relaying it to the target, which does not require SMB signing.',
+            'The source of this edge is the Authenticated Users group (or a group containing the coerced computers), so it applies to every domain account.',
+        ],
+    },
+    CoerceAndRelayNTLMToLDAP: {
+        slug: 'coerce-and-relay-ntlm-to-ldap',
+        paras: [
+            'The target computer runs the WebClient service. Any authenticated user can coerce WebClient (HTTP) NTLM authentication from it and relay that to LDAP on a domain controller that does not require LDAP signing.',
+            'The relayed session can be used to configure Resource-Based Constrained Delegation or Shadow Credentials on the target computer and so take it over, or to abuse other Active Directory permissions the computer account holds.',
+        ],
+    },
+    CoerceAndRelayNTLMToLDAPS: {
+        slug: 'coerce-and-relay-ntlm-to-ldaps',
+        paras: [
+            'The target computer runs the WebClient service. Any authenticated user can coerce WebClient (HTTP) NTLM authentication from it and relay that to LDAPS on a domain controller that does not require LDAPS channel binding.',
+            'The relayed session can be used to configure Resource-Based Constrained Delegation or Shadow Credentials on the target computer and so take it over, or to abuse other Active Directory permissions the computer account holds.',
+        ],
+    },
+    CoerceAndRelayNTLMToADCS: {
+        slug: 'coerce-and-relay-ntlm-to-adcs',
+        paras: [
+            'Any authenticated user can coerce SMB NTLM authentication from the target computer and relay it to an ESC8-vulnerable web enrollment endpoint of an enterprise CA.',
+            'The attacker receives a certificate for the target computer account and can use it to authenticate to the domain as that computer.',
+        ],
+    },
+
+    // --- Entra ID edges ----------------------------------------------------
+    AZAuthenticatesTo: {
+        slug: 'az-authenticates-to',
+        paras: [
+            'The federated identity credential (FIC) is configured on the target app registration. Anyone who can obtain a token from the credential\'s trusted issuer with a matching subject claim can exchange it at the Microsoft identity platform for an access token as the app.',
+            'The app runs as its service principal (AZRunsAs), so follow that edge to see what the attacker gains. Control of the external issuer, for example a CI pipeline or workload identity named in the credential, is what the edge leading to the credential represents.',
+        ],
+    },
+    AZRoleEligible: {
+        slug: 'az-role-eligible',
+        paras: [
+            'The user or group is eligible for the Entra ID role through Privileged Identity Management (PIM). It does not hold the role until it is activated; while it is active the principal also has an AZHasRole edge to the role.',
+            'If the principal is compromised, an attacker can activate the role, subject to the role\'s PIM settings (MFA, justification, ticket number or approval), or use an activation that is already in place. Activations are recorded in the tenant audit logs and can be set to notify administrators.',
+        ],
+    },
+    AZRoleApprover: {
+        slug: 'az-role-approver',
+        paras: [
+            'The principal is an approver in the PIM policy for the Entra ID role. When the policy requires approval, principals that are eligible for the role (AZRoleEligible) need an approver to accept the activation.',
+            'If an approver is compromised, an attacker can approve activations or assignments of the role, for example an activation requested by another account the attacker controls.',
         ],
     },
 };
