@@ -1,7 +1,8 @@
 name: Publish
 
 # Push a tag like v4.3.1-ce.1 to build every platform and attach the zips to a
-# GitHub Release. "Run workflow" on the Actions tab builds the same zips as
+# GitHub Release. Put the release text in docs/release-notes/<tag>.md before
+# tagging and it is used as the release description. "Run workflow" on the Actions tab builds the same zips as
 # downloadable workflow artifacts without creating a release.
 on:
   push:
@@ -87,3 +88,5 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: ${{ env.NAME }}.zip
+        # Release text comes from docs/release-notes/<tag>.md when it exists.
+        body_path: ${{ hashFiles(format('docs/release-notes/{0}.md', github.ref_name)) != '' && format('docs/release-notes/{0}.md', github.ref_name) || '' }}

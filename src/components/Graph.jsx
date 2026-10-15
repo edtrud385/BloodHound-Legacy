@@ -15,6 +15,7 @@ import { filterQuery } from '../js/edgeFilter';
 import { compositionQuery, domainCompositionQuery } from '../js/adcsComposition';
 import { exportGraphImage } from '../js/imageExport';
 import { isHighValue, refreshProtected } from '../js/ceHighValue';
+import { nodeKind } from '../js/nodeKind';
 
 const HIGH_VALUE_GLYPH = {
     position: 'top-right',
@@ -1036,8 +1037,7 @@ class GraphContainer extends Component {
             return null;
         }
         let id = data.identity;
-        let fType = data.labels.filter((w) => w !== 'Base' && w !== 'AZBase');
-        let type = fType.length > 0 ? fType[0] : 'Base';
+        let type = nodeKind(data.labels);
         let label = this.selectLabel(data.properties);
 
         let node = {
