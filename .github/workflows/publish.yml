@@ -1,14 +1,22 @@
 name: Publish
 
-# Push a tag like v4.3.1-ce.1 to build every platform and attach the zips to a
-# GitHub Release. Put the release text in docs/release-notes/<tag>.md before
-# tagging and it is used as the release description. "Run workflow" on the Actions tab builds the same zips as
-# downloadable workflow artifacts without creating a release.
+# Push a tag like v1.2.3 to build every platform and publish a GitHub Release
+# with the zips attached. The release text comes from
+# docs/release-notes/<tag>.md when that file exists.
+#
+# "Run workflow" on the Actions tab builds the same zips as downloadable
+# workflow artifacts. Fill in "tag" there to also create that tag on the
+# commit being built and publish the release, without pushing a tag first.
 on:
   push:
     tags:
       - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to create, e.g. v1.2.3 (leave empty to only build artifacts)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -83,10 +91,34 @@ jobs:
         name: ${{ env.NAME }}
         path: ${{ env.NAME }}.zip
 
-    - name: Attach to release
-      if: startsWith(github.ref, 'refs/tags/')
+  # One job publishes the release after every platform has built, so the tag
+  # and release are created once, and only when all builds succeeded.
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download builds
+      uses: actions/download-artifact@v4
+      with:
+        path: dist
+
+    - name: Release notes
+      id: notes
+      run: |
+        if [ -f "docs/release-notes/$TAG.md" ]; then
+          echo "path=docs/release-notes/$TAG.md" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Publish release
       uses: softprops/action-gh-release@v2
       with:
-        files: ${{ env.NAME }}.zip
-        # Release text comes from docs/release-notes/<tag>.md when it exists.
-        body_path: ${{ hashFiles(format('docs/release-notes/{0}.md', github.ref_name)) != '' && format('docs/release-notes/{0}.md', github.ref_name) || '' }}
+        tag_name: ${{ env.TAG }}
+        target_commitish: ${{ github.sha }}
+        body_path: ${{ steps.notes.outputs.path }}
+        files: dist/*/*.zip
