@@ -108,7 +108,7 @@ This is display only: nothing is written to the database. The protected set is r
 **Graph Images**
 
 - **Image Size**: a fixed size, or blank for the graph's on-screen size.
-- **Image Padding**: zooms out slightly so nothing sits on the edge of the image.
+- **Image Padding** (default 0%): zooms out by this percent so nothing sits on the edge of the image.
 - **Image Markers**: whether saved images show the High Value and Owned markers.
 - **Numbered Auto-Save**: saves straight to the image folder as `00001.png`, `00002.png`, ... without asking.
 - **Image Folder**: where images are saved.
