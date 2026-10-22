@@ -9,6 +9,10 @@ import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import styles from './NodeData.module.css';
+import { InboundControlSection } from './Components/ControlSections';
+import { inboundControlQueries } from '../../../js/controlQueries';
+
+const inbound = inboundControlQueries('OU');
 
 const OUNodeData = () => {
     const [visible, setVisible] = useState(false);
@@ -170,6 +174,14 @@ const OUNodeData = () => {
                         </Table>
                     </div>
                 </CollapsibleSection>
+
+                <hr></hr>
+
+                <InboundControlSection
+                    queries={inbound}
+                    objectid={objectid}
+                    label={label}
+                />
 
                 {/* <Notes objectid={objectid} type='OU' />
                 <NodeGallery objectid={objectid} type='OU' visible={visible} /> */}

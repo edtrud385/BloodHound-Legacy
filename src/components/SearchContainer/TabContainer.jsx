@@ -39,6 +39,14 @@ import CENodeData from './Tabs/CENodeData';
 import SiteNodeData from './Tabs/SiteNodeData';
 import SiteServerNodeData from './Tabs/SiteServerNodeData';
 import SiteSubnetNodeData from './Tabs/SiteSubnetNodeData';
+import EnterpriseCANodeData from './Tabs/EnterpriseCANodeData';
+import RootCANodeData from './Tabs/RootCANodeData';
+import AIACANodeData from './Tabs/AIACANodeData';
+import NTAuthStoreNodeData from './Tabs/NTAuthStoreNodeData';
+import CertTemplateNodeData from './Tabs/CertTemplateNodeData';
+import IssuancePolicyNodeData from './Tabs/IssuancePolicyNodeData';
+import ADLocalGroupNodeData from './Tabs/ADLocalGroupNodeData';
+import ADLocalUserNodeData from './Tabs/ADLocalUserNodeData';
 
 class TabContainer extends Component {
 
@@ -57,6 +65,14 @@ class TabContainer extends Component {
             siteVisible: false,
             siteServerVisible: false,
             siteSubnetVisible: false,
+            enterpriseCAVisible: false,
+            rootCAVisible: false,
+            aiacaVisible: false,
+            ntAuthStoreVisible: false,
+            certTemplateVisible: false,
+            issuancePolicyVisible: false,
+            adLocalGroupVisible: false,
+            adLocalUserVisible: false,
             azGroupVisible: false,
             azUserVisible: false,
             azContainerRegistryVisible: false,
@@ -150,6 +166,22 @@ class TabContainer extends Component {
             this._siteServerNodeClicked()
         } else if (type === 'SiteSubnet') {
             this._siteSubnetNodeClicked()
+        } else if (type === 'EnterpriseCA') {
+            this._panelClicked('enterpriseCAVisible')
+        } else if (type === 'RootCA') {
+            this._panelClicked('rootCAVisible')
+        } else if (type === 'AIACA') {
+            this._panelClicked('aiacaVisible')
+        } else if (type === 'NTAuthStore') {
+            this._panelClicked('ntAuthStoreVisible')
+        } else if (type === 'CertTemplate') {
+            this._panelClicked('certTemplateVisible')
+        } else if (type === 'IssuancePolicy') {
+            this._panelClicked('issuancePolicyVisible')
+        } else if (type === 'ADLocalGroup') {
+            this._panelClicked('adLocalGroupVisible')
+        } else if (type === 'ADLocalUser') {
+            this._panelClicked('adLocalUserVisible')
         } else if (type === 'AZManagementGroup') {
             this._azManagementGroupNodeClicked()
         } else if (type === 'AZRole') {
@@ -185,6 +217,15 @@ class TabContainer extends Component {
         this.clearVisible()
         this.setState({
             baseVisible: true,
+            selected: 2
+        });
+    }
+
+    // shows the panel whose state key is `key`
+    _panelClicked(key) {
+        this.clearVisible()
+        this.setState({
+            [key]: true,
             selected: 2
         });
     }
@@ -458,39 +499,11 @@ class TabContainer extends Component {
                     <Tab eventKey={2} title='Node Info'>
                         <NoNodeData
                             visible={
-                                !this.state.baseVisible &&
-                                !this.state.containerVisible &&
-                                !this.state.siteVisible &&
-                                !this.state.siteServerVisible &&
-                                !this.state.siteSubnetVisible &&
-                                !this.state.userVisible &&
-                                !this.state.computerVisible &&
-                                !this.state.groupVisible &&
-                                !this.state.domainVisible &&
-                                !this.state.gpoVisible &&
-                                !this.state.ouVisible &&
-                                !this.state.azGroupVisible &&
-                                !this.state.azUserVisible &&
-                                !this.state.azContainerRegistryVisible &&
-                                !this.state.azAutomationAccountVisible &&
-                                !this.state.azLogicAppVisible &&
-                                !this.state.azFunctionAppVisible &&
-                                !this.state.azWebAppVisible &&
-                                !this.state.azManagedClusterVisible &&
-                                !this.state.azVMScaleSetVisible &&
-                                !this.state.azKeyVaultVisible &&
-                                !this.state.azResourceGroupVisible &&
-                                !this.state.azDeviceVisible &&
-                                !this.state.azFederatedIdentityCredentialVisible &&
-                                !this.state.azSubscriptionVisible &&
-                                !this.state.azTenantVisible &&
-                                !this.state.azVMVisible &&
-                                !this.state.azServicePrincipalVisible &&
-                                !this.state.azAppVisible &&
-                                !this.state.baseVisible &&
-                                !this.state.azManagementGroupVisible &&
-                                !this.state.azRoleVisible &&
-                                !this.state.otherVisible
+                                !Object.keys(this.state).some(
+                                    (key) =>
+                                        key.includes('Visible') &&
+                                        this.state[key]
+                                )
                             }
                         />
                         <BaseNodeData visible={this.state.baseVisible} />
@@ -506,6 +519,14 @@ class TabContainer extends Component {
                         <SiteNodeData visible={this.state.siteVisible} />
                         <SiteServerNodeData visible={this.state.siteServerVisible} />
                         <SiteSubnetNodeData visible={this.state.siteSubnetVisible} />
+                        <EnterpriseCANodeData />
+                        <RootCANodeData />
+                        <AIACANodeData />
+                        <NTAuthStoreNodeData />
+                        <CertTemplateNodeData />
+                        <IssuancePolicyNodeData />
+                        <ADLocalGroupNodeData />
+                        <ADLocalUserNodeData />
                         <AZGroupNodeData visible={this.state.azGroupVisible} />
                         <AZUserNodeData visible={this.state.azUserVisible} />
                         <AZContainerRegistryNodeData visible={this.state.azContainerRegistryVisible} />

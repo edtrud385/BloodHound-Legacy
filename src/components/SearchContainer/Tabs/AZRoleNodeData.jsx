@@ -98,6 +98,14 @@ const AZRoleNodeData = ({}) => {
                         property={'Active Assignments'}
                         target={objectid}
                     />
+                    <NodeCypherLink
+                        baseQuery={
+                            'MATCH p=(n)-[:AZRoleApprover]->(:AZRole {objectid:$objectid})'
+                        }
+                        property={'Approvers'}
+                        target={objectid}
+                        distinct
+                    />
                 </CollapsibleSectionTable>
 
             </div>

@@ -9,6 +9,10 @@ import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import styles from './NodeData.module.css';
 import clsx from 'clsx';
 import { Table } from 'react-bootstrap';
+import { InboundControlSection } from './Components/ControlSections';
+import { inboundControlQueries } from '../../../js/controlQueries';
+
+const inbound = inboundControlQueries('Container');
 
 const ContainerNodeData = ({}) => {
     const [visible, setVisible] = useState(false);
@@ -170,6 +174,14 @@ const ContainerNodeData = ({}) => {
                         </Table>
                     </div>
                 </CollapsibleSection>
+
+                <hr></hr>
+
+                <InboundControlSection
+                    queries={inbound}
+                    objectid={objectid}
+                    label={label}
+                />
             </div>
         </div>
     );

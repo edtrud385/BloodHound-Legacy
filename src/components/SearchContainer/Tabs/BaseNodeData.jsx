@@ -8,6 +8,14 @@ import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import { AppContext } from '../../../AppContext';
+import { InboundControlSection, OutboundControlSection } from './Components/ControlSections';
+import {
+    inboundControlQueries,
+    outboundControlQueries,
+} from '../../../js/controlQueries';
+
+const inbound = inboundControlQueries('Base');
+const outbound = outboundControlQueries('Base');
 
 const BaseNodeData = ({}) => {
     const [visible, setVisible] = useState(false);
@@ -104,6 +112,22 @@ const BaseNodeData = ({}) => {
             </CollapsibleSection>
 
             <CEProperties properties={nodeProps} />
+
+            <hr></hr>
+
+            <InboundControlSection
+                queries={inbound}
+                objectid={objectid}
+                label={label}
+            />
+
+            <hr></hr>
+
+            <OutboundControlSection
+                queries={outbound}
+                objectid={objectid}
+                label={label}
+            />
         </div>
     );
 };

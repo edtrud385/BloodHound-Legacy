@@ -7,6 +7,10 @@ import MappedNodeProps from './Components/MappedNodeProps';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
 import { AppContext } from '../../../AppContext';
+import { InboundControlSection } from './Components/ControlSections';
+import { azInboundControlQueries } from '../../../js/controlQueries';
+
+const inbound = azInboundControlQueries('AZDevice');
 
 const AZDeviceNodeData = () => {
     const [visible, setVisible] = useState(false);
@@ -122,7 +126,7 @@ const AZDeviceNodeData = () => {
                                     property='Unrolled Execution Principals'
                                     target={objectid}
                                     baseQuery={
-                                        'MATCH p = (m)-[:MemberOf]->(n)-[r:AZOwns|AZExecuteCommand]->(g:AZDevice {objectid: $objectid})'
+                                        'MATCH p = (m)-[:AZMemberOf]->(n)-[r:AZOwns|AZExecuteCommand]->(g:AZDevice {objectid: $objectid})'
                                     }
                                     end={label}
                                     distinct
@@ -131,6 +135,15 @@ const AZDeviceNodeData = () => {
                         </Table>
                     </div>
                 </CollapsibleSection>
+
+                <hr></hr>
+
+                <InboundControlSection
+                    header='INBOUND OBJECT CONTROL'
+                    queries={inbound}
+                    objectid={objectid}
+                    label={label}
+                />
 
                 {/* <Notes objectid={objectid} type='AZResourceGroup' />
                 <NodeGallery

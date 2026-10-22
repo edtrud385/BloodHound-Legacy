@@ -1,3 +1,5 @@
+import { inboundControlQueries as adInboundControlQueries } from './controlQueries';
+
 // Edges CE creates from a principal onto an AD Site (SharpHound v2.17 Site
 // ACLs), for the Inbound Control Rights sections of the Site, SiteServer and
 // SiteSubnet panels. WriteGPLink is how a principal links a GPO to the site.
@@ -27,18 +29,10 @@ export const GPO_CONTROL_EDGES = [
 
 const types = (edges) => edges.join('|');
 
-// Inbound Control Rights queries for a node of `kind` matched by $objectid.
-// Each one binds the controller as n and the path as p, the way
-// NodeCypherLink / NodePlayCypherLink expect.
-export const inboundControlQueries = (kind, edges = SITE_CONTROL_EDGES) => ({
-    explicit: `MATCH p = (n)-[r:${types(edges)}]->(t:${kind} {objectid: $objectid})`,
-    unrolled: `MATCH p = (n)-[r:MemberOf*1..]->(g:Group)-[r1:${types(
-        edges
-    )}]->(t:${kind} {objectid: $objectid}) WITH LENGTH(p) as pathLength, p, n, t WHERE NONE (x in NODES(p)[1..(pathLength-1)] WHERE x.objectid = t.objectid) AND NOT n.objectid = t.objectid`,
-    transitive: `MATCH (n) WHERE NOT n.objectid = $objectid WITH n MATCH p = shortestPath((n)-[r:MemberOf|${types(
-        edges
-    )}*1..]->(t:${kind} {objectid: $objectid}))`,
-});
+// Inbound Control Rights queries for a node of `kind` matched by $objectid,
+// over the edges CE creates on sites.
+export const inboundControlQueries = (kind, edges = SITE_CONTROL_EDGES) =>
+    adInboundControlQueries(kind, edges);
 
 export const gpoControllerQuery = (kind) =>
     `MATCH p = (n)-[r:${types(
