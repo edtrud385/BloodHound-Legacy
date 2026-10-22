@@ -15,7 +15,7 @@ const { dialog } = remote;
 export const IMAGE_DEFAULTS = {
     width: 0,
     height: 0,
-    padding: 8,
+    padding: 0,
     highValue: true,
     owned: true,
     autoNumber: true,
