@@ -114,9 +114,26 @@ const GPONodeData = () => {
                                     property='Directly Affected OUs'
                                     target={objectid}
                                     baseQuery={
-                                        'MATCH p = (m:GPO {objectid: $objectid})-[r:GPLink]->(n)'
+                                        'MATCH p = (m:GPO {objectid: $objectid})-[r:GPLink]->(n) WHERE n:OU OR n:Domain'
                                     }
                                     start={label}
+                                />
+                                <NodeCypherLink
+                                    property='Linked Sites'
+                                    target={objectid}
+                                    baseQuery={
+                                        'MATCH p = (m:GPO {objectid: $objectid})-[r:GPLink]->(n:Site)'
+                                    }
+                                    start={label}
+                                />
+                                <NodeCypherLink
+                                    property='Site Server Computers'
+                                    target={objectid}
+                                    baseQuery={
+                                        'MATCH p = (m:GPO {objectid: $objectid})-[r:GPLink]->(:Site)-[r1:Contains]->(:SiteServer)-[r2:ServerIs]->(n:Computer)'
+                                    }
+                                    start={label}
+                                    distinct
                                 />
                                 <NodeCypherLink
                                     property='Affected OUs'

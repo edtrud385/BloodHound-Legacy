@@ -36,6 +36,9 @@ import ContainerNodeData from "./Tabs/ContainerNodeData";
 import AZManagementGroupNodeData from "./Tabs/AZManagementGroupNodeData";
 import AZRoleNodeData from "./Tabs/AZRoleNodeData";
 import CENodeData from './Tabs/CENodeData';
+import SiteNodeData from './Tabs/SiteNodeData';
+import SiteServerNodeData from './Tabs/SiteServerNodeData';
+import SiteSubnetNodeData from './Tabs/SiteSubnetNodeData';
 
 class TabContainer extends Component {
 
@@ -51,6 +54,9 @@ class TabContainer extends Component {
             gpoVisible: false,
             ouVisible: false,
             containerVisible: false,
+            siteVisible: false,
+            siteServerVisible: false,
+            siteSubnetVisible: false,
             azGroupVisible: false,
             azUserVisible: false,
             azContainerRegistryVisible: false,
@@ -138,6 +144,12 @@ class TabContainer extends Component {
             this._baseNodeClicked();
         } else if (type === 'Container') {
             this._containerNodeClicked()
+        } else if (type === 'Site') {
+            this._siteNodeClicked()
+        } else if (type === 'SiteServer') {
+            this._siteServerNodeClicked()
+        } else if (type === 'SiteSubnet') {
+            this._siteSubnetNodeClicked()
         } else if (type === 'AZManagementGroup') {
             this._azManagementGroupNodeClicked()
         } else if (type === 'AZRole') {
@@ -190,6 +202,30 @@ class TabContainer extends Component {
         this.clearVisible()
         this.setState({
             containerVisible: true,
+            selected: 2
+        });
+    }
+
+    _siteNodeClicked() {
+        this.clearVisible()
+        this.setState({
+            siteVisible: true,
+            selected: 2
+        });
+    }
+
+    _siteServerNodeClicked() {
+        this.clearVisible()
+        this.setState({
+            siteServerVisible: true,
+            selected: 2
+        });
+    }
+
+    _siteSubnetNodeClicked() {
+        this.clearVisible()
+        this.setState({
+            siteSubnetVisible: true,
             selected: 2
         });
     }
@@ -424,6 +460,9 @@ class TabContainer extends Component {
                             visible={
                                 !this.state.baseVisible &&
                                 !this.state.containerVisible &&
+                                !this.state.siteVisible &&
+                                !this.state.siteServerVisible &&
+                                !this.state.siteSubnetVisible &&
                                 !this.state.userVisible &&
                                 !this.state.computerVisible &&
                                 !this.state.groupVisible &&
@@ -464,6 +503,9 @@ class TabContainer extends Component {
                         <GpoNodeData visible={this.state.gpoVisible} />
                         <OuNodeData visible={this.state.ouVisible} />
                         <ContainerNodeData visible={this.state.containerVisible} />
+                        <SiteNodeData visible={this.state.siteVisible} />
+                        <SiteServerNodeData visible={this.state.siteServerVisible} />
+                        <SiteSubnetNodeData visible={this.state.siteSubnetVisible} />
                         <AZGroupNodeData visible={this.state.azGroupVisible} />
                         <AZUserNodeData visible={this.state.azUserVisible} />
                         <AZContainerRegistryNodeData visible={this.state.azContainerRegistryVisible} />
