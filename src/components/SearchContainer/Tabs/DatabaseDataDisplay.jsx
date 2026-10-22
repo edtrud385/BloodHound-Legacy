@@ -134,6 +134,49 @@ const DatabaseDataDisplay = () => {
 
             <hr></hr>
 
+            <CollapsibleSection header='AD SITES'>
+                <Table hover striped responsive>
+                    <thead></thead>
+                    <tbody>
+                        <DatabaseDataLabel
+                            query={'MATCH (n:Site) RETURN count(n) AS count'}
+                            index={index}
+                            label={'Sites'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:SiteServer) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Site Servers'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:SiteSubnet) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Site Subnets'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH ()-[r:ServerIs]->() RETURN count(r) AS count'
+                            }
+                            index={index}
+                            label={'ServerIs Links'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH ()-[r:GPLink]->(:Site) RETURN count(r) AS count'
+                            }
+                            index={index}
+                            label={'GPOs Linked to Sites'}
+                        />
+                    </tbody>
+                </Table>
+            </CollapsibleSection>
+
+            <hr></hr>
+
             <CollapsibleSection header='PKI / AD CS OBJECTS'>
                 <Table hover striped responsive>
                     <thead></thead>
