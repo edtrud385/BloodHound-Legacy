@@ -69,6 +69,7 @@ const AZKeyVaultNodeData = () => {
                 <h5>{label || objectid}</h5>
 
                 <MappedNodeProps
+                    kind='AZKeyVault'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

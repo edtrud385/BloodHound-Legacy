@@ -3,11 +3,13 @@ import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
 import CEProperties from './Components/CEProperties';
+import MappedNodeProps from './Components/MappedNodeProps';
 import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import { AppContext } from '../../../AppContext';
+import { nodeKind } from '../../../js/nodeKind';
 import { InboundControlSection, OutboundControlSection } from './Components/ControlSections';
 import {
     inboundControlQueries,
@@ -23,6 +25,7 @@ const BaseNodeData = ({}) => {
     const [label, setLabel] = useState(null);
     const [domain, setDomain] = useState(null);
     const [nodeProps, setNodeProps] = useState({});
+    const [kind, setKind] = useState(null);
     const context = useContext(AppContext);
 
     useEffect(() => {
@@ -40,12 +43,13 @@ const BaseNodeData = ({}) => {
             setDomain(domain);
             let session = driver.session();
             session
-                .run(`MATCH (n:Base {objectid: $objectid}) RETURN n AS node`, {
+                .run(`MATCH (n:Base {objectid: $objectid}) RETURN n AS node, labels(n) AS labels`, {
                     objectid: id,
                 })
                 .then((r) => {
                     let props = r.records[0].get('node').properties;
                     setNodeProps(props);
+                    setKind(nodeKind(r.records[0].get('labels')));
                     setLabel(props.name || props.azname || objectid);
                     session.close();
                 });
@@ -110,6 +114,13 @@ const BaseNodeData = ({}) => {
                     </Table>
                 </div>
             </CollapsibleSection>
+
+            <MappedNodeProps
+                kind={kind}
+                displayMap={{}}
+                properties={nodeProps}
+                label={label}
+            />
 
             <CEProperties properties={nodeProps} />
 

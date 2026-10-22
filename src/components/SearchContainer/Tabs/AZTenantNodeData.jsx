@@ -69,6 +69,7 @@ const AZTenantNodeData = () => {
                 <h5>{label || objectid}</h5>
 
                 <MappedNodeProps
+                    kind='AZTenant'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

@@ -20,9 +20,12 @@ const useNodePanel = (kind) => {
             setObjectid(id);
             let session = driver.session();
             session
-                .run(`MATCH (n:${kind} {objectid: $objectid}) RETURN n AS node`, {
-                    objectid: id,
-                })
+                .run(
+                    `MATCH (n:${kind} {objectid: $objectid}) RETURN n AS node`,
+                    {
+                        objectid: id,
+                    }
+                )
                 .then((r) => {
                     let props =
                         r.records.length > 0

@@ -4,7 +4,7 @@ import styles from '../NodeData.module.css';
 import {Table} from 'react-bootstrap';
 import {AppContext} from '../../../../AppContext';
 
-const MappedNodeProps = ({ label, properties, displayMap }) => {
+const MappedNodeProps = ({ label, properties, displayMap, kind }) => {
     const [elements, setElements] = useState({});
     const context = useContext(AppContext);
 
@@ -108,11 +108,20 @@ const MappedNodeProps = ({ label, properties, displayMap }) => {
         setElements(temp);
     }, [label]);
 
-    return elements.length === 0 ? null : (
+    // the selected node's kind leads the list, like CE's object type
+    return !kind && Object.keys(elements).length === 0 ? null : (
         <CollapsibleSection header={'NODE PROPERTIES'}>
             <div className={styles.itemlist}>
                 <Table>
                     <tbody>
+                        {kind && (
+                            <tr key='objecttype'>
+                                <td align='left' className={'col-md-2'}>
+                                    Object Type
+                                </td>
+                                <td align='right'>{kind}</td>
+                            </tr>
+                        )}
                         {Object.keys(elements).map((key) => {
                             return <tr key={key}>{elements[key]}</tr>;
                         })}

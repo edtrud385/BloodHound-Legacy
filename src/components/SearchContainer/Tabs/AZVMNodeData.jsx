@@ -92,6 +92,7 @@ const AZVMNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZVM'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

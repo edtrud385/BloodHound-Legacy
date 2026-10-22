@@ -91,6 +91,7 @@ const AZWebAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZWebApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

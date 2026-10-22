@@ -73,6 +73,7 @@ const AZRoleNodeData = ({}) => {
                 <h5>{label || objectid}</h5>
 
                 <MappedNodeProps
+                    kind='AZRole'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

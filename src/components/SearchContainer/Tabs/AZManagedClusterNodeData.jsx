@@ -94,6 +94,7 @@ const AZManagedClusterNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZManagedCluster'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

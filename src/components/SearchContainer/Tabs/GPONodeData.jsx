@@ -88,6 +88,7 @@ const GPONodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='GPO'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

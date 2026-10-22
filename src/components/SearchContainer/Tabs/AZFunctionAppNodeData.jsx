@@ -91,6 +91,7 @@ const AZFunctionAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZFunctionApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

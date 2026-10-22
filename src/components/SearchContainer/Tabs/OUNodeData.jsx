@@ -90,6 +90,7 @@ const OUNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='OU'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

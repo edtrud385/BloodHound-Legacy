@@ -92,6 +92,7 @@ const AZManagementGroupNodeData = ({}) => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZManagementGroup'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

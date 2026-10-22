@@ -68,6 +68,7 @@ const AZResourceGroupNodeData = () => {
                 <h5>{label || objectid}</h5>
 
                 <MappedNodeProps
+                    kind='AZResourceGroup'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

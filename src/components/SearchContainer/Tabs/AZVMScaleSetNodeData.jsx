@@ -91,6 +91,7 @@ const AZVMScaleSetNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZVMScaleSet'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

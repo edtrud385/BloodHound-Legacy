@@ -100,6 +100,7 @@ const AZDeviceNodeData = () => {
                 </CollapsibleSection>
 
                 <MappedNodeProps
+                    kind='AZDevice'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

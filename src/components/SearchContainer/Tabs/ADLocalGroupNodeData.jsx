@@ -32,7 +32,11 @@ const displayMap = {
 };
 
 const ADLocalGroupNodeData = () => (
-    <NodePanel kind='ADLocalGroup' displayMap={displayMap} overview={overview} />
+    <NodePanel
+        kind='ADLocalGroup'
+        displayMap={displayMap}
+        overview={overview}
+    />
 );
 
 export default ADLocalGroupNodeData;

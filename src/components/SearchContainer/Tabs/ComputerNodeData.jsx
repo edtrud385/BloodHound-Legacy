@@ -139,6 +139,7 @@ const ComputerNodeData = () => {
                 </CollapsibleSection>
 
                 <MappedNodeProps
+                    kind='Computer'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

@@ -26,7 +26,9 @@ const QuerySection = ({ header, rows, objectid, label }) => (
                 <thead></thead>
                 <tbody className='searchable'>
                     {rows.map((row) => {
-                        const Link = row.play ? NodePlayCypherLink : NodeCypherLink;
+                        const Link = row.play
+                            ? NodePlayCypherLink
+                            : NodeCypherLink;
                         const ends = row.outbound
                             ? { start: label }
                             : { end: label };
@@ -49,7 +51,8 @@ const QuerySection = ({ header, rows, objectid, label }) => (
 
 // Node Info panel for one kind, laid out like the Site panels: overview
 // rows, node properties, CE properties, then the kind's own sections and its
-// inbound / outbound control. Used by the panels for the kinds CE added
+// inbound / outbound control. A section with `top: true` goes above the
+// overview instead. Used by the panels for the kinds CE added
 // (ADCS, local groups and users).
 const NodePanel = ({
     kind,
@@ -76,6 +79,19 @@ const NodePanel = ({
             <div className={clsx(styles.dl)}>
                 <h5>{label || objectid}</h5>
 
+                {sections
+                    .filter((section) => section.top)
+                    .map((section) => (
+                        <React.Fragment key={section.header}>
+                            <QuerySection
+                                header={section.header}
+                                rows={section.rows}
+                                {...linkProps}
+                            />
+                            <hr></hr>
+                        </React.Fragment>
+                    ))}
+
                 {overview.length > 0 && (
                     <>
                         <QuerySection
@@ -87,16 +103,14 @@ const NodePanel = ({
                     </>
                 )}
 
-                {Object.keys(displayMap).length > 0 && (
-                    <>
-                        <MappedNodeProps
-                            displayMap={displayMap}
-                            properties={nodeProps}
-                            label={label}
-                        />
-                        <hr></hr>
-                    </>
-                )}
+                <MappedNodeProps
+                    kind={kind}
+                    displayMap={displayMap}
+                    properties={nodeProps}
+                    label={label}
+                />
+
+                <hr></hr>
 
                 <ExtraNodeProps
                     displayMap={displayMap}
@@ -106,16 +120,18 @@ const NodePanel = ({
 
                 <CEProperties properties={nodeProps} />
 
-                {sections.map((section) => (
-                    <React.Fragment key={section.header}>
-                        <hr></hr>
-                        <QuerySection
-                            header={section.header}
-                            rows={section.rows}
-                            {...linkProps}
-                        />
-                    </React.Fragment>
-                ))}
+                {sections
+                    .filter((section) => !section.top)
+                    .map((section) => (
+                        <React.Fragment key={section.header}>
+                            <hr></hr>
+                            <QuerySection
+                                header={section.header}
+                                rows={section.rows}
+                                {...linkProps}
+                            />
+                        </React.Fragment>
+                    ))}
 
                 {inbound && (
                     <>

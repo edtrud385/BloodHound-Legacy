@@ -98,6 +98,7 @@ const SiteServerNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='SiteServer'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

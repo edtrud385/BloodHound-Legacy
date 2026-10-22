@@ -128,6 +128,7 @@ const DomainNodeData = () => {
                     </div>
                 </CollapsibleSection>
                 <MappedNodeProps
+                    kind='Domain'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

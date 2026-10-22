@@ -109,6 +109,7 @@ const AZFederatedIdentityCredentialNodeData = () => {
                 </CollapsibleSection>
 
                 <MappedNodeProps
+                    kind='AZFederatedIdentityCredential'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

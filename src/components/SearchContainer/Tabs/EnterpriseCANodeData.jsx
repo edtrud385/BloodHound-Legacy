@@ -63,7 +63,7 @@ const EnterpriseCANodeData = () => (
         kind='EnterpriseCA'
         displayMap={displayMap}
         overview={overview}
-        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy }]}
+        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy, top: true }]}
         inbound={inboundControlQueries('EnterpriseCA')}
     />
 );

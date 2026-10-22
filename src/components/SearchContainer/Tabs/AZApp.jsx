@@ -112,6 +112,7 @@ const AZAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

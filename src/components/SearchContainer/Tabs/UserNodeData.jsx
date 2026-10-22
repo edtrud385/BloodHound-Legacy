@@ -140,6 +140,7 @@ const UserNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='User'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

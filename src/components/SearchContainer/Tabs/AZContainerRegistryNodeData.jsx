@@ -91,6 +91,7 @@ const AZContainerRegistryNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZContainerRegistry'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

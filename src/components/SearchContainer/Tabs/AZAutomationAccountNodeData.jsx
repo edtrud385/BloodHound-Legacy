@@ -91,6 +91,7 @@ const AZAutomationAccountNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZAutomationAccount'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

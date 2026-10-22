@@ -110,6 +110,7 @@ const AZGroupNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZGroup'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

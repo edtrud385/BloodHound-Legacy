@@ -98,6 +98,7 @@ const SiteSubnetNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='SiteSubnet'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

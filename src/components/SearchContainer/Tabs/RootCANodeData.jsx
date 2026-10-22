@@ -43,7 +43,7 @@ const RootCANodeData = () => (
         kind='RootCA'
         displayMap={displayMap}
         overview={overview}
-        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy }]}
+        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy, top: true }]}
         inbound={inboundControlQueries('RootCA')}
     />
 );

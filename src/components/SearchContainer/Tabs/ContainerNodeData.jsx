@@ -90,6 +90,7 @@ const ContainerNodeData = ({}) => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='Container'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

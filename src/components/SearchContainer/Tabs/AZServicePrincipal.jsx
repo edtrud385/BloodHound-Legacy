@@ -104,6 +104,7 @@ const AZServicePrincipalNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZServicePrincipal'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

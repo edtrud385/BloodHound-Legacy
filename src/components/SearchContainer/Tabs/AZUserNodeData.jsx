@@ -113,6 +113,7 @@ const AZUserNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZUser'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

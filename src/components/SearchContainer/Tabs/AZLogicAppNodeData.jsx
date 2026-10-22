@@ -91,6 +91,7 @@ const AZLogicAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZLogicApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

@@ -95,6 +95,7 @@ const GroupNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='Group'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

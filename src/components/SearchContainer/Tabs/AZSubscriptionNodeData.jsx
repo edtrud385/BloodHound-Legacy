@@ -90,6 +90,7 @@ const AZSubscriptionNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
+                    kind='AZSubscription'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

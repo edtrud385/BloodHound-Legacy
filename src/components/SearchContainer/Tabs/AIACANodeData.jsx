@@ -31,7 +31,7 @@ const AIACANodeData = () => (
     <NodePanel
         kind='AIACA'
         displayMap={displayMap}
-        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy }]}
+        sections={[{ header: 'PKI HIERARCHY', rows: hierarchy, top: true }]}
         inbound={inboundControlQueries('AIACA')}
     />
 );
