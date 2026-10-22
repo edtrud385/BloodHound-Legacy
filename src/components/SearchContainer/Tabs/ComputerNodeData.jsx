@@ -99,6 +99,15 @@ const ComputerNodeData = () => {
                                     }
                                     start={label}
                                 />
+                                <NodeCypherLink
+                                    property='AD Site'
+                                    target={objectid}
+                                    baseQuery={
+                                        'MATCH p = (n:Site)-[r:Contains]->(:SiteServer)-[r1:ServerIs]->(c:Computer {objectid: $objectid})'
+                                    }
+                                    end={label}
+                                    distinct
+                                />
                                 <NodeCypherLinkComplex
                                     property='Sibling Objects in the Same OU'
                                     target={objectid}
