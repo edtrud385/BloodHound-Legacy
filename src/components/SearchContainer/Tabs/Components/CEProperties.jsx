@@ -6,12 +6,10 @@ import { propLabel, propValue } from '../../../../js/propLabels';
 
 // Every property of a node, including the ones BloodHound CE collection adds
 // (system_tags, isaclprotected, doesanyacegrantownerrights, ...), with
-// readable names. Keys in `exclude` (the ones the panel's Node Properties
-// already shows) are left out so no field is listed twice. In the regular Node Info panels it starts collapsed and
-// remembers whether it was last left open.
+// readable names. Used by the generic Node Info panel for kinds that have no
+// panel of their own; the other panels list these under Node Properties.
 const CEProperties = ({
     properties,
-    exclude = [],
     extraRows = [],
     alwaysOpen = false,
 }) => {
@@ -25,7 +23,6 @@ const CEProperties = ({
     };
 
     const rows = Object.keys(properties || {})
-        .filter((key) => !exclude.includes(key))
         .map((key) => [propLabel(key), propValue(properties[key])])
         .sort((a, b) => a[0].localeCompare(b[0]))
         .concat(extraRows);

@@ -54,7 +54,7 @@ const AZServicePrincipalNodeData = () => {
         displayname: 'Display Name',
         objectid: 'Object ID',
         enabled: 'Enabled',
-        descripton: 'Description',
+        description: 'Description',
         appdescription: 'App Description',
         appdisplayname: 'App Display Name',
         appownerorganizationid: 'App Owner Organization ID',

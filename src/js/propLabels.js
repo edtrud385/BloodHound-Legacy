@@ -1,6 +1,8 @@
 // Readable labels for the lowercase, run-together property keys that
 // BloodHound stores (e.g. "enrolleesuppliessubject").
 
+import { CE_LABELS } from './ceLabels';
+
 const LABELS = {
     objectid: 'Object ID',
     distinguishedname: 'Distinguished Name',
@@ -91,35 +93,30 @@ const WORDS = [
     'auth', 'for', 'host', 'dns',
 ];
 
-// Greedily splits a run-together key into known words.
+// Splits a run-together key into known words, preferring the fewest words.
+// Returns null when some part of the key is not a known word, so a key is
+// never cut into fragments like "Admin Is Trators".
 function splitWords(key) {
-    const out = [];
-    let rest = key;
-    while (rest.length) {
-        let hit = null;
+    // best[i] holds the shortest split of key.slice(0, i)
+    const best = [[]];
+    for (let i = 1; i <= key.length; i++) {
         for (const word of WORDS) {
-            if (rest.startsWith(word) && (!hit || word.length > hit.length))
-                hit = word;
+            const start = i - word.length;
+            if (start < 0 || !best[start] || !key.startsWith(word, start))
+                continue;
+            if (!best[i] || best[start].length + 1 < best[i].length)
+                best[i] = best[start].concat(word);
         }
-        if (!hit) {
-            // take characters up to where the next known word starts
-            let cut = 1;
-            while (
-                cut < rest.length &&
-                !WORDS.some((word) => rest.startsWith(word, cut))
-            )
-                cut++;
-            hit = rest.slice(0, cut);
-        }
-        out.push(hit);
-        rest = rest.slice(hit.length);
     }
-    return out.join(' ');
+    return best[key.length] ? best[key.length].join(' ') : null;
 }
 
 export function propLabel(key) {
     if (LABELS[key]) return LABELS[key];
-    const text = key.includes('_') ? key.replace(/_/g, ' ') : splitWords(key);
+    if (CE_LABELS[key]) return CE_LABELS[key];
+    const text = key.includes('_')
+        ? key.replace(/_/g, ' ')
+        : splitWords(key) || key;
     return text.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
