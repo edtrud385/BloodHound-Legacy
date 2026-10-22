@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { withAlert } from 'react-alert';
 import { Table } from 'react-bootstrap';
@@ -109,13 +108,6 @@ const AZServicePrincipalNodeData = () => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

@@ -4,7 +4,6 @@ import { Table } from 'react-bootstrap';
 import { AppContext } from '../../../AppContext';
 import CollapsibleSection from './Components/CollapsibleSection';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import styles from './NodeData.module.css';
@@ -95,13 +94,6 @@ const OUNodeData = () => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

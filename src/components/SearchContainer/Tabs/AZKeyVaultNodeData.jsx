@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
-import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
@@ -77,10 +76,6 @@ const AZKeyVaultNodeData = () => {
                     label={label}
                 />
 
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
-                />
 
                 <hr></hr>
 

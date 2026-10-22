@@ -4,7 +4,6 @@ import CollapsibleSection from './Components/CollapsibleSection';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
@@ -93,13 +92,6 @@ const GPONodeData = () => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

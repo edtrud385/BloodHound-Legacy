@@ -4,7 +4,6 @@ import CollapsibleSection from './Components/CollapsibleSection';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
 import { AppContext } from '../../../AppContext';
@@ -106,13 +105,6 @@ const SiteSubnetNodeData = () => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

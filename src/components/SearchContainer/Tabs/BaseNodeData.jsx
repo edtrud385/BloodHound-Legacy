@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
-import CEProperties from './Components/CEProperties';
 import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
+import MappedNodeProps from './Components/MappedNodeProps';
 import { AppContext } from '../../../AppContext';
 import { nodeKind } from '../../../js/nodeKind';
 import {
@@ -123,8 +123,13 @@ const BaseNodeData = ({}) => {
                 </div>
             </CollapsibleSection>
 
+            <hr></hr>
 
-            <CEProperties properties={nodeProps} />
+            <MappedNodeProps
+                displayMap={{}}
+                properties={nodeProps}
+                label={label}
+            />
 
             <hr></hr>
 

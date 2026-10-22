@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
-import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
@@ -117,13 +116,6 @@ const AZAppNodeData = () => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

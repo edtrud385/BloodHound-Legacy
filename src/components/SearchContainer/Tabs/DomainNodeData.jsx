@@ -5,7 +5,6 @@ import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import NodeCypherLabel from './Components/NodeCypherLabel';
 import { Table } from 'react-bootstrap';
@@ -135,10 +134,6 @@ const DomainNodeData = () => {
                     label={label}
                 />
 
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
-                />
 
                 <hr></hr>
 

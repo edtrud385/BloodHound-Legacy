@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import CEProperties from './Components/CEProperties';
 import { withAlert } from 'react-alert';
 import CollapsibleSectionTable from './Components/CollapsibleSectionNew';
 
@@ -78,13 +77,6 @@ const AZRoleNodeData = ({}) => {
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
-                />
-
-                <hr></hr>
-
-                <CEProperties
-                    properties={nodeProps}
-                    exclude={Object.keys(displayMap)}
                 />
 
                 <hr></hr>

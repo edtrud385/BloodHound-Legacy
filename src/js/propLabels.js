@@ -7,6 +7,8 @@ const LABELS = {
     samaccountname: 'SAM Account Name',
     displayname: 'Display Name',
     admincount: 'Admin Count',
+    administrators: 'Administrators',
+    adminsdholderprotected: 'AdminSDHolder Protected',
     pwdlastset: 'Password Last Set',
     lastlogon: 'Last Logon',
     lastlogontimestamp: 'Last Logon Timestamp',
@@ -75,7 +77,7 @@ const LABELS = {
 // Words used to split keys that have no entry above.
 const WORDS = [
     'certificate', 'enrollment', 'distinguished', 'operating', 'delegation',
-    'principal', 'inherited', 'security', 'extension', 'management',
+    'administrators', 'administrator', 'principal', 'inherited', 'security', 'extension', 'management',
     'account', 'password', 'mapping', 'methods', 'binding', 'enforcement',
     'restrictions', 'authentication', 'authorized', 'signatures',
     'effective', 'functional', 'timestamp', 'directory', 'protected',

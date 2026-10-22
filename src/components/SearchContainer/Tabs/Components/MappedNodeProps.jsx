@@ -3,6 +3,7 @@ import CollapsibleSection from './CollapsibleSection';
 import styles from '../NodeData.module.css';
 import { Table } from 'react-bootstrap';
 import { AppContext } from '../../../../AppContext';
+import { propLabel, propValue } from '../../../../js/propLabels';
 
 const MappedNodeProps = ({ label, properties, displayMap }) => {
     const [elements, setElements] = useState({});
@@ -108,7 +109,16 @@ const MappedNodeProps = ({ label, properties, displayMap }) => {
         setElements(temp);
     }, [label]);
 
-    return Object.keys(elements).length === 0 ? null : (
+    // Every other property the node has (including the ones CE collection
+    // adds), after the panel's own fields, with readable names. The name is
+    // already the panel's title.
+    const otherRows = Object.keys(properties || {})
+        .filter((key) => !(key in displayMap) && key !== 'name')
+        .map((key) => [key, propLabel(key), propValue(properties[key])])
+        .sort((a, b) => a[1].localeCompare(b[1]));
+
+    return Object.keys(elements).length === 0 &&
+        otherRows.length === 0 ? null : (
         <CollapsibleSection header={'NODE PROPERTIES'}>
             <div className={styles.itemlist}>
                 <Table>
@@ -116,6 +126,16 @@ const MappedNodeProps = ({ label, properties, displayMap }) => {
                         {Object.keys(elements).map((key) => {
                             return <tr key={key}>{elements[key]}</tr>;
                         })}
+                        {otherRows.map(([key, label, value]) => (
+                            <tr key={key}>
+                                <td align='left' className={'col-md-2'}>
+                                    {label}
+                                </td>
+                                <td align='right' className={styles.propValue}>
+                                    {value}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
             </div>
