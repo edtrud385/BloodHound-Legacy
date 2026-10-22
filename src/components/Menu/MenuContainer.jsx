@@ -52,6 +52,7 @@ const MenuContainer = () => {
     const [postProcessRunning, setPostProcessRunning] = useState(false);
     const [postProcessStep, setPostProcessStep] = useState(0);
     const [postProcessVisible, setPostProcessVisible] = useState(false);
+    const [updateAvailable, setUpdateAvailable] = useState(false);
 
     const batchSize = 1000;
 
@@ -59,12 +60,18 @@ const MenuContainer = () => {
         emitter.on('cancelUpload', cancelUpload);
         emitter.on('filedrop', filesDropped);
         emitter.on('importShim', importClick);
+        emitter.on('updateCheckResult', handleUpdateCheck);
         return () => {
             emitter.removeListener('cancelUpload', cancelUpload);
             emitter.removeListener('filedrop', filesDropped);
             emitter.removeListener('importShim', importClick);
+            emitter.removeListener('updateCheckResult', handleUpdateCheck);
         };
     }, []);
+
+    const handleUpdateCheck = (result) => {
+        setUpdateAvailable(!!result && result.status === 'update');
+    };
 
     const inputUsed = (e) => {
         let fileNames = [];
@@ -1393,8 +1400,11 @@ const MenuContainer = () => {
             <div>
                 <MenuButton
                     click={aboutClick}
-                    hoverVal='About'
+                    hoverVal={
+                        updateAvailable ? 'About (Update Available)' : 'About'
+                    }
                     glyphicon='fa fa-info'
+                    badge={updateAvailable}
                 />
             </div>
             <input
