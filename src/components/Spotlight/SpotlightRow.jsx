@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { NODE_ICON_CLASSES, nodeIconClass } from '../../js/nodeIcons';
 
 export default class SpotlightRow extends Component {
     _handleClick() {
@@ -11,61 +12,10 @@ export default class SpotlightRow extends Component {
     }
 
     render() {
-        let nodeIcon;
-        let parentIcon = '';
-        switch (this.props.nodeType) {
-            case 'Group':
-                nodeIcon = 'fa fa-users';
-                break;
-            case 'User':
-                nodeIcon = 'fa fa-user';
-                break;
-            case 'Computer':
-                nodeIcon = 'fa fa-desktop';
-                break;
-            case 'Domain':
-                nodeIcon = 'fa fa-globe';
-                break;
-            case 'OU':
-                nodeIcon = 'fa fa-sitemap';
-                break;
-            case 'Container':
-                nodeIcon = 'fa fa-archive'
-                break
-            case 'GPO':
-                nodeIcon = 'fa fa-list';
-                break;
-            default:
-                nodeIcon = '';
-                break;
-        }
-
-        switch (this.props.parentNodeType) {
-            case 'Group':
-                parentIcon = 'fa fa-users';
-                break;
-            case 'User':
-                parentIcon = 'fa fa-user';
-                break;
-            case 'Computer':
-                parentIcon = 'fa fa-desktop';
-                break;
-            case 'Domain':
-                parentIcon = 'fa fa-globe';
-                break;
-            case 'OU':
-                nodeIcon = 'fa fa-sitemap';
-                break;
-            case 'Container':
-                nodeIcon = 'fa fa-box';
-                break
-            case 'GPO':
-                nodeIcon = 'fa fa-list';
-                break;
-            default:
-                parentIcon = '';
-                break;
-        }
+        const iconFor = (kind) =>
+            kind in NODE_ICON_CLASSES ? nodeIconClass(kind) : '';
+        const nodeIcon = iconFor(this.props.nodeType);
+        const parentIcon = iconFor(this.props.parentNodeType);
         return (
             <tr
                 style={{ cursor: 'pointer' }}
