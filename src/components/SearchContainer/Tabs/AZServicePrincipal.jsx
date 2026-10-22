@@ -73,7 +73,10 @@ const AZServicePrincipalNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZServicePrincipal</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -103,7 +106,6 @@ const AZServicePrincipalNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZServicePrincipal'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

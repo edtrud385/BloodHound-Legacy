@@ -34,9 +34,12 @@ const AZWebAppNodeData = () => {
             setDomain(domain);
             let session = driver.session();
             session
-                .run(`MATCH (n:AZWebApp {objectid: $objectid}) RETURN n AS node`, {
-                    objectid: id,
-                })
+                .run(
+                    `MATCH (n:AZWebApp {objectid: $objectid}) RETURN n AS node`,
+                    {
+                        objectid: id,
+                    }
+                )
                 .then((r) => {
                     let props = r.records[0].get('node').properties;
                     setNodeProps(props);
@@ -63,7 +66,10 @@ const AZWebAppNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZWebApp</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -90,7 +96,6 @@ const AZWebAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZWebApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
@@ -141,7 +146,6 @@ const AZWebAppNodeData = () => {
                         </Table>
                     </div>
                 </CollapsibleSection>
-
             </div>
         </div>
     );

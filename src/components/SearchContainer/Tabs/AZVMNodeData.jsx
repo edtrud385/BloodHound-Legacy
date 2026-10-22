@@ -64,7 +64,10 @@ const AZVMNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZVM</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -91,7 +94,6 @@ const AZVMNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZVM'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

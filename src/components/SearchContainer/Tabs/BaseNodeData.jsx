@@ -3,14 +3,16 @@ import clsx from 'clsx';
 import styles from './NodeData.module.css';
 import CollapsibleSection from './Components/CollapsibleSection';
 import CEProperties from './Components/CEProperties';
-import MappedNodeProps from './Components/MappedNodeProps';
 import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import { AppContext } from '../../../AppContext';
 import { nodeKind } from '../../../js/nodeKind';
-import { InboundControlSection, OutboundControlSection } from './Components/ControlSections';
+import {
+    InboundControlSection,
+    OutboundControlSection,
+} from './Components/ControlSections';
 import {
     inboundControlQueries,
     outboundControlQueries,
@@ -43,9 +45,12 @@ const BaseNodeData = ({}) => {
             setDomain(domain);
             let session = driver.session();
             session
-                .run(`MATCH (n:Base {objectid: $objectid}) RETURN n AS node, labels(n) AS labels`, {
-                    objectid: id,
-                })
+                .run(
+                    `MATCH (n:Base {objectid: $objectid}) RETURN n AS node, labels(n) AS labels`,
+                    {
+                        objectid: id,
+                    }
+                )
                 .then((r) => {
                     let props = r.records[0].get('node').properties;
                     setNodeProps(props);
@@ -69,7 +74,10 @@ const BaseNodeData = ({}) => {
             )}
         >
             <div className={styles.dl}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    {kind && <span className={styles.kind}> - {kind}</span>}
+                </h5>
             </div>
 
             <CollapsibleSection header={'OVERVIEW'}>
@@ -115,12 +123,6 @@ const BaseNodeData = ({}) => {
                 </div>
             </CollapsibleSection>
 
-            <MappedNodeProps
-                kind={kind}
-                displayMap={{}}
-                properties={nodeProps}
-                label={label}
-            />
 
             <CEProperties properties={nodeProps} />
 

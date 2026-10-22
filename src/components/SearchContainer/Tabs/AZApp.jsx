@@ -80,7 +80,10 @@ const AZAppNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZApp</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -111,7 +114,6 @@ const AZAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

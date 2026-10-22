@@ -68,7 +68,10 @@ const AZManagementGroupNodeData = ({}) => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZManagementGroup</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -91,7 +94,6 @@ const AZManagementGroupNodeData = ({}) => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZManagementGroup'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

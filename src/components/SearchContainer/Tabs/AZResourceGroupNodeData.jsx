@@ -65,10 +65,12 @@ const AZResourceGroupNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZResourceGroup</span>
+                </h5>
 
                 <MappedNodeProps
-                    kind='AZResourceGroup'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

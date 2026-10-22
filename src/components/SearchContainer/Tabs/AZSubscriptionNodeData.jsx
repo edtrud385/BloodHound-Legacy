@@ -69,7 +69,10 @@ const AZSubscriptionNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZSubscription</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -89,7 +92,6 @@ const AZSubscriptionNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZSubscription'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

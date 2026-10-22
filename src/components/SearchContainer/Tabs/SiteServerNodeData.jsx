@@ -33,9 +33,12 @@ const SiteServerNodeData = () => {
             setObjectid(id);
             let session = driver.session();
             session
-                .run(`MATCH (n:SiteServer {objectid: $objectid}) RETURN n AS node`, {
-                    objectid: id,
-                })
+                .run(
+                    `MATCH (n:SiteServer {objectid: $objectid}) RETURN n AS node`,
+                    {
+                        objectid: id,
+                    }
+                )
                 .then((r) => {
                     let props = r.records[0].get('node').properties;
                     setNodeProps(props);
@@ -64,7 +67,10 @@ const SiteServerNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - SiteServer</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -97,7 +103,6 @@ const SiteServerNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='SiteServer'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

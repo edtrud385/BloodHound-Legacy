@@ -65,10 +65,12 @@ const AZTenantNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZTenant</span>
+                </h5>
 
                 <MappedNodeProps
-                    kind='AZTenant'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

@@ -76,7 +76,10 @@ const NodePanel = ({
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    {kind && <span className={styles.kind}> - {kind}</span>}
+                </h5>
 
                 {sections
                     .filter((section) => section.top)
@@ -103,7 +106,6 @@ const NodePanel = ({
                 )}
 
                 <MappedNodeProps
-                    kind={kind}
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

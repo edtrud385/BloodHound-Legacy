@@ -56,7 +56,7 @@ const AZRoleNodeData = ({}) => {
         enabled: 'Enabled',
         description: 'Description',
         templateid: 'Template ID',
-        tenantid: 'Tenant ID'
+        tenantid: 'Tenant ID',
     };
 
     return objectid === null ? (
@@ -69,10 +69,12 @@ const AZRoleNodeData = ({}) => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZRole</span>
+                </h5>
 
                 <MappedNodeProps
-                    kind='AZRole'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
@@ -104,7 +106,6 @@ const AZRoleNodeData = ({}) => {
                         distinct
                     />
                 </CollapsibleSectionTable>
-
             </div>
         </div>
     );

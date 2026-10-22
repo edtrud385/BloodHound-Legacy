@@ -34,9 +34,12 @@ const AZLogicAppNodeData = () => {
             setDomain(domain);
             let session = driver.session();
             session
-                .run(`MATCH (n:AZLogicApp {objectid: $objectid}) RETURN n AS node`, {
-                    objectid: id,
-                })
+                .run(
+                    `MATCH (n:AZLogicApp {objectid: $objectid}) RETURN n AS node`,
+                    {
+                        objectid: id,
+                    }
+                )
                 .then((r) => {
                     let props = r.records[0].get('node').properties;
                     setNodeProps(props);
@@ -63,7 +66,10 @@ const AZLogicAppNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZLogicApp</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -90,7 +96,6 @@ const AZLogicAppNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='AZLogicApp'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
@@ -141,7 +146,6 @@ const AZLogicAppNodeData = () => {
                         </Table>
                     </div>
                 </CollapsibleSection>
-
             </div>
         </div>
     );

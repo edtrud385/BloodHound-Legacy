@@ -83,7 +83,10 @@ const UserNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectId}</h5>
+                <h5>
+                    {label || objectId}
+                    <span className={styles.kind}> - User</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -139,7 +142,6 @@ const UserNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='User'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

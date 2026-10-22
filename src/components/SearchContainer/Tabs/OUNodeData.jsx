@@ -69,7 +69,10 @@ const OUNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - OU</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -89,7 +92,6 @@ const OUNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='OU'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

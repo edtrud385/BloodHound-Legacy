@@ -63,7 +63,10 @@ const GroupNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - Group</span>
+                </h5>
 
                 <CollapsibleSection header='OVERVIEW'>
                     <div className={styles.itemlist}>
@@ -94,7 +97,6 @@ const GroupNodeData = () => {
                 <hr></hr>
 
                 <MappedNodeProps
-                    kind='Group'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}

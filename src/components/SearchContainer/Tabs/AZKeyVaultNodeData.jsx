@@ -66,10 +66,12 @@ const AZKeyVaultNodeData = () => {
             )}
         >
             <div className={clsx(styles.dl)}>
-                <h5>{label || objectid}</h5>
+                <h5>
+                    {label || objectid}
+                    <span className={styles.kind}> - AZKeyVault</span>
+                </h5>
 
                 <MappedNodeProps
-                    kind='AZKeyVault'
                     displayMap={displayMap}
                     properties={nodeProps}
                     label={label}
