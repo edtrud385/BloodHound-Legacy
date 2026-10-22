@@ -8,7 +8,6 @@ import { Table } from 'react-bootstrap';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeDisplayLink from './Components/NodeDisplayLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { withAlert } from 'react-alert';
 
@@ -100,13 +99,10 @@ const AZManagementGroupNodeData = ({}) => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../AppContext';
 import CollapsibleSection from './Components/CollapsibleSection';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import MappedNodeProps from './Components/MappedNodeProps';
 import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
@@ -98,13 +97,10 @@ const ContainerNodeData = ({}) => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

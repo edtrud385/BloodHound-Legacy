@@ -75,7 +75,10 @@ const AZKeyVaultNodeData = () => {
                     label={label}
                 />
 
-                <CEProperties properties={nodeProps} />
+                <CEProperties
+                    properties={nodeProps}
+                    exclude={Object.keys(displayMap)}
+                />
 
                 <hr></hr>
 

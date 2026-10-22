@@ -4,7 +4,6 @@ import CollapsibleSection from './Components/CollapsibleSection';
 import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
@@ -118,13 +117,10 @@ const AZGroupNodeData = () => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

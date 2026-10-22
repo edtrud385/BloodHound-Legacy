@@ -6,9 +6,15 @@ import { propLabel, propValue } from '../../../../js/propLabels';
 
 // Every property of a node, including the ones BloodHound CE collection adds
 // (system_tags, isaclprotected, doesanyacegrantownerrights, ...), with
-// readable names. In the regular Node Info panels it starts collapsed and
+// readable names. Keys in `exclude` (the ones the panel's Node Properties
+// already shows) are left out so no field is listed twice. In the regular Node Info panels it starts collapsed and
 // remembers whether it was last left open.
-const CEProperties = ({ properties, extraRows = [], alwaysOpen = false }) => {
+const CEProperties = ({
+    properties,
+    exclude = [],
+    extraRows = [],
+    alwaysOpen = false,
+}) => {
     // Default to open so the section is not missed while scrolling; only stay
     // closed if the user has deliberately collapsed it before.
     const [open, setOpen] = useState(conf.get('cePropertiesOpen') !== false);
@@ -19,6 +25,7 @@ const CEProperties = ({ properties, extraRows = [], alwaysOpen = false }) => {
     };
 
     const rows = Object.keys(properties || {})
+        .filter((key) => !exclude.includes(key))
         .map((key) => [propLabel(key), propValue(properties[key])])
         .sort((a, b) => a[0].localeCompare(b[0]))
         .concat(extraRows);

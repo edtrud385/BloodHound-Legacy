@@ -6,7 +6,6 @@ import NodeCypherLinkComplex from './Components/NodeCypherLinkComplex';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodeCypherNoNumberLink from './Components/NodeCypherNoNumberLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
@@ -102,13 +101,10 @@ const AZManagedClusterNodeData = () => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

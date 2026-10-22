@@ -4,7 +4,6 @@ import CollapsibleSection from './Components/CollapsibleSection';
 import NodeCypherLink from './Components/NodeCypherLink';
 import NodePlayCypherLink from './Components/NodePlayCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import CEProperties from './Components/CEProperties';
 import { Table } from 'react-bootstrap';
 import styles from './NodeData.module.css';
@@ -118,13 +117,10 @@ const SiteNodeData = () => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

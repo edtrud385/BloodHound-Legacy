@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { AppContext } from '../../../AppContext';
 import CollapsibleSection from './Components/CollapsibleSection';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import MappedNodeProps from './Components/MappedNodeProps';
 import CEProperties from './Components/CEProperties';
 import NodeCypherLink from './Components/NodeCypherLink';
@@ -103,13 +102,10 @@ const GroupNodeData = () => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 

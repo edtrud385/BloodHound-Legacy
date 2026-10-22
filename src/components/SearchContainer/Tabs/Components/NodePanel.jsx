@@ -5,7 +5,6 @@ import CollapsibleSection from './CollapsibleSection';
 import NodeCypherLink from './NodeCypherLink';
 import NodePlayCypherLink from './NodePlayCypherLink';
 import MappedNodeProps from './MappedNodeProps';
-import ExtraNodeProps from './ExtraNodeProps';
 import CEProperties from './CEProperties';
 import {
     InboundControlSection,
@@ -112,13 +111,10 @@ const NodePanel = ({
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 {sections
                     .filter((section) => !section.top)

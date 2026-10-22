@@ -5,7 +5,6 @@ import styles from './NodeData.module.css';
 import NodeCypherLink from './Components/NodeCypherLink';
 import MappedNodeProps from './Components/MappedNodeProps';
 import CEProperties from './Components/CEProperties';
-import ExtraNodeProps from './Components/ExtraNodeProps';
 import { withAlert } from 'react-alert';
 import CollapsibleSectionTable from './Components/CollapsibleSectionNew';
 
@@ -81,13 +80,10 @@ const AZRoleNodeData = ({}) => {
 
                 <hr></hr>
 
-                <ExtraNodeProps
-                    displayMap={displayMap}
+                <CEProperties
                     properties={nodeProps}
-                    label={label}
+                    exclude={Object.keys(displayMap)}
                 />
-
-                <CEProperties properties={nodeProps} />
 
                 <hr></hr>
 
