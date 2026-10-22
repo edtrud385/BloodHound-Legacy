@@ -209,21 +209,21 @@ global.appStore = {
             // AD Sites (SharpHound v2.17 / CE 9.8)
             Site: {
                 font: "'Font Awesome 5 Free'",
-                content: '\uf3c5',
+                content: '\uf277',
                 scale: 1.25,
-                color: '#7CB7A4',
+                color: '#2DD4BF',
             },
             SiteServer: {
                 font: "'Font Awesome 5 Free'",
-                content: '\uf233',
+                content: '\uf041',
                 scale: 1.25,
-                color: '#5FA88E',
+                color: '#60A5FA',
             },
             SiteSubnet: {
                 font: "'Font Awesome 5 Free'",
-                content: '\uf6ff',
+                content: '\uf279',
                 scale: 1.25,
-                color: '#A3CFC0',
+                color: '#F59E0B',
             },
             // Azure
             AZUser: {
@@ -406,9 +406,9 @@ global.appStore = {
             NTAuthStore: '#D575F5',
             CertTemplate: '#B153F3',
             IssuancePolicy: '#99B2DD',
-            Site: '#7CB7A4',
-            SiteServer: '#5FA88E',
-            SiteSubnet: '#A3CFC0',
+            Site: '#2DD4BF',
+            SiteServer: '#60A5FA',
+            SiteSubnet: '#F59E0B',
             AZUser: '#34D2EB',
             AZGroup: '#F57C9B',
             AZTenant: '#54F2F2',
