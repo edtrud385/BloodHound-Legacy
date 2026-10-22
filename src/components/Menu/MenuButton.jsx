@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {AppContext} from '../../AppContext';
 import {motion} from 'framer-motion';
 
-const MenuButton = ({ glyphicon, click, rightClick, hoverVal }) => {
+const MenuButton = ({ glyphicon, click, rightClick, hoverVal, badge }) => {
     const [hovered, setHovered] = useState(false);
     const context = useContext(AppContext);
 
@@ -48,6 +48,7 @@ const MenuButton = ({ glyphicon, click, rightClick, hoverVal }) => {
             }
         >
             {hovered ? hoverVal : ''} <span className={glyphicon} />
+            {badge && <span className='menu-button-badge' />}
         </motion.button>
     );
 };

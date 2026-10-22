@@ -707,6 +707,29 @@ div.tooltip-inner-custom {
     height: 15px;
 }
 
+.menudiv > div > button {
+    position: relative;
+}
+
+.menudiv > div > button > .menu-button-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #e53935;
+    pointer-events: none;
+}
+
+.menu-button-dark > .menu-button-badge {
+    box-shadow: 0 0 0 2px rgb(22, 29, 40);
+}
+
+.menu-button-light > .menu-button-badge {
+    box-shadow: 0 0 0 2px white;
+}
+
 .fake-hidden {
     width: 0;
     height: 0;

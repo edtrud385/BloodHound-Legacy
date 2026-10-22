@@ -33,6 +33,7 @@ const About = () => {
         const result = await checkForUpdate(fork);
         setUpdate(result);
         setChecking(false);
+        emitter.emit('updateCheckResult', result);
     };
 
     // Renders the result of the update check as a short status line.
