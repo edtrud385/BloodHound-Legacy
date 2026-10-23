@@ -1,6 +1,6 @@
-# BloodHound Legacy 4.3.1 with CE support
+# BloodHound Legacy 4.3.1, extended for CE data
 
-A fork of [BloodHound Legacy](https://github.com/SpecterOps/BloodHound-Legacy) 4.3.1 that can display and work with data collected for BloodHound Community Edition (CE): ADCS objects, local groups and the newer attack-path edges. It also adds label, image-export and filtering improvements. The stock prebuilt queries are unchanged.
+A fork of [BloodHound Legacy](https://github.com/SpecterOps/BloodHound-Legacy) 4.3.1 that reads data collected for BloodHound Community Edition (CE) and extends Legacy well beyond that: Node Info panels for AD CS (with the PKI hierarchy), AD Sites and local groups, a "Name - Type" title and a single Node Properties section on every panel, CE icons and high-value markers, ADCS attack-path expansion, edge filtering that applies to every query, PKI and Sites counts in Database Info, and report-ready PNG export with label and padding settings. The stock prebuilt queries are unchanged.
 
 The screenshots below use a small fictional `CORP.LOCAL` domain.
 
@@ -24,11 +24,17 @@ The About window also has a **Check for Updates** line. It asks GitHub whether a
 
 Every CE node kind gets CE's own icon and colour, including the ADCS kinds that Legacy drew as blank question marks: EnterpriseCA, RootCA, AIACA, NTAuthStore, CertTemplate and IssuancePolicy. Local groups and users (ADLocalGroup, ADLocalUser), the AD Sites kinds from SharpHound v2.17 (Site, SiteServer, SiteSubnet) and AZFederatedIdentityCredential are covered too. Nodes carrying CE's `Tag_Tier_Zero` or `Tag_Owned` labels keep their own icon and Node Info panel, whatever order Neo4j returns the labels in. Low detail mode uses the same colours.
 
-![ADCS objects drawn with CE icons](docs/screenshots/01-ce-icons.png)
+![An AD CS PKI hierarchy drawn with CE icons](docs/screenshots/01-ce-icons.png)
 
 ## PKI / AD CS objects in Database Info
 
 The Database Info tab counts on-prem and Azure objects but had no counts for the ADCS objects CE collects. A **PKI / AD CS OBJECTS** section now sits right after **On-Prem Objects**, counting Certificate Templates, Enterprise CAs, Root CAs, AIA CAs, NTAuth Stores and Issuance Policies. On a database with no ADCS data collected the counts are simply zero.
+
+## AD Sites
+
+AD Sites collected by SharpHound v2.17 (Site, SiteServer and SiteSubnet) draw with CE's icons and open their own Node Info panels. A Site shows its site servers, subnets and server computers, the GPOs linked to it (and enforced) with who controls them, and inbound control rights, including WriteGPLink. A SiteServer shows its site and the computer it maps to (ServerIs). The GPO and Computer panels gain Linked Sites and AD Site rows, and Database Info has an **AD SITES** section with the counts.
+
+![Two AD Sites with their site servers, subnets and server computers](docs/screenshots/15-sites.png)
 
 ## Edge filtering for every edge and every query
 
