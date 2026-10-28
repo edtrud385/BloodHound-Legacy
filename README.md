@@ -95,9 +95,13 @@ CE marks Tier Zero with the `Tag_Tier_Zero` label and `admin_tier_0` in `system_
 - its `system_tags` contain `admin_tier_0`
 - it is a protected object, while **Protected Groups Are High Value** is on (see below)
 
+unless it has been unmarked from the right-click menu (see below).
+
 Protected objects are the AD protected groups (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Domain Controllers, Read-only Domain Controllers, Key Admins, Enterprise Key Admins, Enterprise Domain Controllers, Account, Server, Print and Backup Operators, Replicators) and all their nested members, Azure tenants, and the groups, users, service principals and devices holding the Global Administrator or Privileged Role Administrator role. CE's `ProtectAdminGroups` edges are not used: CE draws them to every account AD has flagged as AdminSDHolder-protected, and AD keeps that flag after an account leaves a protected group, so they would mark former admins.
 
-This is display only: nothing is written to the database. The protected set is read with a single query when the graph opens and is refreshed when the setting changes or a node is marked or unmarked from the right-click menu. The **Mark / Unmark as High Value** actions only change `highvalue`, so the right-click menu says when something else keeps the diamond: **Unmark … (diamond stays: CE Tier Zero)** when the node is also marked by CE or the protected set, and a greyed **High Value: protected group** line instead of **Mark** when the diamond comes only from CE or the protected set.
+Working out the diamond writes nothing to the database. The protected set is read with a single query when the graph opens and is refreshed when the setting changes or a node is marked or unmarked.
+
+The right-click menu offers **Unmark as High Value** on any node showing the diamond, whatever put it there. Unmark sets `highvalue` to false and `highvalueoverride` to true on the node, which hides the diamond even when CE or the protected set marks the node; **Mark as High Value** sets `highvalue` again and removes `highvalueoverride`. These are the only properties the app writes, as Legacy's own Mark / Unmark always did.
 
 
 <img src="docs/screenshots/04-settings.png" alt="Settings window" width="520" align="right">

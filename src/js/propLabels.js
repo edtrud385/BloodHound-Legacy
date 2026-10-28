@@ -24,6 +24,7 @@ const LABELS = {
     sensitive: 'Sensitive (Not Delegated)',
     enabled: 'Enabled',
     highvalue: 'High Value',
+    highvalueoverride: 'High Value Unmarked',
     system_tags: 'System Tags',
     operatingsystem: 'Operating System',
     enrolleesuppliessubject: 'Enrollee Supplies Subject',

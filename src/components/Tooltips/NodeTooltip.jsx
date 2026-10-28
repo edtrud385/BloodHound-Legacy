@@ -3,18 +3,19 @@ import { If, Then, Else } from 'react-if';
 import styles from './Tooltips.module.css';
 import clsx from 'clsx';
 import { AppContext } from '../../AppContext';
-import { derivedHighValueReasons } from '../../js/ceHighValue';
+import { isHighValue } from '../../js/ceHighValue';
 
 const NodeTooltip = ({ node, x, y }) => {
     let type = node.type;
     let label = node.label;
     let id = node.id;
     let objectid = node.objectid;
-    // Reasons Mark / Unmark can't change, shown so the menu matches the diamond.
-    let highValueReasons = derivedHighValueReasons({
+    // Matches the diamond, which can come from more than highvalue.
+    let highValue = isHighValue({
         objectid: objectid,
         labels: node.labels,
         properties: node.props,
+        highvalue: node.highvalue,
     });
 
     const [realX, setRealX] = useState(0);
@@ -133,32 +134,28 @@ const NodeTooltip = ({ node, x, y }) => {
                         </li>
                     </Else>
                 </If>
-                {node.highvalue === true ? (
-                    <li
-                        onClick={() => {
-                            emitter.emit('setHighVal', id, false);
-                        }}
-                    >
-                        <i className='fa fa-gem' /> Unmark {type} as High
-                        Value
-                        {highValueReasons.length > 0 &&
-                            ` (diamond stays: ${highValueReasons.join(', ')})`}
-                    </li>
-                ) : highValueReasons.length > 0 ? (
-                    <li className='disabled'>
-                        <i className='fa fa-gem' /> High Value:{' '}
-                        {highValueReasons.join(', ')}
-                    </li>
-                ) : (
-                    <li
-                        onClick={() => {
-                            emitter.emit('setHighVal', id, true);
-                        }}
-                    >
-                        <i className='fa fa-gem' /> Mark {type} as High
-                        Value
-                    </li>
-                )}
+                <If condition={highValue}>
+                    <Then>
+                        <li
+                            onClick={() => {
+                                emitter.emit('setHighVal', id, false);
+                            }}
+                        >
+                            <i className='fa fa-gem' /> Unmark {type} as High
+                            Value
+                        </li>
+                    </Then>
+                    <Else>
+                        <li
+                            onClick={() => {
+                                emitter.emit('setHighVal', id, true);
+                            }}
+                        >
+                            <i className='fa fa-gem' /> Mark {type} as High
+                            Value
+                        </li>
+                    </Else>
+                </If>
                 <li
                     onClick={() => {
                         emitter.emit('deleteNode', id);

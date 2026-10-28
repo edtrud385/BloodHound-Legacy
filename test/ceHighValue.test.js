@@ -4,7 +4,6 @@ import {
     PROTECTED_PARAMS,
     hasSystemTag,
     isHighValue,
-    derivedHighValueReasons,
     refreshProtected,
 } from '../src/js/ceHighValue';
 
@@ -39,32 +38,28 @@ const cases = [
         true,
     ],
     ['owned tag only', { properties: { system_tags: 'owned' } }, false],
+    // Unmark from the right-click menu hides the diamond whatever marks it.
+    [
+        'unmarked Tier Zero',
+        {
+            labels: ['Tag_Tier_Zero'],
+            properties: { system_tags: 'admin_tier_0', highvalueoverride: true },
+        },
+        false,
+    ],
+    [
+        'unmarked highvalue',
+        { highvalue: true, properties: { highvalueoverride: true } },
+        false,
+    ],
+    [
+        'override false',
+        { labels: ['Tag_Tier_Zero'], properties: { highvalueoverride: false } },
+        true,
+    ],
 ];
 for (const [name, node, expected] of cases) {
     assert.strictEqual(isHighValue(node), expected, name);
-}
-
-// Reasons Unmark can't change; highvalue itself is never one of them.
-const reasonCases = [
-    ['plain node', { labels: ['Base', 'User'], properties: {} }, []],
-    ['highvalue only', { highvalue: true, properties: {} }, []],
-    ['Tag_Tier_Zero label', { labels: ['Tag_Tier_Zero'] }, ['CE Tier Zero']],
-    [
-        'label and system tag',
-        {
-            labels: ['Tag_Tier_Zero'],
-            properties: { system_tags: 'admin_tier_0' },
-        },
-        ['CE Tier Zero'],
-    ],
-    [
-        'highvalue and system tag',
-        { highvalue: true, properties: { system_tags: 'admin_tier_0' } },
-        ['CE Tier Zero'],
-    ],
-];
-for (const [name, node, expected] of reasonCases) {
-    assert.deepStrictEqual(derivedHighValueReasons(node), expected, name);
 }
 
 // The protected set is read from the database, and dropped again when the
@@ -93,19 +88,16 @@ const da = { objectid: 'S-1-5-21-1-2-3-512', properties: {} };
     assert.strictEqual(isHighValue(da), false, 'not protected before load');
     await refreshProtected();
     assert.strictEqual(isHighValue(da), true, 'protected by default');
-    assert.deepStrictEqual(
-        derivedHighValueReasons({
-            ...da,
-            labels: ['Tag_Tier_Zero'],
-        }),
-        ['CE Tier Zero', 'protected group'],
-        'both reasons'
+    assert.strictEqual(
+        isHighValue({ ...da, properties: { highvalueoverride: true } }),
+        false,
+        'unmarked protected node'
     );
     config.protectedGroupsHighValue = false;
     await refreshProtected();
     assert.strictEqual(isHighValue(da), false, 'setting off');
     assert.deepStrictEqual(events, ['highValueUpdated', 'highValueUpdated']);
-    console.log(`ceHighValue: ${cases.length + reasonCases.length + 4} cases passed`);
+    console.log(`ceHighValue: ${cases.length + 4} cases passed`);
 })().catch((e) => {
     console.error(e);
     process.exit(1);

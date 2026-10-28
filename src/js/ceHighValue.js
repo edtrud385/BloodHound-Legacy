@@ -15,6 +15,7 @@
 
 export const TIER_ZERO_LABEL = 'Tag_Tier_Zero';
 export const TIER_ZERO_TAG = 'admin_tier_0';
+export const OVERRIDE_PROPERTY = 'highvalueoverride';
 
 // Domain-relative RIDs of the protected AD groups: Domain Admins, Domain
 // Controllers, Schema Admins, Enterprise Admins, Read-only Domain
@@ -132,29 +133,16 @@ export async function refreshProtected() {
     emitter.emit('highValueUpdated');
 }
 
-export const REASON_TIER_ZERO = 'CE Tier Zero';
-export const REASON_PROTECTED = 'protected group';
-
-// The reasons a node is high value other than its highvalue property. The
-// right-click Mark / Unmark only changes highvalue, so the menu uses these to
-// explain why a diamond stays.
-export function derivedHighValueReasons({ objectid, labels, properties }) {
-    const props = properties || {};
-    const reasons = [];
-    if (
-        (labels || []).includes(TIER_ZERO_LABEL) ||
-        hasSystemTag(props.system_tags, TIER_ZERO_TAG)
-    ) {
-        reasons.push(REASON_TIER_ZERO);
-    }
-    if (objectid !== undefined && isProtected(objectid)) {
-        reasons.push(REASON_PROTECTED);
-    }
-    return reasons;
-}
-
 // Whether a node gets the diamond. highvalue is Legacy's property, which the
-// right-click menu keeps current on drawn nodes.
-export function isHighValue(node) {
-    return node.highvalue === true || derivedHighValueReasons(node).length > 0;
+// right-click menu keeps current on drawn nodes. Unmark sets highvalueoverride
+// on the node, which hides the diamond whatever else marks it; Mark removes it.
+export function isHighValue({ objectid, labels, properties, highvalue }) {
+    const props = properties || {};
+    if (props[OVERRIDE_PROPERTY] === true) return false;
+    return (
+        highvalue === true ||
+        (labels || []).includes(TIER_ZERO_LABEL) ||
+        hasSystemTag(props.system_tags, TIER_ZERO_TAG) ||
+        (objectid !== undefined && isProtected(objectid))
+    );
 }

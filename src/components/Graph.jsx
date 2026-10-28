@@ -267,38 +267,31 @@ class GraphContainer extends Component {
         });
     }
 
+    // Mark sets highvalue and clears highvalueoverride; Unmark clears
+    // highvalue and sets highvalueoverride, so the diamond goes even when CE
+    // Tier Zero or the protected set marks the node.
     setHighVal(id, status) {
         closeTooltip();
         let instance = this.state.sigmaInstance;
         let node = instance.graph.nodes(id);
         node.highvalue = status;
+        node.props = { ...node.props };
         if (status) {
-            node.glyphs.push({
-                position: 'top-right',
-                font: '"Font Awesome 5 Free"',
-                content: '\uf3a5',
-                fillColor: 'black',
-                fontScale: 1.5,
-                fontStyle: '900',
-            });
+            delete node.props.highvalueoverride;
         } else {
-            let newglyphs = [];
-            $.each(node.glyphs, (_, glyph) => {
-                if (glyph.position !== 'top-right') {
-                    newglyphs.push(glyph);
-                }
-            });
-            node.glyphs = newglyphs;
+            node.props.highvalueoverride = true;
         }
-
-        instance.renderers[0].glyphs();
-        instance.refresh();
+        this.applyHighValue();
 
         let q = driver.session();
 
         q.run(
-            `MATCH (n:${node.type} {objectid: $objectid}) SET n.highvalue=$status`,
-            { objectid: node.objectid, status: status }
+            `MATCH (n:${node.type} {objectid: $objectid}) SET n.highvalue=$status, n.highvalueoverride=$override`,
+            {
+                objectid: node.objectid,
+                status: status,
+                override: status ? null : true,
+            }
         ).then(() => {
             q.close();
         });
