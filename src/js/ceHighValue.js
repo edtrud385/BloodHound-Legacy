@@ -10,8 +10,7 @@
 //
 // The protected set is what Legacy's post-processing and CE treat as high
 // value by default: the AD protected/privileged groups and their nested
-// members, the objects CE's ProtectAdminGroups edges point to, Azure tenants,
-// and the privileged Entra roles' holders. It is read with one query and
+// members, Azure tenants, and the privileged Entra roles' holders. It is read with one query and
 // cached; nothing is written to the database.
 
 export const TIER_ZERO_LABEL = 'Tag_Tier_Zero';
@@ -64,8 +63,10 @@ export const PROTECTED_QUERY = [
     RETURN g.objectid AS id`,
     `MATCH (m)-[:MemberOf*1..]->(g:Group) WHERE ${protectedGroup('g')}
     RETURN m.objectid AS id`,
-    `MATCH ()-[:ProtectAdminGroups]->(n)
-    RETURN n.objectid AS id`,
+    // CE's ProtectAdminGroups edges are left out on purpose. CE draws them to
+    // every object AD flagged as AdminSDHolder-protected (admincount), and AD
+    // never clears that flag when an account leaves a protected group, so
+    // they mark former admins. Current members are covered by the rule above.
     `MATCH (n:AZTenant)
     RETURN n.objectid AS id`,
     `MATCH (g:AZGroup)-[:AZHasRole]->(r:AZRole) WHERE ${privilegedRole}
@@ -131,14 +132,29 @@ export async function refreshProtected() {
     emitter.emit('highValueUpdated');
 }
 
+export const REASON_TIER_ZERO = 'CE Tier Zero';
+export const REASON_PROTECTED = 'protected group';
+
+// The reasons a node is high value other than its highvalue property. The
+// right-click Mark / Unmark only changes highvalue, so the menu uses these to
+// explain why a diamond stays.
+export function derivedHighValueReasons({ objectid, labels, properties }) {
+    const props = properties || {};
+    const reasons = [];
+    if (
+        (labels || []).includes(TIER_ZERO_LABEL) ||
+        hasSystemTag(props.system_tags, TIER_ZERO_TAG)
+    ) {
+        reasons.push(REASON_TIER_ZERO);
+    }
+    if (objectid !== undefined && isProtected(objectid)) {
+        reasons.push(REASON_PROTECTED);
+    }
+    return reasons;
+}
+
 // Whether a node gets the diamond. highvalue is Legacy's property, which the
 // right-click menu keeps current on drawn nodes.
-export function isHighValue({ objectid, labels, properties, highvalue }) {
-    const props = properties || {};
-    return (
-        highvalue === true ||
-        (labels || []).includes(TIER_ZERO_LABEL) ||
-        hasSystemTag(props.system_tags, TIER_ZERO_TAG) ||
-        (objectid !== undefined && isProtected(objectid))
-    );
+export function isHighValue(node) {
+    return node.highvalue === true || derivedHighValueReasons(node).length > 0;
 }

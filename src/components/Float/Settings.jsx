@@ -360,7 +360,7 @@ const Settings = () => {
                                 <i
                                     data-toggle='tooltip'
                                     data-placement='right'
-                                    title='Show the high value marker on AD protected groups and their members, ProtectAdminGroups targets, Azure tenants and privileged Entra role holders. Nothing is written to the database.'
+                                    title='Show the high value marker on AD protected groups and their members, Azure tenants and privileged Entra role holders. Nothing is written to the database.'
                                     className={clsx(
                                         'glyphicon',
                                         'glyphicon-question-sign',

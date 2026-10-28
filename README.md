@@ -95,9 +95,9 @@ CE marks Tier Zero with the `Tag_Tier_Zero` label and `admin_tier_0` in `system_
 - its `system_tags` contain `admin_tier_0`
 - it is a protected object, while **Protected Groups Are High Value** is on (see below)
 
-Protected objects are the AD protected groups (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Domain Controllers, Read-only Domain Controllers, Key Admins, Enterprise Key Admins, Enterprise Domain Controllers, Account, Server, Print and Backup Operators, Replicators) and all their nested members, the objects CE's `ProtectAdminGroups` edges point to, Azure tenants, and the groups, users, service principals and devices holding the Global Administrator or Privileged Role Administrator role.
+Protected objects are the AD protected groups (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Domain Controllers, Read-only Domain Controllers, Key Admins, Enterprise Key Admins, Enterprise Domain Controllers, Account, Server, Print and Backup Operators, Replicators) and all their nested members, Azure tenants, and the groups, users, service principals and devices holding the Global Administrator or Privileged Role Administrator role. CE's `ProtectAdminGroups` edges are not used: CE draws them to every account AD has flagged as AdminSDHolder-protected, and AD keeps that flag after an account leaves a protected group, so they would mark former admins.
 
-This is display only: nothing is written to the database. The protected set is read with a single query when the graph opens and is refreshed when the setting changes or a node is marked or unmarked from the right-click menu. The **Mark / Unmark as High Value** actions work as before; unmarking a node that CE or the protected set still marks leaves its diamond in place.
+This is display only: nothing is written to the database. The protected set is read with a single query when the graph opens and is refreshed when the setting changes or a node is marked or unmarked from the right-click menu. The **Mark / Unmark as High Value** actions only change `highvalue`, so the right-click menu says when something else keeps the diamond: **Unmark … (diamond stays: CE Tier Zero)** when the node is also marked by CE or the protected set, and a greyed **High Value: protected group** line instead of **Mark** when the diamond comes only from CE or the protected set.
 
 
 <img src="docs/screenshots/04-settings.png" alt="Settings window" width="520" align="right">
@@ -109,7 +109,7 @@ This is display only: nothing is written to the database. The protected set is r
 
 **High Value**
 
-- **Protected Groups Are High Value** (default on) shows the diamond on protected groups and their members, `ProtectAdminGroups` targets, Azure tenants and privileged Entra role holders, as described above.
+- **Protected Groups Are High Value** (default on) shows the diamond on protected groups and their members, Azure tenants and privileged Entra role holders, as described above.
 
 **Graph Images**
 

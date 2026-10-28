@@ -4,6 +4,7 @@ import {
     PROTECTED_PARAMS,
     hasSystemTag,
     isHighValue,
+    derivedHighValueReasons,
     refreshProtected,
 } from '../src/js/ceHighValue';
 
@@ -12,7 +13,8 @@ assert.ok(
     !/\b(CREATE|MERGE|DELETE|SET|REMOVE|CALL)\b/.test(PROTECTED_QUERY),
     'protected query is read-only'
 );
-assert.ok(PROTECTED_QUERY.includes('ProtectAdminGroups'));
+// ProtectAdminGroups also points at former admins, so it is not used.
+assert.ok(!PROTECTED_QUERY.includes('ProtectAdminGroups'));
 assert.ok(PROTECTED_QUERY.includes('AZTenant'));
 assert.deepStrictEqual(PROTECTED_PARAMS.roles, [
     '62E90394-69F5-4237-9190-012177145E10',
@@ -42,6 +44,29 @@ for (const [name, node, expected] of cases) {
     assert.strictEqual(isHighValue(node), expected, name);
 }
 
+// Reasons Unmark can't change; highvalue itself is never one of them.
+const reasonCases = [
+    ['plain node', { labels: ['Base', 'User'], properties: {} }, []],
+    ['highvalue only', { highvalue: true, properties: {} }, []],
+    ['Tag_Tier_Zero label', { labels: ['Tag_Tier_Zero'] }, ['CE Tier Zero']],
+    [
+        'label and system tag',
+        {
+            labels: ['Tag_Tier_Zero'],
+            properties: { system_tags: 'admin_tier_0' },
+        },
+        ['CE Tier Zero'],
+    ],
+    [
+        'highvalue and system tag',
+        { highvalue: true, properties: { system_tags: 'admin_tier_0' } },
+        ['CE Tier Zero'],
+    ],
+];
+for (const [name, node, expected] of reasonCases) {
+    assert.deepStrictEqual(derivedHighValueReasons(node), expected, name);
+}
+
 // The protected set is read from the database, and dropped again when the
 // setting is turned off.
 const config = {};
@@ -68,11 +93,19 @@ const da = { objectid: 'S-1-5-21-1-2-3-512', properties: {} };
     assert.strictEqual(isHighValue(da), false, 'not protected before load');
     await refreshProtected();
     assert.strictEqual(isHighValue(da), true, 'protected by default');
+    assert.deepStrictEqual(
+        derivedHighValueReasons({
+            ...da,
+            labels: ['Tag_Tier_Zero'],
+        }),
+        ['CE Tier Zero', 'protected group'],
+        'both reasons'
+    );
     config.protectedGroupsHighValue = false;
     await refreshProtected();
     assert.strictEqual(isHighValue(da), false, 'setting off');
     assert.deepStrictEqual(events, ['highValueUpdated', 'highValueUpdated']);
-    console.log(`ceHighValue: ${cases.length + 3} cases passed`);
+    console.log(`ceHighValue: ${cases.length + reasonCases.length + 4} cases passed`);
 })().catch((e) => {
     console.error(e);
     process.exit(1);

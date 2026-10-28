@@ -36,6 +36,13 @@
     cursor: pointer;
 }
 
+.tooltip :global ul li.disabled,
+.tooltip :global ul li.disabled:hover {
+    color: #94989d;
+    background-color: transparent;
+    cursor: default;
+}
+
 .tooltip :global ul li:last-child {
     border-radius: 0 0 12px 12px;
     border: none;
